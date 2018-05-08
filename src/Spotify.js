@@ -117,7 +117,6 @@ export const Spotify = {
     });
     return spotifyWrap.search.tracks(terms)
     .then(data => {
-      console.log(data);
       if (data.tracks.items && data.tracks.items.length !== 0) {
         return data.tracks.items.map((track, i) => {
           if (data.tracks.items[i].artists.length === 0) {

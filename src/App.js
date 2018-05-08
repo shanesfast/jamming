@@ -21,25 +21,21 @@ class App extends Component {
   }
 
   updateSearch(terms) {
-    console.log('triggered!');
-    if (terms.length > 0 && this.state.sortBy === "Artist") {
+    if (terms.length > 0) {
       Spotify.searchArtist(terms)
       .then(artists => {
         this.setState({
           artist: artists
         });
       });
-    } else if (terms.length > 0 && this.state.sortBy === "Album") {
       Spotify.searchAlbum(terms)
       .then(albums => {
         this.setState({
           album: albums
         });
       });
-    } else if (terms.length > 0 && this.state.sortBy === "Track") {
       Spotify.searchTracks(terms)
       .then(tracks => {
-        console.log(tracks);
         this.setState({
           track: tracks
         });
@@ -82,10 +78,7 @@ class App extends Component {
         artist={this.state.artist}
         album={this.state.album}
         track={this.state.track}
-        onClick={{
-          handleSortByChange: this.handleSortByChange,
-          handleInputValue: this.handleInputValue
-        }}
+        onClick={ this.handleSortByChange }
         sortBy={this.state.sortBy} />
       </div>
     );

@@ -11,8 +11,6 @@ export class SearchResults extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    this.handleValueClick = this.handleValueClick.bind(this);
-    this.onClick = this.onClick.bind(this);
   }
 
   renderSortByOptions() {
@@ -21,7 +19,7 @@ export class SearchResults extends React.Component {
       return <h3 key={ sortByOptionValue }
               options={ sortByOptionValue }
               className={ this.getSortByClass(sortByOptionValue) }
-              onClick={ this.onClick }>
+              onClick={ this.handleClick }>
                 { sortByOption }
               </h3>
     });
@@ -35,20 +33,7 @@ export class SearchResults extends React.Component {
 
   handleClick(e) {
     let sortByOptionValue = e.target.innerHTML;
-    this.props.onClick.handleSortByChange(sortByOptionValue);
-  }
-
-  handleValueClick() {
-    let searchText = document.getElementById('searchBar').value;
-    if (typeof searchText !== 'string') {
-      searchText = '';
-    }
-    this.props.onClick.handleInputValue(searchText);
-  }
-
-  onClick(e) {
-    this.handleClick(e);
-    this.handleValueClick();
+    this.props.onClick(sortByOptionValue);
   }
 
   generateRandomString(length) {
