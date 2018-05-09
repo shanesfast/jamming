@@ -62,8 +62,10 @@ export class SearchResults extends React.Component {
                 return <ResultList
                 name={artists.name}
                 img={artists.img[0]}
+                artistId={artists.id}
                 sortBy={this.props.sortBy}
-                key={this.generateRandomString(16)} />
+                key={this.generateRandomString(16)}
+                getAlbums={this.props.getAlbums} />
               })
             }
           </div>
@@ -86,7 +88,7 @@ export class SearchResults extends React.Component {
                 img={albums.img[0]}
                 sortBy={this.props.sortBy}
                 key={this.generateRandomString(16)}
-                id={albums.id}
+                albumId={albums.id}
                 addAlbum={this.props.addAlbum} />
               })
             }

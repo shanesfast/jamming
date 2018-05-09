@@ -188,7 +188,7 @@ h2 {
 }
 
 .ResultList {
-  height: 90%;
+  height: 87%;
   width: 100%;
   overflow-y: scroll;
 }
@@ -224,6 +224,10 @@ h2 {
   justify-content: center;
   height: 200px;
   max-height: 20%;
+}
+
+#track {
+  height: 80px;
 }
 
 .Track-information h1 { /* this is for artist-name search results */

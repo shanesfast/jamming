@@ -13,10 +13,12 @@ export class PlayList extends React.Component {
 
     if (title.length > 0 && tracks.length > 0) {
       this.props.onClick.savePlayList(title, tracks);
+      document.getElementById('title').value = '';
     } else if (title.length < 1) {
       alert('You must enter a title before saving the playlist.');
     } else if (tracks.length < 1) {
-      this.props.onClick.savePlayList(title)
+      this.props.onClick.savePlayList(title);
+      document.getElementById('title').value = '';
     }
   }
 

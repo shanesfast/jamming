@@ -22,6 +22,7 @@ class App extends Component {
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.addEntireAlbum = this.addEntireAlbum.bind(this);
+    this.getAlbums = this.getAlbums.bind(this);
   }
 
   updateSearch(terms) {
@@ -59,6 +60,9 @@ class App extends Component {
       uris = [...uris, track.uri];
     })
     Spotify.createPlayList(title, uris);
+    this.setState({
+      playListTracks: []
+    })
   }
 
   addTrack(trackInfo) {
@@ -89,7 +93,6 @@ class App extends Component {
     }
 
     remove(trackArray, removeThis);
-    console.log(trackArray);
     this.setState({
       playListTracks: trackArray
     });
@@ -102,6 +105,16 @@ class App extends Component {
         this.addTrack(track);
       });
     });
+  }
+
+  getAlbums(id, name) {
+    Spotify.getAlbumsFromArtist(id, name)
+    .then(album => {
+      this.setState({
+        album: album,
+        sortBy: "Album"
+      })
+    })
   }
 
   handleSortByChange(sortByOption) {
@@ -134,7 +147,8 @@ class App extends Component {
         onAdd={this.addTrack}
         remove={this.removeTrack}
         sortBy={this.state.sortBy}
-        addAlbum={this.addEntireAlbum} />
+        addAlbum={this.addEntireAlbum}
+        getAlbums={this.getAlbums} />
       </div>
     );
   }

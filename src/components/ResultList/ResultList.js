@@ -6,6 +6,7 @@ export class ResultList extends React.Component {
 
     this.addTrack = this.addTrack.bind(this);
     this.addAlbum = this.addAlbum.bind(this);
+    this.getAlbums = this.getAlbums.bind(this);
   }
 
   addTrack() {
@@ -19,16 +20,28 @@ export class ResultList extends React.Component {
     );
   }
 
+  getAlbums(e) {
+    this.props.getAlbums(
+      e.target.getAttribute('data-artist-id'),
+      e.target.getAttribute('data-artist-name')
+    );
+  }
+
   render() {
 
     if (this.props.sortBy === "Artist") {
       return (
         <div className="Track">
           <div className="Track-information">
-            <img src={this.props.img.url} alt={this.props.name}></img>
-            <h1>{ this.props.name }</h1>
+            <img src={this.props.img.url}
+            alt={this.props.name}
+            data-artist-id={this.props.artistId}
+            data-artist-name={this.props.name}
+            onClick={this.getAlbums}></img>
+            <h1 data-artist-id={this.props.artistId}
+            data-artist-name={this.props.name}
+            onClick={this.getAlbums}>{ this.props.name }</h1>
           </div>
-          <a className="Track-action">+</a>
         </div>
       );
     } else if (this.props.sortBy === "Album") {
@@ -41,7 +54,7 @@ export class ResultList extends React.Component {
               <p>{ this.props.artistName }</p>
             </div>
             <a className="Track-action"
-            data-id={this.props.id}
+            data-id={this.props.albumId}
             data-album={this.props.name}
             onClick={this.addAlbum}>+</a>
           </div>
@@ -50,7 +63,7 @@ export class ResultList extends React.Component {
     } else {
       return (
         <div className="Track">
-          <div className="Track-information">
+          <div className="Track-information" id="track">
             <h3>{ this.props.name }</h3>
             <p>{ this.props.artistName } | { this.props.albumName }</p>
           </div>

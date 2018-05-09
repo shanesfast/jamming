@@ -108,8 +108,6 @@ export const Spotify = {
       })
     }
 
-
-    console.log(tracks);
     // invokes create playlist POST call, then calls add-tracks POST call.
     // Only way I was able to get the playlist POST to resolve and return the
     // playlist ID before the add-tracks POST call was made.
@@ -134,6 +132,50 @@ export const Spotify = {
 
   },
 
+  getAlbumsFromArtist(id, name) {
+    const albumRequest = new Request('https://api.spotify.com/v1/artists/' +
+    id + '/albums', {
+    	headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    })
+
+    // GET call to retrieve album data
+    return fetch(albumRequest)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .then(jsonResponse => {
+      return jsonResponse;
+    })
+    .catch(err => {
+      console.log(err);
+    })
+    .then(data => {
+      if (data.items && data.items.length !== 0) {
+        return data.items.map((albums, i) => {
+          if (albums.images.length === 0) {
+            return {
+              albumName: albums.name,
+              artistName: name,
+              id: albums.id,
+              img: [{url: './missing_photo.jpg'}]
+            }
+          } else {
+            return {
+              albumName: albums.name,
+              artistName: name,
+              id: albums.id,
+              img: albums.images
+            }
+          }
+        })
+      }
+    });
+  },
+
   // all search methods below use the Spotify Wrapper API (https://github.com/willianjusten/spotify-wrapper)
   // to get data from Spotify
   searchArtist(terms) {
@@ -147,12 +189,14 @@ export const Spotify = {
           if (data.artists.items[i].images.length === 0) {
             return {
               name: artist.name,
-              img: [{url: './missing_photo.jpg'}]
+              img: [{url: './missing_photo.jpg'}],
+              id: artist.id
             }
           } else {
             return {
               name: artist.name,
-              img: artist.images
+              img: artist.images,
+              id: artist.id
             };
           }
         });

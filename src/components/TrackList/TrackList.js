@@ -28,7 +28,7 @@ export class TrackList extends React.Component {
                 this.props.playListTracks.map(track => {
                   return (
                     <div key={track.uri} className="Track">
-                      <div className="Track-information">
+                      <div className="Track-information" id="track">
                         <h3>{track.name}</h3>
                         <p>{track.artistName} | {track.albumName}</p>
                       </div>
