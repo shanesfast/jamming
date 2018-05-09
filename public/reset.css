@@ -47,15 +47,31 @@ table {
 	border-spacing: 0;
 }
 
-::placeholder {
+/* all placeholder psuedo selectors below change the default color of the
+placeholder text in the input elements */
+
+.Playlist input::placeholder {
     color: #f442e5;
     opacity: 1; /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+.Playlist input:-ms-input-placeholder { /* Internet Explorer 10-11 */
    color: #f442e5;
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
+.Playlist input::-ms-input-placeholder { /* Microsoft Edge */
    color: #f442e5;
+}
+
+.SearchBar input::placeholder {
+    color: #fff;
+    opacity: 1; /* Firefox */
+}
+
+.SearchBar input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #fff;
+}
+
+.SearchBar input::-ms-input-placeholder { /* Microsoft Edge */
+   color: #fff;
 }

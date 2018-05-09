@@ -1,6 +1,23 @@
 import React, { Component } from 'react';
 
 export class ResultList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.addTrack = this.addTrack.bind(this);
+    this.addAlbum = this.addAlbum.bind(this);
+  }
+
+  addTrack() {
+    this.props.onAdd(this.props.trackInfo);
+  }
+
+  addAlbum(e) {
+    this.props.addAlbum(
+      e.target.getAttribute('data-id'),
+      e.target.getAttribute('data-album')
+    );
+  }
 
   render() {
 
@@ -23,7 +40,10 @@ export class ResultList extends React.Component {
               <h3>{this.props.name}</h3>
               <p>{ this.props.artistName }</p>
             </div>
-            <a className="Track-action">+</a>
+            <a className="Track-action"
+            data-id={this.props.id}
+            data-album={this.props.name}
+            onClick={this.addAlbum}>+</a>
           </div>
         </div>
       );
@@ -34,7 +54,7 @@ export class ResultList extends React.Component {
             <h3>{ this.props.name }</h3>
             <p>{ this.props.artistName } | { this.props.albumName }</p>
           </div>
-          <a className="Track-action">+</a>
+          <a className="Track-action" onClick={this.addTrack}>+</a>
         </div>
       );
     }

@@ -108,6 +108,8 @@ export const Spotify = {
       })
     }
 
+
+    console.log(tracks);
     // invokes create playlist POST call, then calls add-tracks POST call.
     // Only way I was able to get the playlist POST to resolve and return the
     // playlist ID before the add-tracks POST call was made.
@@ -172,26 +174,30 @@ export const Spotify = {
             return {
               albumName: album.name,
               artistName: album.artists,
-              img: [{url: './missing_photo.jpg'}]
+              img: [{url: './missing_photo.jpg'}],
+              id: album.id
             }
           } else if (data.albums.items[i].artists.length === 0) {
               return {
                 albumName: album.name,
                 artistName: 'NoArtistFound',
-                img: album.images
+                img: album.images,
+                id: album.id
               };
           } else if (data.albums.items[i].images.length === 0
             && data.albums.items[i].artists.length === 0) {
               return {
                 albumName: album.name,
                 artistName: 'NoArtistFound',
-                img: [{url: './missing_photo.jpg'}]
+                img: [{url: './missing_photo.jpg'}],
+                id: album.id
               };
           } else {
               return {
                 albumName: album.name,
                 artistName: album.artists,
-                img: album.images
+                img: album.images,
+                id: album.id
               };
           }
         });
@@ -213,18 +219,48 @@ export const Spotify = {
             return {
               name: track.name,
               artistName: 'NoArtistFound',
-              albumName: track.album.name
+              albumName: track.album.name,
+              uri: track.uri
             }
           } else {
             return {
               name: track.name,
               artistName: track.artists,
-              albumName: track.album.name
+              albumName: track.album.name,
+              uri: track.uri
             };
           }
         });
       } else {
         return 'empty';
+      }
+    })
+  },
+
+  getTracksFromAlbum(id, name) {
+    const spotifyWrap = new SpotifyWrapper({
+      token: accessToken
+    });
+    return spotifyWrap.album.getTracks(id)
+    .then(data => {
+      if (data.items && data.items.length !== 0) {
+        return data.items.map((track, i) => {
+          if (data.items[i].artists.length === 0) {
+            return {
+              name: track.name,
+              artistName: 'NoArtistFound',
+              albumName: name,
+              uri: track.uri
+            }
+          } else {
+            return {
+              name: track.name,
+              artistName: track.artists[0].name,
+              albumName: name,
+              uri: track.uri
+            };
+          }
+        })
       }
     })
   }

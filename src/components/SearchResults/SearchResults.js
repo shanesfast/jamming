@@ -55,7 +55,7 @@ export class SearchResults extends React.Component {
           <div className="SearchFilters">
             { this.renderSortByOptions() }
           </div>
-          <div className="TrackList">
+          <div className="ResultList">
             {
               this.props.artist.map(artists =>
               {
@@ -76,7 +76,7 @@ export class SearchResults extends React.Component {
           <div className="SearchFilters">
             { this.renderSortByOptions() }
           </div>
-          <div className="TrackList">
+          <div className="ResultList">
             {
               this.props.album.map(albums =>
               {
@@ -85,7 +85,9 @@ export class SearchResults extends React.Component {
                 artistName={albums.artistName[0].name}
                 img={albums.img[0]}
                 sortBy={this.props.sortBy}
-                key={this.generateRandomString(16)} />
+                key={this.generateRandomString(16)}
+                id={albums.id}
+                addAlbum={this.props.addAlbum} />
               })
             }
           </div>
@@ -98,7 +100,7 @@ export class SearchResults extends React.Component {
           <div className="SearchFilters">
             { this.renderSortByOptions() }
           </div>
-          <div className="TrackList">
+          <div className="ResultList">
             {
               this.props.track.map(tracks =>
               {
@@ -106,8 +108,15 @@ export class SearchResults extends React.Component {
                 name={tracks.name}
                 artistName={tracks.artistName[0].name}
                 albumName={tracks.albumName}
+                trackInfo={{
+                  name: tracks.name,
+                  artistName: tracks.artistName[0].name,
+                  albumName: tracks.albumName,
+                  uri: tracks.uri
+                }}
                 sortBy={this.props.sortBy}
-                key={this.generateRandomString(16)} />
+                key={this.generateRandomString(16)}
+                onAdd={this.props.onAdd} />
               })
             }
           </div>
@@ -120,7 +129,7 @@ export class SearchResults extends React.Component {
           <div className="SearchFilters">
             { this.renderSortByOptions() }
           </div>
-          <div className="TrackList">
+          <div className="ResultList">
             <br /><p>Search for something.</p>
           </div>
         </div>

@@ -15,8 +15,16 @@ export class AppPlayList extends React.Component {
         album={this.props.album}
         track={this.props.track}
         onClick={this.props.onClick}
-        sortBy={this.props.sortBy} />
-        <PlayList onClick={this.props.onClick} />
+        onAdd={this.props.onAdd}
+        sortBy={this.props.sortBy}
+        addAlbum={this.props.addAlbum} />
+        <PlayList
+        artist={this.props.artist}
+        album={this.props.album}
+        track={this.props.track}
+        playListTracks={this.props.playListTracks}
+        onClick={this.props.onClick}
+        remove={this.props.remove} />
       </div>
     );
   }
