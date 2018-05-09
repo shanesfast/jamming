@@ -16,8 +16,8 @@ class App extends Component {
       search: ''
      };
     this.updateSearch = this.updateSearch.bind(this);
+    this.savePlayList = this.savePlayList.bind(this);
     this.handleSortByChange = this.handleSortByChange.bind(this);
-    this.handleInputValue = this.handleInputValue.bind(this);
   }
 
   updateSearch(terms) {
@@ -49,16 +49,13 @@ class App extends Component {
     }
   }
 
+  savePlayList(title, tracks) {
+    Spotify.createPlayList(title, tracks);
+  }
+
   handleSortByChange(sortByOption) {
     this.setState({
       sortBy: sortByOption
-    });
-  }
-
-  handleInputValue(searchText) {
-    this.updateSearch(searchText);
-    this.setState({
-      search: searchText
     });
   }
 
@@ -78,7 +75,10 @@ class App extends Component {
         artist={this.state.artist}
         album={this.state.album}
         track={this.state.track}
-        onClick={ this.handleSortByChange }
+        onClick={{
+          handleSortByChange: this.handleSortByChange,
+          savePlayList: this.savePlayList
+        }}
         sortBy={this.state.sortBy} />
       </div>
     );

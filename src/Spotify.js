@@ -5,7 +5,9 @@ const client_id = '4160d0ec3a004092acdbba03d6e30a03';
 const redirect_uri = 'http://localhost:3000/';
 
 const url = 'https://accounts.spotify.com/authorize';
-const scope = 'user-read-private user-read-email';
+const scope = 'user-read-private user-read-email ' +
+'playlist-modify-private playlist-read-private ' +
+'playlist-modify-public playlist-read-collaborative';
 
 // Generates a random string containing numbers and letters
 // @param  {number} length The length of the string
@@ -27,8 +29,11 @@ const urlRequest = url + "?client_id=" + client_id + "&response_type=token&redir
 
 let accessToken;
 let expiration;
+let userID;
 
 export const Spotify = {
+
+  //gets authorization token using Spotify's Implicit Grant method
   getAccess() {
     if (accessToken) {
       return accessToken;
@@ -42,8 +47,93 @@ export const Spotify = {
     } else {
         window.location = urlRequest;
     }
+
+    // gets user ID
+    fetch("https://api.spotify.com/v1/me", { headers: {
+       'Authorization': 'Bearer ' + accessToken
+     }
+    }).then(response => {
+      return response.json()
+    })
+    .then(jsonResponse => {
+      userID = jsonResponse.id;
+    })
+    .catch(err => { console.log(err) });
   },
 
+  // creates a new playlist on Spotify
+  createPlayList(title, tracks) {
+    // params for POST call to create playlist
+    const titleRequest = new Request('https://api.spotify.com/v1/users/' + userID +
+    '/playlists', {
+    	method: 'POST',
+    	headers: {
+    		'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken
+      },
+      body: JSON.stringify({
+        name: title
+      })
+    })
+
+    // POST call to create the playlist, stored in a variable
+    const addPlayList = fetch(titleRequest)
+    .then(response => {
+      if (response.ok) {
+        console.log('Playlist created');
+        return response.json();
+      }
+    })
+    .then(jsonResponse => {
+      return jsonResponse.id;
+    })
+    .catch(err => {
+      console.log(err);
+    })
+
+    // POST call to add track to playlist, stored in a function
+    function addTracks(trackRequest)  {
+      return fetch(trackRequest)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then(jsonResponse => {
+        console.log('Tracks added');
+        return jsonResponse;
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+
+    // invokes create playlist POST call, then calls add-tracks POST call.
+    // Only way I was able to get the playlist POST to resolve and return the
+    // playlist ID before the add-tracks POST call was made.
+    addPlayList
+    .then(playListID => {
+      let trackRequest = new Request('https://api.spotify.com/v1/users/' +
+      userID + '/playlists/' + playListID + '/tracks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + accessToken
+        },
+        body: JSON.stringify({
+          uris: tracks
+        })
+      })
+      return trackRequest;
+    })
+    .then(trackRequest => {
+      return addTracks(trackRequest)
+    });
+
+  },
+
+  // all search methods below use the Spotify Wrapper API (https://github.com/willianjusten/spotify-wrapper)
+  // to get data from Spotify
   searchArtist(terms) {
     const spotifyWrap = new SpotifyWrapper({
       token: accessToken

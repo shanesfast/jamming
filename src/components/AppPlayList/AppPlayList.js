@@ -16,7 +16,7 @@ export class AppPlayList extends React.Component {
         track={this.props.track}
         onClick={this.props.onClick}
         sortBy={this.props.sortBy} />
-        <PlayList />
+        <PlayList onClick={this.props.onClick} />
       </div>
     );
   }

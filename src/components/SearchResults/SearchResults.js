@@ -33,7 +33,7 @@ export class SearchResults extends React.Component {
 
   handleClick(e) {
     let sortByOptionValue = e.target.innerHTML;
-    this.props.onClick(sortByOptionValue);
+    this.props.onClick.handleSortByChange(sortByOptionValue);
   }
 
   generateRandomString(length) {
