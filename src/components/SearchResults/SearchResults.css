@@ -1,0 +1,49 @@
+.SearchResults {
+  width: 45%;
+  height: 600px;
+  padding: .88rem;
+  background-color: rgba(56, 73, 113, 0.86);
+  box-shadow: 2px 5px 4px 1px #000000;
+}
+
+.SearchResults h2 {
+  border-bottom: 1px solid #6f6f6f;
+  padding: 0.5rem 0;
+}
+
+.SearchFilters {
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #6f6f6f;
+}
+
+.SearchFilters h3.active,
+.SearchFilters h3.active:hover {
+  color: #59d44b;
+  border-top: 1px solid #59d44b;
+  border-bottom: 1px solid #59d44b;
+}
+
+.SearchFilters h3:hover {
+  cursor: pointer;
+  color: #a942f4;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+@media only screen and (max-width: 1020px) {
+  .SearchResults {
+    width: 90%;
+    margin-bottom: 2rem;
+  }
+}
+
+.ResultList {
+  height: 87%;
+  width: 100%;
+  overflow-y: scroll;
+}

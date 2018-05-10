@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { SearchResults } from '../SearchResults/SearchResults.js';
 import { PlayList } from '../PlayList/PlayList.js';
+import './AppPlayList.css';
 
 export class AppPlayList extends React.Component {
   constructor(props) {

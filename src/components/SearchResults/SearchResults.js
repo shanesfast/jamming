@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ResultList } from '../ResultList/ResultList.js';
+import './SearchResults.css';
 
 const sortByOptions = {
   "Artist": "Artist",

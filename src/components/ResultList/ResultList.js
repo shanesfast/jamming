@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './ResultList.css';
 
 export class ResultList extends React.Component {
   constructor(props) {
@@ -48,7 +49,7 @@ export class ResultList extends React.Component {
       return (
         <div>
           <div className="Track">
-            <div className="Track-information">
+            <div className="Track-information" id="album">
               <img src={this.props.img.url} alt={this.props.name}></img>
               <h3>{this.props.name}</h3>
               <p>{ this.props.artistName }</p>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { SearchBar } from './components/SearchBar/SearchBar.js';
 import { AppPlayList } from './components/AppPlayList/AppPlayList.js';
@@ -134,6 +133,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <h1>Quick J<i className="highlight">amm</i>in'</h1>
         <SearchBar onChange={this.updateSearch} />
         <AppPlayList
         artist={this.state.artist}
