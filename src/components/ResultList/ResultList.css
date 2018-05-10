@@ -7,8 +7,11 @@
 .Track img { /* this is for album image search results */
   height: 100px;
   width: 100px;
-  padding: 1rem;
   align-self: center;
+}
+
+.Track img:hover {
+  cursor: pointer;
 }
 
 .Track-information {
@@ -24,6 +27,12 @@
   background-color: rgba(1, 12, 63, 0);
   font-size: 0.9rem;
   max-width: 100%;
+  padding: 0;
+  margin-top: 2%;
+}
+
+.Track-information h1:hover {
+  cursor: pointer;
 }
 
 .Track-information h3 {
@@ -54,4 +63,5 @@
 
 #album {
   text-align: center;
+  cursor: default;
 }

@@ -85,7 +85,7 @@ export class SearchResults extends React.Component {
               {
                 return <ResultList
                 name={albums.albumName}
-                artistName={albums.artistName[0].name}
+                artistName={albums.artistName}
                 img={albums.img[0]}
                 sortBy={this.props.sortBy}
                 key={this.generateRandomString(16)}
