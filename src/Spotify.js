@@ -5,7 +5,7 @@ const client_id = '4160d0ec3a004092acdbba03d6e30a03';
 
 //use https://quick-jammin.herokuapp.com/ to deploy to heroku
 // use http://localhost:3000/ for development,
-const redirect_uri = 'https://quick-jammin.herokuapp.com/';
+const redirect_uri = 'http://localhost:3000/';
 
 const url = 'https://accounts.spotify.com/authorize';
 const scope = 'user-read-private user-read-email ' +

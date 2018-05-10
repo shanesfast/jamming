@@ -56,7 +56,7 @@ export class ResultList extends React.Component {
             </div>
             <a className="Track-action"
             data-id={this.props.albumId}
-            data-album={this.props.name}
+            data-album={this.props.albumName}
             onClick={this.addAlbum}>+</a>
           </div>
         </div>
