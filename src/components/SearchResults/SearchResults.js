@@ -84,8 +84,8 @@ export class SearchResults extends React.Component {
               this.props.album.map(albums =>
               {
                 return <ResultList
-                name={albums.albumName}
-                artistName={albums.artistName}
+                albumName={albums.albumName}
+                artistName={albums.artistName[0].name}
                 img={albums.img[0]}
                 sortBy={this.props.sortBy}
                 key={this.generateRandomString(16)}

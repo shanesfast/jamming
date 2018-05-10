@@ -51,7 +51,7 @@ export class ResultList extends React.Component {
           <div className="Track">
             <div className="Track-information" id="album">
               <img src={this.props.img.url} alt={this.props.name} id="album"></img>
-              <h3>{this.props.name}</h3>
+              <h3>{this.props.albumName}</h3>
               <p>{ this.props.artistName }</p>
             </div>
             <a className="Track-action"

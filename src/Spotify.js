@@ -5,7 +5,7 @@ const client_id = '4160d0ec3a004092acdbba03d6e30a03';
 
 // use http://localhost:3000/ for development,
 //use https://quick-jammin.herokuapp.com/ to deploy to heroku
-const redirect_uri = 'https://quick-jammin.herokuapp.com/';
+const redirect_uri = 'http://localhost:3000/';
 
 const url = 'https://accounts.spotify.com/authorize';
 const scope = 'user-read-private user-read-email ' +
@@ -135,7 +135,7 @@ export const Spotify = {
 
   },
 
-  getAlbumsFromArtist(id, name) {
+  getAlbumsFromArtist(id, artistName) {
     const albumRequest = new Request('https://api.spotify.com/v1/artists/' +
     id + '/albums', {
     	headers: {
@@ -163,14 +163,14 @@ export const Spotify = {
             if (albums.images.length === 0) {
               return {
                 albumName: albums.name,
-                artistName: name,
+                artistName: [{name: artistName}],
                 id: albums.id,
                 img: [{url: './missing_photo.jpg'}]
               }
             } else {
               return {
                 albumName: albums.name,
-                artistName: name,
+                artistName: [{name: artistName}],
                 id: albums.id,
                 img: albums.images
               }
