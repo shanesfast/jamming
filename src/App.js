@@ -150,7 +150,9 @@ class App extends Component {
         sortBy={this.state.sortBy}
         addAlbum={this.addEntireAlbum}
         getAlbums={this.getAlbums} />
-        <ListOfPlayLists toggle={this.state.list} />
+        <ListOfPlayLists
+        show={this.state.list}
+        toggle={this.openPlayLists} />
       </div>
     );
   }

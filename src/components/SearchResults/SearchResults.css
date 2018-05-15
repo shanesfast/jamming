@@ -18,6 +18,10 @@
   border-bottom: 1px solid #6f6f6f;
 }
 
+.SearchFilters h3 {
+  transition: color .25s;
+}
+
 .SearchFilters h3.active,
 .SearchFilters h3.active:hover {
   color: #59d44b;

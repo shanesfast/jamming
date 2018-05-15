@@ -3,16 +3,24 @@ import './ListOfPlayLists.css';
 
 export class ListOfPlayLists extends React.Component {
 
-  render() {
+  handleClick = (e) => {
+    e.preventDefault();
+    this.props.toggle(e);
+  }
 
-    if (this.props.toggle === 'open') {
+  render() {
+    if (this.props.show === 'open') {
       return (
-        <div className="Playlist-container">
-          <h3>UserIDs Playlists</h3>
-          <div className="Playlist-list">
-            <div className="List-item">
-              <p>This is a Playlist : <i>30 Tracks</i></p>
-              <p>edit | delete</p>
+        <div>
+          <div className="Close-playlist-container" onClick={this.handleClick}>
+          </div>
+          <div className="Playlist-container">
+            <h3>UserIDs Playlists</h3>
+            <div className="Playlist-list">
+              <div className="List-item">
+                <p>This is a Playlist : <i>30 Tracks</i></p>
+                <p>edit | delete</p>
+              </div>
             </div>
           </div>
         </div>

@@ -3,6 +3,17 @@
   width: 0;
 }
 
+.Close-playlist-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #010c3f87;
+  cursor: pointer;
+  z-index: 0;
+}
+
 .Playlist-container {
   position: absolute;
   top: 17%;
@@ -10,8 +21,9 @@
   height: 50%;
   width: 50%;
   border: 2px solid #6c41ec;
-  background-color: rgba(49, 59, 86, 0.97);
+  background-color: rgba(26, 36, 64, 0.96);
   overflow-y: hidden;
+  z-index: 1;
 }
 
 .Playlist-container h3 {

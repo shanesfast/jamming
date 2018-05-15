@@ -11,7 +11,7 @@ export class SearchBar extends React.Component {
   render() {
     return (
       <div className="SearchBar">
-        <input id="searchBar" placeholder="Search here" onChange={this.handleSearch} />
+        <input id="searchBar" placeholder="Search Spotify" onChange={this.handleSearch} />
       </div>
     );
   }

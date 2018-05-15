@@ -22,6 +22,11 @@
   width: 120px;
   margin-top: 16px;
   cursor: pointer;
+  transition: color .25s;
+}
+
+.Show-playlist-list:hover {
+  color: #59d44b;
 }
 
 .Playlist input {
