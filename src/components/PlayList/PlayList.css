@@ -9,6 +9,21 @@
   box-shadow: 2px 5px 4px 1px #000000;
 }
 
+.remove-space {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: baseline;
+  height: 0;
+  width: 100%;
+}
+
+.Show-playlist-list {
+  position: relative;
+  width: 120px;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
 .Playlist input {
   width: 100%;
   border: 0;

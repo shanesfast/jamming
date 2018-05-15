@@ -12,7 +12,8 @@ class App extends Component {
     album: '',
     track: '',
     sortBy: "Track",
-    playListTracks: []
+    playListTracks: [],
+    list: 'closed'
    };
 
   updateSearch = (terms) => {
@@ -53,6 +54,14 @@ class App extends Component {
     this.setState({
       playListTracks: []
     })
+  }
+
+  openPlayLists = (e) => {
+    if (this.state.list === 'open') {
+      this.setState({ list: 'closed' });
+    } else {
+      this.setState({ list: 'open' });
+    }
   }
 
   addTrack = (trackInfo) => {
@@ -133,14 +142,15 @@ class App extends Component {
         playListTracks={this.state.playListTracks}
         onClick={{
           handleSortByChange: this.handleSortByChange,
-          savePlayList: this.savePlayList
+          savePlayList: this.savePlayList,
+          open: this.openPlayLists
         }}
         onAdd={this.addTrack}
         remove={this.removeTrack}
         sortBy={this.state.sortBy}
         addAlbum={this.addEntireAlbum}
         getAlbums={this.getAlbums} />
-        <ListOfPlayLists />
+        <ListOfPlayLists toggle={this.state.list} />
       </div>
     );
   }

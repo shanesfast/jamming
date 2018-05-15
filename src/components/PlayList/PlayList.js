@@ -19,8 +19,16 @@ export const PlayList = (props) => {
     }
   }
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    props.onClick.open(e);
+  }
+
   return (
     <div className="Playlist">
+      <div className="remove-space">
+        <div className="Show-playlist-list" onClick={handleClick}>Edit playlists</div>
+      </div>
       <input id='title' placeholder="New Playlist"></input>
       <a className="Playlist-save"
       onClick={handleTitleChange}>
