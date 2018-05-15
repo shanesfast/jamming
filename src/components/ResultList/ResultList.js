@@ -2,26 +2,19 @@ import React, { Component } from 'react';
 import './ResultList.css';
 
 export class ResultList extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.addTrack = this.addTrack.bind(this);
-    this.addAlbum = this.addAlbum.bind(this);
-    this.getAlbums = this.getAlbums.bind(this);
-  }
-
-  addTrack() {
+  addTrack = () => {
     this.props.onAdd(this.props.trackInfo);
   }
 
-  addAlbum(e) {
+  addAlbum = (e) => {
     this.props.addAlbum(
       e.target.getAttribute('data-id'),
       e.target.getAttribute('data-album')
     );
   }
 
-  getAlbums(e) {
+  getAlbums = (e) => {
     this.props.getAlbums(
       e.target.getAttribute('data-artist-id'),
       e.target.getAttribute('data-artist-name')

@@ -2,29 +2,20 @@ import React, { Component } from 'react';
 import './App.css';
 import { SearchBar } from './components/SearchBar/SearchBar.js';
 import { AppPlayList } from './components/AppPlayList/AppPlayList.js';
+import { ListOfPlayLists } from './components/ListOfPlayLists/ListOfPlayLists.js';
 import { Spotify } from './Spotify.js';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      artist: '',
-      album: '',
-      track: '',
-      sortBy: "Track",
-      playListTracks: []
-     };
 
-    this.updateSearch = this.updateSearch.bind(this);
-    this.savePlayList = this.savePlayList.bind(this);
-    this.handleSortByChange = this.handleSortByChange.bind(this);
-    this.addTrack = this.addTrack.bind(this);
-    this.removeTrack = this.removeTrack.bind(this);
-    this.addEntireAlbum = this.addEntireAlbum.bind(this);
-    this.getAlbums = this.getAlbums.bind(this);
-  }
+  state = {
+    artist: '',
+    album: '',
+    track: '',
+    sortBy: "Track",
+    playListTracks: []
+   };
 
-  updateSearch(terms) {
+  updateSearch = (terms) => {
     if (terms.length > 0) {
       Spotify.searchArtist(terms)
       .then(artists => {
@@ -53,7 +44,7 @@ class App extends Component {
     }
   }
 
-  savePlayList(title) {
+  savePlayList = (title) => {
     let uris = [];
     this.state.playListTracks.map(track => {
       uris = [...uris, track.uri];
@@ -64,7 +55,7 @@ class App extends Component {
     })
   }
 
-  addTrack(trackInfo) {
+  addTrack = (trackInfo) => {
     if (this.state.playListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
       return;
     }
@@ -74,7 +65,7 @@ class App extends Component {
     )
   }
 
-  removeTrack(uri) {
+  removeTrack = (uri) => {
     let trackArray = [...this.state.playListTracks];
     let removeThis = trackArray.find(savedTrack => {
       if (savedTrack.uri === uri) {
@@ -97,7 +88,7 @@ class App extends Component {
     });
   }
 
-  addEntireAlbum(id, name) {
+  addEntireAlbum = (id, name) => {
     Spotify.getTracksFromAlbum(id, name)
     .then(tracks => {
       tracks.forEach(track => {
@@ -106,7 +97,7 @@ class App extends Component {
     });
   }
 
-  getAlbums(id, name) {
+  getAlbums = (id, name) => {
     Spotify.getAlbumsFromArtist(id, name)
     .then(album => {
       this.setState({
@@ -116,7 +107,7 @@ class App extends Component {
     })
   }
 
-  handleSortByChange(sortByOption) {
+  handleSortByChange = (sortByOption) => {
     this.setState({
       sortBy: sortByOption
     });
@@ -149,6 +140,7 @@ class App extends Component {
         sortBy={this.state.sortBy}
         addAlbum={this.addEntireAlbum}
         getAlbums={this.getAlbums} />
+        <ListOfPlayLists />
       </div>
     );
   }

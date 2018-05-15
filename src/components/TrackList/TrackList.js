@@ -2,12 +2,8 @@ import React, { Component } from 'react';
 import './TrackList.css';
 
 export class TrackList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.removeTrack = this.removeTrack.bind(this);
-  }
 
-  removeTrack(e) {
+  removeTrack = (e) => {
     e.preventDefault();
     this.props.remove(e.target.getAttribute('data-uri'));
   }

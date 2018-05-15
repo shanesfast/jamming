@@ -3,31 +3,25 @@ import { SearchResults } from '../SearchResults/SearchResults.js';
 import { PlayList } from '../PlayList/PlayList.js';
 import './AppPlayList.css';
 
-export class AppPlayList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+export const AppPlayList = (props) => {
     return (
       <div className="App-playlist">
         <SearchResults
-        artist={this.props.artist}
-        album={this.props.album}
-        track={this.props.track}
-        onClick={this.props.onClick}
-        onAdd={this.props.onAdd}
-        sortBy={this.props.sortBy}
-        addAlbum={this.props.addAlbum}
-        getAlbums={this.props.getAlbums} />
+        artist={props.artist}
+        album={props.album}
+        track={props.track}
+        onClick={props.onClick}
+        onAdd={props.onAdd}
+        sortBy={props.sortBy}
+        addAlbum={props.addAlbum}
+        getAlbums={props.getAlbums} />
         <PlayList
-        artist={this.props.artist}
-        album={this.props.album}
-        track={this.props.track}
-        playListTracks={this.props.playListTracks}
-        onClick={this.props.onClick}
-        remove={this.props.remove} />
+        artist={props.artist}
+        album={props.album}
+        track={props.track}
+        playListTracks={props.playListTracks}
+        onClick={props.onClick}
+        remove={props.remove} />
       </div>
     );
-  }
 }

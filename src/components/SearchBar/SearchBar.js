@@ -2,12 +2,8 @@ import React, { Component } from 'react';
 import './SearchBar.css';
 
 export class SearchBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSearch = this.handleSearch.bind(this);
-  }
 
-  handleSearch(e) {
+  handleSearch = (e) => {
     const terms = e.target.value;
     this.props.onChange(terms);
   }

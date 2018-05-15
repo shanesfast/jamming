@@ -9,10 +9,6 @@ const sortByOptions = {
 }
 
 export class SearchResults extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
 
   renderSortByOptions() {
     return Object.keys(sortByOptions).map(sortByOption => {
@@ -32,7 +28,7 @@ export class SearchResults extends React.Component {
     }
   }
 
-  handleClick(e) {
+  handleClick = (e) => {
     let sortByOptionValue = e.target.innerHTML;
     this.props.onClick.handleSortByChange(sortByOptionValue);
   }

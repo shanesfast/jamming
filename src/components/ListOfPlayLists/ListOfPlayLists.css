@@ -1,0 +1,26 @@
+.Playlist-container {
+  display: none;
+  position: absolute;
+  top: 17%;
+  left: 25%;
+  height: 50%;
+  width: 50%;
+  border: 2px solid #6c41ec;
+  background-color: rgba(49, 59, 86, 0.97);
+}
+
+.Playlist-container h3 {
+  width: 85%;
+  padding: 5% 5% 4% 1%;
+  margin-left: 4%;
+  border-bottom: 2px solid white;
+}
+
+.Playlist-list {
+  height: 100%;
+  width: 100%;
+}
+
+.Playlist-list .List-item {
+  padding: 2% 0 0 4%;
+}
