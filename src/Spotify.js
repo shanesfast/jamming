@@ -55,11 +55,39 @@ export const Spotify = {
     fetch("https://api.spotify.com/v1/me", { headers: {
        'Authorization': 'Bearer ' + accessToken
      }
-    }).then(response => {
+    })
+    .then(response => {
       return response.json()
     })
     .then(jsonResponse => {
       userID = jsonResponse.id;
+    })
+    .catch(err => { console.log(err) });
+  },
+
+  // gets all playlists from user account
+  getPlayLists() {
+    return fetch("https://api.spotify.com/v1/me/playlists", { headers: {
+      'Authorization': 'Bearer ' + accessToken
+      }
+    })
+    .then(response => {
+      return response.json();
+    })
+    .then(jsonResponse => {
+      if (jsonResponse.items.length !== 0) {
+        return jsonResponse.items.map((items, num) => {
+          return {
+            name: jsonResponse.items[num].name,
+            count: jsonResponse.items[num].tracks.total,
+            id: jsonResponse.items[num].id,
+            user: userID
+          }
+        });
+      } else {
+        return;
+      }
+
     })
     .catch(err => { console.log(err) });
   },

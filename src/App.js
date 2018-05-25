@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import './App.css';
 import { SearchBar } from './components/SearchBar/SearchBar.js';
 import { AppPlayList } from './components/AppPlayList/AppPlayList.js';
@@ -13,7 +13,8 @@ class App extends Component {
     track: '',
     sortBy: "Track",
     playListTracks: [],
-    list: 'closed'
+    editList: 'closed',
+    editListPlayLists: [{}]
    };
 
   updateSearch = (terms) => {
@@ -57,10 +58,15 @@ class App extends Component {
   }
 
   openPlayLists = (e) => {
-    if (this.state.list === 'open') {
-      this.setState({ list: 'closed' });
+    if (this.state.editList === 'open') {
+      this.setState({ editList: 'closed' });
     } else {
-      this.setState({ list: 'open' });
+      this.setState({ editList: 'open' });
+      Spotify.getPlayLists()
+      .then(playlists => {
+        this.setState({ editListPlayLists: playlists });
+        console.log(this.state.editListPlayLists);
+      });
     }
   }
 
@@ -143,7 +149,8 @@ class App extends Component {
         onClick={{
           handleSortByChange: this.handleSortByChange,
           savePlayList: this.savePlayList,
-          open: this.openPlayLists
+          open: this.openPlayLists,
+          getPlayLists: this.getPlayLists
         }}
         onAdd={this.addTrack}
         remove={this.removeTrack}
@@ -151,8 +158,9 @@ class App extends Component {
         addAlbum={this.addEntireAlbum}
         getAlbums={this.getAlbums} />
         <ListOfPlayLists
-        show={this.state.list}
-        toggle={this.openPlayLists} />
+        show={this.state.editList}
+        toggle={this.openPlayLists}
+        playlists={this.state.editListPlayLists} />
       </div>
     );
   }
