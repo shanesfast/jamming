@@ -34,7 +34,8 @@ export class ListOfPlayLists extends React.Component {
                   name={playlist.name}
                   id={playlist.id}
                   count={playlist.count}
-                  key={this.generateRandomString(16)} />
+                  key={this.generateRandomString(16)}
+                  getTracks={this.props.getTracks} />
                 })
               }
             </div>
@@ -47,7 +48,7 @@ export class ListOfPlayLists extends React.Component {
           <div className="Close-playlist-container" onClick={this.handleClick}>
           </div>
           <div className="Playlist-container">
-            <h3>UserIDs Playlists</h3>
+            <h3>Playlists</h3>
             <div className="Playlist-list">
               <p>No playlists found.</p>
             </div>

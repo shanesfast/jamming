@@ -65,22 +65,20 @@ export const Spotify = {
     .catch(err => { console.log(err) });
   },
 
-  // gets all playlists from user account
+  // gets all playlists from a user account
   getPlayLists() {
     return fetch("https://api.spotify.com/v1/me/playlists", { headers: {
       'Authorization': 'Bearer ' + accessToken
       }
     })
-    .then(response => {
-      return response.json();
-    })
+    .then(response => {return response.json();})
     .then(jsonResponse => {
       if (jsonResponse.items.length !== 0) {
         return jsonResponse.items.map((items, num) => {
           return {
-            name: jsonResponse.items[num].name,
-            count: jsonResponse.items[num].tracks.total,
-            id: jsonResponse.items[num].id,
+            name: items.name,
+            count: items.tracks.total,
+            id: items.id,
             user: userID
           }
         });
@@ -89,7 +87,33 @@ export const Spotify = {
       }
 
     })
-    .catch(err => { console.log(err) });
+    .catch(err => { console.log(err); });
+  },
+
+  // Gets tracks from a users playListTracks
+  getTracksFromPlayList(playlist_id, offset) {
+    if (offset === null || offset === undefined || offset.isNaN()) {
+      offset = 0;
+    }
+    return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlist_id}/tracks?offset=${offset}&limit=100`,
+      { headers: {
+      'Authorization': 'Bearer ' + accessToken
+      }
+    })
+    .then(response => { return response.json(); })
+    .then(jsonResponse => {
+      if (jsonResponse.items.length !== 0) {
+        return jsonResponse.items.map((item, num) => {
+          return {
+            track: item.track.name,
+            artist: item.track.artists[0].name,
+            album: item.track.album.name,
+            uri: item.track.uri
+          }
+        });
+      } else { return; }
+    })
+    .catch(err => { console.log(err); });
   },
 
   // creates a new playlist on Spotify

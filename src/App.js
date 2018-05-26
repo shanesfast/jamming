@@ -65,9 +65,36 @@ class App extends Component {
       Spotify.getPlayLists()
       .then(playlists => {
         this.setState({ editListPlayLists: playlists });
-        console.log(this.state.editListPlayLists);
       });
     }
+  }
+
+  getTracksFromPlayList = (playlist_id) => {
+    Spotify.getTracksFromPlayList(playlist_id)
+    .then(data => {
+      if (Array.isArray(data)) {
+        return data.map(track => {
+          return {
+            artistName: track.artist,
+            albumName: track.album,
+            name: track.track,
+            uri: track.uri
+          }
+        })
+      } else {
+        window.alert('You cannot edit this playlist.' +
+        'Most likely because you do not "own" it.' +
+        'It may have been created by Spotify for you.')
+      }
+    })
+    .then(tracks => {
+      if (tracks) {
+        this.setState({
+          playListTracks: tracks,
+          editList: 'closed'
+        });
+      }
+    });
   }
 
   addTrack = (trackInfo) => {
@@ -160,7 +187,8 @@ class App extends Component {
         <ListOfPlayLists
         show={this.state.editList}
         toggle={this.openPlayLists}
-        playlists={this.state.editListPlayLists} />
+        playlists={this.state.editListPlayLists}
+        getTracks={this.getTracksFromPlayList} />
       </div>
     );
   }
