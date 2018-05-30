@@ -8,32 +8,32 @@ const sortByOptions = {
   "Track": "Track"
 }
 
-export class SearchResults extends React.Component {
+export const SearchResults = (props) => {
 
-  renderSortByOptions() {
+  const renderSortByOptions = () => {
     return Object.keys(sortByOptions).map(sortByOption => {
       let sortByOptionValue = sortByOption;
       return <h3 key={ sortByOptionValue }
               options={ sortByOptionValue }
-              className={ this.getSortByClass(sortByOptionValue) }
-              onClick={ this.handleClick }>
+              className={ getSortByClass(sortByOptionValue) }
+              onClick={ handleClick }>
                 { sortByOption }
               </h3>
     });
   }
 
-  getSortByClass(sortByOption) {
-    if (this.props.sortBy === sortByOption) {
+  const getSortByClass = (sortByOption) => {
+    if (props.sortBy === sortByOption) {
       return "active";
     }
   }
 
-  handleClick = (e) => {
+  const handleClick = (e) => {
     let sortByOptionValue = e.target.innerHTML;
-    this.props.onClick.handleSortByChange(sortByOptionValue);
+    props.onClick.handleSortByChange(sortByOptionValue);
   }
 
-  generateRandomString(length) {
+  const generateRandomString = (length) => {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -43,96 +43,96 @@ export class SearchResults extends React.Component {
     return text;
   };
 
-  render() {
-
-    if (Array.isArray(this.props.artist) && this.props.sortBy === "Artist") {
-      return (
-        <div className="SearchResults">
-          <h2>Results</h2>
-          <div className="SearchFilters">
-            { this.renderSortByOptions() }
-          </div>
-          <div className="ResultList">
+  if (Array.isArray(props.artist) && props.sortBy === "Artist") {
+    return (
+      <div className="SearchResults">
+        <h2>Results</h2>
+        <div className="SearchFilters">
+          { renderSortByOptions() }
+        </div>
+        <div className="ResultList">
+          {
+            props.artist.map(artists =>
             {
-              this.props.artist.map(artists =>
-              {
-                return <ResultList
-                name={artists.name}
-                img={artists.img[0]}
-                artistId={artists.id}
-                sortBy={this.props.sortBy}
-                key={this.generateRandomString(16)}
-                getAlbums={this.props.getAlbums} />
-              })
-            }
-          </div>
+              return (
+                <ResultList
+                  name={artists.name}
+                  img={artists.img[0]}
+                  artistId={artists.id}
+                  sortBy={props.sortBy}
+                  key={generateRandomString(16)}
+                  getAlbums={props.getAlbums} />
+            )})
+          }
         </div>
-      );
-    } else if (Array.isArray(this.props.album) && this.props.sortBy === "Album") {
-      return (
-        <div className="SearchResults">
-          <h2>Results</h2>
-          <div className="SearchFilters">
-            { this.renderSortByOptions() }
-          </div>
-          <div className="ResultList">
+      </div>
+    );
+  } else if (Array.isArray(props.album) && props.sortBy === "Album") {
+    return (
+      <div className="SearchResults">
+        <h2>Results</h2>
+        <div className="SearchFilters">
+          { renderSortByOptions() }
+        </div>
+        <div className="ResultList">
+          {
+            props.album.map(albums =>
             {
-              this.props.album.map(albums =>
-              {
-                return <ResultList
-                albumName={albums.albumName}
-                artistName={albums.artistName[0].name}
-                img={albums.img[0]}
-                sortBy={this.props.sortBy}
-                key={this.generateRandomString(16)}
-                albumId={albums.id}
-                addAlbum={this.props.addAlbum} />
-              })
-            }
-          </div>
+              return (
+                <ResultList
+                  albumName={albums.albumName}
+                  artistName={albums.artistName[0].name}
+                  img={albums.img[0]}
+                  sortBy={props.sortBy}
+                  key={generateRandomString(16)}
+                  albumId={albums.id}
+                  addAlbum={props.addAlbum} />
+            )})
+          }
         </div>
-      );
-    } else if (Array.isArray(this.props.track) && this.props.sortBy === "Track") {
-      return (
-        <div className="SearchResults">
-          <h2>Results</h2>
-          <div className="SearchFilters">
-            { this.renderSortByOptions() }
-          </div>
-          <div className="ResultList">
+      </div>
+    );
+  } else if (Array.isArray(props.track) && props.sortBy === "Track") {
+    return (
+      <div className="SearchResults">
+        <h2>Results</h2>
+        <div className="SearchFilters">
+          { renderSortByOptions() }
+        </div>
+        <div className="ResultList">
+          {
+            props.track.map(tracks =>
             {
-              this.props.track.map(tracks =>
-              {
-                return <ResultList
-                name={tracks.name}
-                artistName={tracks.artistName[0].name}
-                albumName={tracks.albumName}
-                trackInfo={{
-                  name: tracks.name,
-                  artistName: tracks.artistName[0].name,
-                  albumName: tracks.albumName,
-                  uri: tracks.uri
-                }}
-                sortBy={this.props.sortBy}
-                key={this.generateRandomString(16)}
-                onAdd={this.props.onAdd} />
-              })
-            }
-          </div>
+              return (
+                <ResultList
+                  name={tracks.name}
+                  artistName={tracks.artistName[0].name}
+                  albumName={tracks.albumName}
+                  trackInfo={{
+                    name: tracks.name,
+                    artistName: tracks.artistName[0].name,
+                    albumName: tracks.albumName,
+                    uri: tracks.uri
+                  }}
+                  sortBy={props.sortBy}
+                  key={generateRandomString(16)}
+                  onAdd={props.onAdd} />
+            )})
+          }
         </div>
-      );
-    } else {
-      return (
-        <div className="SearchResults">
-          <h2>Results</h2>
-          <div className="SearchFilters">
-            { this.renderSortByOptions() }
-          </div>
-          <div className="ResultList">
-            <br /><p>Search for something.</p>
-          </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="SearchResults">
+        <h2>Results</h2>
+        <div className="SearchFilters">
+          { renderSortByOptions() }
         </div>
-      );
-    }
+        <div className="ResultList">
+          <br /><p>Search for something.</p>
+        </div>
+      </div>
+    );
   }
 }

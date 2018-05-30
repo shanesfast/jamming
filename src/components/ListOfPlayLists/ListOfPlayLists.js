@@ -2,14 +2,14 @@ import React from 'react';
 import './ListOfPlayLists.css';
 import { EditList } from '../EditList/EditList.js';
 
-export class ListOfPlayLists extends React.Component {
+export const ListOfPlayLists = (props) => {
 
-  handleClick = (e) => {
+  const handleClick = (e) => {
     e.preventDefault();
-    this.props.toggle(e);
+    props.toggle(e);
   }
 
-  generateRandomString(length) {
+  const generateRandomString = (length) => {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -19,44 +19,42 @@ export class ListOfPlayLists extends React.Component {
     return text;
   };
 
-  render() {
-    if (this.props.show === 'open' && Array.isArray(this.props.playlists)) {
-      return (
-        <div>
-          <div className="Close-playlist-container" onClick={this.handleClick}>
-          </div>
-          <div className="Playlist-container">
-            <h3>{this.props.playlists[0].user} Playlists</h3>
-            <div className="Playlist-list">
-              {
-                this.props.playlists.map(playlist => {
-                  return <EditList
-                  name={playlist.name}
-                  id={playlist.id}
-                  count={playlist.count}
-                  key={this.generateRandomString(16)}
-                  getTracks={this.props.getTracks} />
-                })
-              }
-            </div>
+  if (props.show === 'open' && Array.isArray(props.playlists)) {
+    return (
+      <div>
+        <div className="Close-playlist-container" onClick={handleClick}>
+        </div>
+        <div className="Playlist-container">
+          <h3>{props.playlists[0].user} Playlists</h3>
+          <div className="Playlist-list">
+            {
+              props.playlists.map(playlist => {
+                return <EditList
+                name={playlist.name}
+                id={playlist.id}
+                count={playlist.count}
+                key={generateRandomString(16)}
+                getTracks={props.getTracks} />
+              })
+            }
           </div>
         </div>
-      );
-    } else if (this.props.show === 'open') {
-      return (
-        <div>
-          <div className="Close-playlist-container" onClick={this.handleClick}>
-          </div>
-          <div className="Playlist-container">
-            <h3>Playlists</h3>
-            <div className="Playlist-list">
-              <p>No playlists found.</p>
-            </div>
+      </div>
+    );
+  } else if (props.show === 'open') {
+    return (
+      <div>
+        <div className="Close-playlist-container" onClick={handleClick}>
+        </div>
+        <div className="Playlist-container">
+          <h3>Playlists</h3>
+          <div className="Playlist-list">
+            <p>No playlists found.</p>
           </div>
         </div>
-      );
-    } else {
-      return( <div className="nothing"></div> );
-    }
+      </div>
+    );
+  } else {
+    return( <div className="nothing"></div> );
   }
 }

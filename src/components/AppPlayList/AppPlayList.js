@@ -7,21 +7,21 @@ export const AppPlayList = (props) => {
     return (
       <div className="App-playlist">
         <SearchResults
-        artist={props.artist}
-        album={props.album}
-        track={props.track}
-        onClick={props.onClick}
-        onAdd={props.onAdd}
-        sortBy={props.sortBy}
-        addAlbum={props.addAlbum}
-        getAlbums={props.getAlbums} />
+          artist={props.artist}
+          album={props.album}
+          track={props.track}
+          onClick={props.onClick}
+          onAdd={props.onAdd}
+          sortBy={props.sortBy}
+          addAlbum={props.addAlbum}
+          getAlbums={props.getAlbums} />
         <PlayList
-        artist={props.artist}
-        album={props.album}
-        track={props.track}
-        playListTracks={props.playListTracks}
-        onClick={props.onClick}
-        remove={props.remove} />
+          artist={props.artist}
+          album={props.album}
+          track={props.track}
+          playListTracks={props.playListTracks}
+          onClick={props.onClick}
+          remove={props.remove} />
       </div>
     );
 }

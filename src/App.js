@@ -166,29 +166,29 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Quick J<i className="highlight">amm</i>in'</h1>
+        <h1>Quick J<i className="highlight">amm</i>in&#39;</h1>
         <SearchBar onChange={this.updateSearch} />
         <AppPlayList
-        artist={this.state.artist}
-        album={this.state.album}
-        track={this.state.track}
-        playListTracks={this.state.playListTracks}
-        onClick={{
-          handleSortByChange: this.handleSortByChange,
-          savePlayList: this.savePlayList,
-          open: this.openPlayLists,
-          getPlayLists: this.getPlayLists
-        }}
-        onAdd={this.addTrack}
-        remove={this.removeTrack}
-        sortBy={this.state.sortBy}
-        addAlbum={this.addEntireAlbum}
-        getAlbums={this.getAlbums} />
+          artist={this.state.artist}
+          album={this.state.album}
+          track={this.state.track}
+          playListTracks={this.state.playListTracks}
+          onClick={{
+            handleSortByChange: this.handleSortByChange,
+            savePlayList: this.savePlayList,
+            open: this.openPlayLists,
+            getPlayLists: this.getPlayLists
+          }}
+          onAdd={this.addTrack}
+          remove={this.removeTrack}
+          sortBy={this.state.sortBy}
+          addAlbum={this.addEntireAlbum}
+          getAlbums={this.getAlbums} />
         <ListOfPlayLists
-        show={this.state.editList}
-        toggle={this.openPlayLists}
-        playlists={this.state.editListPlayLists}
-        getTracks={this.getTracksFromPlayList} />
+          show={this.state.editList}
+          toggle={this.openPlayLists}
+          playlists={this.state.editListPlayLists}
+          getTracks={this.getTracksFromPlayList} />
       </div>
     );
   }
