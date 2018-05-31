@@ -1,4 +1,4 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import { SearchBar } from './components/SearchBar/SearchBar.js';
 import { AppPlayList } from './components/AppPlayList/AppPlayList.js';
@@ -15,7 +15,7 @@ class App extends Component {
     playListTracks: [],
     editList: 'closed',
     editListPlayLists: [{}]
-   };
+  };
 
   updateSearch = (terms) => {
     if (terms.length > 0) {

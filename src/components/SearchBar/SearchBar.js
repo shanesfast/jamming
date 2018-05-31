@@ -1,18 +1,16 @@
 import React from 'react';
 import './SearchBar.css';
 
-export class SearchBar extends React.Component {
+export const SearchBar = (props) => {
 
-  handleSearch = (e) => {
+  const handleSearch = (e) => {
     const terms = e.target.value;
-    this.props.onChange(terms);
+    props.onChange(terms);
   }
 
-  render() {
-    return (
-      <div className="SearchBar">
-        <input id="searchBar" placeholder="Search Spotify" onChange={this.handleSearch} />
-      </div>
-    );
-  }
+  return (
+    <div className="SearchBar">
+      <input id="searchBar" placeholder="Search Spotify" onChange={handleSearch} />
+    </div>
+  );
 }
