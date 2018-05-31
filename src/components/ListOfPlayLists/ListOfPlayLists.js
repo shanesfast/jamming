@@ -33,8 +33,10 @@ export const ListOfPlayLists = (props) => {
                 name={playlist.name}
                 id={playlist.id}
                 count={playlist.count}
+                position={playlist.position}
                 key={generateRandomString(16)}
-                getTracks={props.getTracks} />
+                getTracks={props.getTracks}
+                getPosition={props.getPosition} />
               })
             }
           </div>

@@ -79,7 +79,8 @@ export const Spotify = {
             name: items.name,
             count: items.tracks.total,
             id: items.id,
-            user: userID
+            user: userID,
+            position: num
           }
         });
       } else {
@@ -185,6 +186,24 @@ export const Spotify = {
       return addTracks(trackRequest)
     });
 
+  },
+
+  updatePlaylistName(playlist_id, new_name) {
+    return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlist_id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + accessToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: new_name
+        })
+      }
+    )
+    .then(response => response.json())
+    .then(jsonResponse => console.log(jsonResponse))
+    .catch(err => console.log(err));
   },
 
   getAlbumsFromArtist(id, artistName) {

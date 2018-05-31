@@ -77,16 +77,19 @@ h2 {
 /* all placeholder psuedo selectors below change the default color of the
 placeholder text in the input elements */
 
-.Playlist input::placeholder {
+.Playlist input::placeholder,
+.Editlist input::placeholder {
     color: #59d44b;
     opacity: 1; /* Firefox */
 }
 
-.Playlist input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+.Playlist input:-ms-input-placeholder,
+.Editlist input:-ms-input-placeholder { /* Internet Explorer 10-11 */
    color: #59d44b;
 }
 
-.Playlist input::-ms-input-placeholder { /* Microsoft Edge */
+.Playlist input::-ms-input-placeholder,
+.Editlist input::-ms-input-placeholder { /* Microsoft Edge */
    color: #59d44b;
 }
 

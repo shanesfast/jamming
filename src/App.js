@@ -14,7 +14,10 @@ class App extends Component {
     sortBy: "Track",
     playListTracks: [],
     editList: 'closed',
-    editListPlayLists: [{}]
+    editListPlayLists: [{}],
+    editListTracks: [],
+    editBox: 'closed',
+    position: 0
   };
 
   updateSearch = (terms) => {
@@ -57,6 +60,10 @@ class App extends Component {
     })
   }
 
+  updatePlaylist = (playlist_id, new_name) => {
+    Spotify.updatePlaylistName(playlist_id, new_name);
+  }
+
   openPlayLists = (e) => {
     if (this.state.editList === 'open') {
       this.setState({ editList: 'closed' });
@@ -90,32 +97,52 @@ class App extends Component {
     .then(tracks => {
       if (tracks) {
         this.setState({
-          playListTracks: tracks,
-          editList: 'closed'
+          editListTracks: tracks,
+          editList: 'closed',
+          editBox: 'open'
         });
       }
     });
   }
 
   addTrack = (trackInfo) => {
+    if (this.state.editBox === 'open') {
+      if (this.state.editListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
+        return;
+      }
+      this.setState(prevState => ({
+          editListTracks: [...prevState.editListTracks, trackInfo]
+        })
+      );
+      return;
+    }
+
     if (this.state.playListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
       return;
     }
     this.setState(prevState => ({
         playListTracks: [...prevState.playListTracks, trackInfo]
       })
-    )
+    );
   }
 
-  removeTrack = (uri) => {
-    let trackArray = [...this.state.playListTracks];
+  removeTrack = (uri, list) => {
+    let trackArray;
+
+    if (list === 'editListTracks') {
+      trackArray = [...this.state.editListTracks]
+    } else {
+      trackArray = [...this.state.playListTracks];
+    }
+
     let removeThis = trackArray.find(savedTrack => {
       if (savedTrack.uri === uri) {
         return savedTrack;
       } else {
         return;
       }
-    })
+    });
+
     function remove(array, element) {
       const index = array.indexOf(element);
 
@@ -125,9 +152,12 @@ class App extends Component {
     }
 
     remove(trackArray, removeThis);
-    this.setState({
-      playListTracks: trackArray
-    });
+
+    if (list === 'editListTracks') {
+      this.setState({ editListTracks: trackArray });
+    } else {
+      this.setState({ playListTracks: trackArray });
+    }
   }
 
   addEntireAlbum = (id, name) => {
@@ -155,6 +185,14 @@ class App extends Component {
     });
   }
 
+  getPosition = (spot) => {
+    if (spot === this.state.position) {
+      return;
+    } else {
+      this.setState({ position: spot });
+    }
+  }
+
   componentDidMount() {
     Spotify.getAccess();
   }
@@ -176,19 +214,24 @@ class App extends Component {
           onClick={{
             handleSortByChange: this.handleSortByChange,
             savePlayList: this.savePlayList,
-            open: this.openPlayLists,
-            getPlayLists: this.getPlayLists
+            updatePlayList: this.updatePlaylist,
+            open: this.openPlayLists
           }}
           onAdd={this.addTrack}
           remove={this.removeTrack}
           sortBy={this.state.sortBy}
           addAlbum={this.addEntireAlbum}
-          getAlbums={this.getAlbums} />
+          getAlbums={this.getAlbums}
+          showEditBox={this.state.editBox}
+          editListPlayLists={this.state.editListPlayLists}
+          editListTracks={this.state.editListTracks}
+          position={this.state.position} />
         <ListOfPlayLists
           show={this.state.editList}
           toggle={this.openPlayLists}
           playlists={this.state.editListPlayLists}
-          getTracks={this.getTracksFromPlayList} />
+          getTracks={this.getTracksFromPlayList}
+          getPosition={this.getPosition} />
       </div>
     );
   }
