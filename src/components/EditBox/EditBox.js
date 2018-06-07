@@ -11,9 +11,10 @@ export const EditBox = (props) => {
 
   const handleUpdateClick = (e) => {
     e.preventDefault();
-    let playlist_id;
     let new_name = document.getElementById('edit-title').value;
-    props.onClick.updatePlayList(e.target.getAttribute('data-playlist-id'), new_name);
+    let uris = props.tracks.map(track => { return track.uri; });
+
+    props.onClick.updatePlayList(e.target.getAttribute('data-playlist-id'), new_name, uris);
   }
 
   if (props.show === 'open') {

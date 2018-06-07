@@ -6,16 +6,12 @@ export const PlayList = (props) => {
 
   const handleTitleChange = () => {
     let title = document.getElementById('title').value;
-    let tracks = [];
 
-    if (title.length > 0 && tracks.length > 0) {
-      props.onClick.savePlayList(title, tracks);
+    if (title.length > 0) {
+      props.onClick.savePlayList(title);
       document.getElementById('title').value = '';
     } else if (title.length < 1) {
       alert('You must enter a title before saving the playlist.');
-    } else if (tracks.length < 1) {
-      props.onClick.savePlayList(title);
-      document.getElementById('title').value = '';
     }
   }
 

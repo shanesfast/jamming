@@ -91,7 +91,7 @@ export const Spotify = {
     .catch(err => { console.log(err); });
   },
 
-  // Gets tracks from a users playListTracks
+  // Gets tracks from a users playList
   getTracksFromPlayList(playlist_id, offset) {
     if (offset === null || offset === undefined || offset.isNaN()) {
       offset = 0;
@@ -130,13 +130,12 @@ export const Spotify = {
       body: JSON.stringify({
         name: title
       })
-    })
+    });
 
     // POST call to create the playlist, stored in a variable
     const addPlayList = fetch(titleRequest)
     .then(response => {
       if (response.ok) {
-        console.log('Playlist created');
         return response.json();
       }
     })
@@ -188,7 +187,7 @@ export const Spotify = {
 
   },
 
-  updatePlaylistName(playlist_id, new_name) {
+  updatePlaylistName(playlist_id, new_name) { // changes a playlists name
     return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlist_id}`,
       {
         method: 'PUT',
@@ -198,6 +197,24 @@ export const Spotify = {
         },
         body: JSON.stringify({
           name: new_name
+        })
+      }
+    )
+    .then(response => response.json())
+    .then(jsonResponse => console.log(jsonResponse))
+    .catch(err => console.log(err));
+  },
+
+  updatePlaylistTracks(playlist_id, uris_array) { // replaces a playlists tracks
+    return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlist_id}/tracks`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + accessToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          uris: uris_array
         })
       }
     )

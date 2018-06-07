@@ -60,8 +60,12 @@ class App extends Component {
     })
   }
 
-  updatePlaylist = (playlist_id, new_name) => {
-    Spotify.updatePlaylistName(playlist_id, new_name);
+  updatePlaylist = (playlist_id, new_name, uris_array) => {
+    if (new_name !== this.state.editListPlayLists[this.state.position].name && new_name.length > 0) {
+      Spotify.updatePlaylistName(playlist_id, new_name);
+    }
+
+    Spotify.updatePlaylistTracks(playlist_id, uris_array);
   }
 
   openPlayLists = (e) => {
@@ -87,11 +91,9 @@ class App extends Component {
             name: track.track,
             uri: track.uri
           }
-        })
-      } else {
-        window.alert('You cannot edit this playlist.' +
-        'Most likely because you do not "own" it.' +
-        'It may have been created by Spotify for you.')
+        });
+      } else if (data === undefined) {
+        return [];
       }
     })
     .then(tracks => {
