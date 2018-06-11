@@ -24,10 +24,11 @@ export const EditBox = (props) => {
           <div className="Show-playlist-list" onClick={handleEditListClick}>
             Edit playlists</div>
         </div>
-        <input id='edit-title' placeholder={props.editListPlayLists[props.position].name}></input>
+        <input id="edit-title" placeholder={props.editListPlayLists[props.position].name}></input>
         <a className="Editlist-save" onClick={handleUpdateClick}
            data-playlist-id={props.editListPlayLists[props.position].id}>
         <b data-playlist-id={props.editListPlayLists[props.position].id}>UPDATE ON SPOTIFY</b></a>
+        <div className="Track-counter">Number of tracks: {props.tracks.length}</div>
         <EditBoxTracks
           tracks={props.tracks}
           remove={props.remove} />
