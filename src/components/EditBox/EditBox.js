@@ -1,6 +1,7 @@
 import React from 'react';
 import './EditBox.css';
 import { EditBoxTracks } from '../EditBoxTracks/EditBoxTracks.js';
+import Pagination from '../Pagination/Pagination.js';
 
 export const EditBox = (props) => {
 
@@ -17,6 +18,10 @@ export const EditBox = (props) => {
     props.onClick.updatePlayList(e.target.getAttribute('data-playlist-id'), new_name, uris);
   }
 
+  const onChangePage = (pageOfItems) => {
+    props.pagination.onChangePage(pageOfItems);
+  }
+
   if (props.show === 'open') {
     return (
       <div className="Editlist">
@@ -31,7 +36,9 @@ export const EditBox = (props) => {
         <div className="Track-counter">Number of tracks: {props.tracks.length}</div>
         <EditBoxTracks
           tracks={props.tracks}
-          remove={props.remove} />
+          remove={props.remove}
+          pagination={props.pagination} />
+        <Pagination items={props.tracks} onChangePage={onChangePage} />
       </div>
     );
   } else {

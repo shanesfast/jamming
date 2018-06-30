@@ -24,7 +24,8 @@ export const AppPlayList = (props) => {
           position={props.position}
           tracks={props.editListTracks}
           onClick={props.onClick}
-          remove={props.remove} />
+          remove={props.remove}
+          pagination={props.pagination} />
       </div>
     );
   } else {

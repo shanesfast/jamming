@@ -17,7 +17,8 @@ class App extends Component {
     editListPlayLists: [{}],
     editListTracks: [],
     editBox: 'closed',
-    position: 0
+    position: 0,
+    pageOfItems: []
   };
 
   updateSearch = (terms) => {
@@ -53,6 +54,7 @@ class App extends Component {
     let uris = [];
     this.state.playListTracks.map(track => {
       uris = [...uris, track.uri];
+      return null;
     })
     Spotify.createPlayList(title, uris);
     this.setState({
@@ -93,8 +95,8 @@ class App extends Component {
           }
         });
       } else if (data === undefined) {
-        return [];
-      }
+        return []; // the state expects an array, so an empty
+      }           // array is returned if there is no data to avoid errors
     })
     .then(tracks => {
       if (tracks) {
@@ -141,7 +143,7 @@ class App extends Component {
       if (savedTrack.uri === uri) {
         return savedTrack;
       } else {
-        return;
+        return null;
       }
     });
 
@@ -195,6 +197,11 @@ class App extends Component {
     }
   }
 
+  onChangePage = (pageOfItems) => { // handles pagination
+        // update state with new page of items
+        this.setState({ pageOfItems: pageOfItems });
+    }
+
   componentDidMount() {
     Spotify.getAccess();
   }
@@ -227,7 +234,11 @@ class App extends Component {
           showEditBox={this.state.editBox}
           editListPlayLists={this.state.editListPlayLists}
           editListTracks={this.state.editListTracks}
-          position={this.state.position} />
+          position={this.state.position}
+          pagination={{
+            pageOfItems: this.state.pageOfItems,
+            onChangePage: this.onChangePage
+          }} />
         <ListOfPlayLists
           show={this.state.editList}
           toggle={this.openPlayLists}

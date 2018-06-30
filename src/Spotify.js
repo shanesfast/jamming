@@ -92,29 +92,47 @@ export const Spotify = {
   },
 
   // Gets tracks from a users playList
-  getTracksFromPlayList(playlist_id, offset) {
-    if (offset === null || offset === undefined || offset.isNaN()) {
-      offset = 0;
+  getTracksFromPlayList(playlist_id) {
+    let trackCount = 0; // keeps track of the number of songs while making API calls ( in increments of 100)
+    let iterationCount = 1; // tracks the number of times the API call is made, used as a check before returning any data
+    let offset = 0; // offsets the track number for the API call
+    let playlistTracks = []; // used to store the tracks gathered from each API call
+
+    // this function is used to make the API call. Wrote as a function so it could be reusable.
+    const fetchTracks = () => {
+      return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlist_id}/tracks?offset=${offset}&limit=100`,
+        { headers: {
+          'Authorization': 'Bearer ' + accessToken
+        }
+      })
+      .then(response => { return response.json(); })
+      .then(jsonResponse => {
+        if (jsonResponse.items.length !== 0) {    //ensures there is data coming in
+          return jsonResponse.items.map((item, num) => { // map appends playlistTracks array with current data
+            if (num === 99) { // check to see if the trackCount needs to be updated
+              trackCount +=100;
+            }
+            playlistTracks = [...playlistTracks, // using spread operator to update the playlistTracks array
+              {
+                track: item.track.name,
+                artist: item.track.artists[0].name,
+                album: item.track.album.name,
+                uri: item.track.uri
+              }
+            ];
+          });
+        } else { return playlistTracks; }
+      })
+      .then(jsonResponse => {
+        if (trackCount / iterationCount === 100) { // checks if the number of songs divided by
+          iterationCount += 1;                    // the iteration count is 100; to check if there are more
+          offset += 100;                         //  tracks to be fetched from the playlist. If so, increments the
+          return fetchTracks();                        //  iterationCount and offset for the next API call
+        } else { return playlistTracks; }
+      })
+      .catch(err => { console.log(err); });
     }
-    return fetch(`https://api.spotify.com/v1/users/${userID}/playlists/${playlist_id}/tracks?offset=${offset}&limit=100`,
-      { headers: {
-      'Authorization': 'Bearer ' + accessToken
-      }
-    })
-    .then(response => { return response.json(); })
-    .then(jsonResponse => {
-      if (jsonResponse.items.length !== 0) {
-        return jsonResponse.items.map((item, num) => {
-          return {
-            track: item.track.name,
-            artist: item.track.artists[0].name,
-            album: item.track.album.name,
-            uri: item.track.uri
-          }
-        });
-      } else { return; }
-    })
-    .catch(err => { console.log(err); });
+    return fetchTracks();
   },
 
   // creates a new playlist on Spotify
