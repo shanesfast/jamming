@@ -1,3 +1,9 @@
+# Jamming
+
+This app uses the Spotify API to allow users to sign in via Spotify, and create/save a playlist by searching and building a playlist from this web application. It was built with enitrely using ReactJS. Feel free to fork it and make it your own!
+
+# Create React App
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
