@@ -1,4 +1,4 @@
-# Jamming
+# Quick Jammin'
 
 This app uses the Spotify API to allow users to sign in via Spotify, and create/save a playlist by searching and building a playlist from this web application. It was built enitrely with ReactJS. Feel free to fork it and make it your own!
 
