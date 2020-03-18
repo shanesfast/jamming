@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "eslint-plugin-flowtype": "^4.6.0",
+    "minimist": "^1.2.5",
+    "mkdirp": "^1.0.3",
     "react": "^16.4.1",
     "react-debounce-input": "^3.2.0",
     "react-dom": "^16.3.2",
-    "react-scripts": "1.1.4",
+    "react-scripts": "^3.4.0",
     "spotify-wrapper": "^2.0.5",
+    "typescript": "^3.8.3",
     "whatwg-fetch": "^2.0.4"
   },
   "scripts": {
