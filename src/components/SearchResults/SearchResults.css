@@ -1,6 +1,7 @@
 .SearchResults {
+  display: flex;
+  flex-direction: column;
   width: 45%;
-  height: 600px;
   padding: .88rem;
   background-color: rgba(56, 73, 113, 0.86);
   box-shadow: 2px 5px 4px 1px #000000;
@@ -47,7 +48,6 @@
 }
 
 .ResultList {
-  height: 87%;
   width: 100%;
   overflow-y: scroll;
 }

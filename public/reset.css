@@ -47,12 +47,6 @@ table {
 	border-spacing: 0;
 }
 
-body,
-html,
-#root {
-  height: 100%;
-}
-
 html {
   font-size: 18px;
 }
