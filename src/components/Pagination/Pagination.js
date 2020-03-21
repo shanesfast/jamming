@@ -15,10 +15,7 @@ const defaultProps = {
 }
 
 class Pagination extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { pager: {} };
-    }
+    state = { pager: {} };
 
     componentWillMount() {
         // set page if items array isn't empty

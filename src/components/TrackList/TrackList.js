@@ -2,17 +2,18 @@ import React from 'react';
 import './TrackList.css';
 
 export const TrackList = (props) => {
+  const { remove, playListTracks } = props;
 
   const removeTrack = (e) => {
     e.preventDefault();
-    props.remove(e.target.getAttribute('data-uri'));
+    remove(e.target.getAttribute('data-uri'));
   }
 
-  if (props.playListTracks.length > 0) {
+  if (playListTracks.length > 0) {
       return (
         <div className="TrackList">
           {
-            props.playListTracks.map(track => {
+            playListTracks.map(track => {
               return (
                 <div key={track.uri} className="Track">
                   <div className="Track-information" id="track">

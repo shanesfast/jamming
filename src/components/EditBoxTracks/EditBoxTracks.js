@@ -2,17 +2,18 @@ import React from 'react';
 import './EditBoxTracks.css';
 
 export const EditBoxTracks = (props) => {
+  const { remove, tracks, pagination } = props;
 
   const removeTrack = (e) => {
     e.preventDefault();
-    props.remove(e.target.getAttribute('data-uri'), 'editListTracks');
+    remove(e.target.getAttribute('data-uri'), 'editListTracks');
   }
 
-  if (Array.isArray(props.tracks) && props.tracks.length > 0) {
+  if (Array.isArray(tracks) && tracks.length > 0) {
     return (
       <div className="TrackList">
         {
-          props.pagination.pageOfItems.map(track => {
+          pagination.pageOfItems.map(track => {
             return (
               <div key={track.uri} className="Track">
                 <div className="Track-information" id="track">

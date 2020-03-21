@@ -2,52 +2,54 @@ import React from 'react';
 import './ResultList.css';
 
 export const ResultList = (props) => {
+  const { onAdd, trackInfo, sortBy, 
+          img, name, artistId, albumName, artistName, albumId } = props;
 
   const addTrack = () => {
-    props.onAdd(props.trackInfo);
+    onAdd(trackInfo);
   }
 
   const addAlbum = (e) => {
-    props.addAlbum(
+    addAlbum(
       e.target.getAttribute('data-id'),
       e.target.getAttribute('data-album')
     );
   }
 
   const getAlbums = (e) => {
-    props.getAlbums(
+    getAlbums(
       e.target.getAttribute('data-artist-id'),
       e.target.getAttribute('data-artist-name')
     );
   }
 
-  if (props.sortBy === "Artist") {
+  if (sortBy === "Artist") {
     return (
       <div className="Track">
         <div className="Track-information">
-          <img src={props.img.url}
-            alt={props.name}
-            data-artist-id={props.artistId}
-            data-artist-name={props.name}
+          <img src={img.url}
+            alt={name}
+            data-artist-id={artistId}
+            data-artist-name={name}
             onClick={getAlbums}></img>
-          <h1 data-artist-id={props.artistId}
-            data-artist-name={props.name}
-            onClick={getAlbums}>{ props.name }</h1>
+          <h1 data-artist-id={artistId}
+            data-artist-name={name}
+            onClick={getAlbums}>{ name }</h1>
         </div>
       </div>
     );
-  } else if (props.sortBy === "Album") {
+  } else if (sortBy === "Album") {
     return (
       <div>
         <div className="Track">
           <div className="Track-information" id="album">
-            <img src={props.img.url} alt={props.name} id="album"></img>
-            <h3>{props.albumName}</h3>
-            <p>{ props.artistName }</p>
+            <img src={img.url} alt={name} id="album"></img>
+            <h3>{albumName}</h3>
+            <p>{ artistName }</p>
           </div>
           <a className="Track-action"
-            data-id={props.albumId}
-            data-album={props.albumName}
+            data-id={albumId}
+            data-album={albumName}
             onClick={addAlbum}>+</a>
         </div>
       </div>
@@ -56,8 +58,8 @@ export const ResultList = (props) => {
     return (
       <div className="Track">
         <div className="Track-information" id="track">
-          <h3>{ props.name }</h3>
-          <p>{ props.artistName } | { props.albumName }</p>
+          <h3>{ name }</h3>
+          <p>{ artistName } | { albumName }</p>
         </div>
         <a className="Track-action" onClick={addTrack}>+</a>
       </div>

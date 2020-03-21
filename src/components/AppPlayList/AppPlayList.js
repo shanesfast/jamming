@@ -5,48 +5,51 @@ import EditBox from '../EditBox/EditBox.js';
 import './AppPlayList.css';
 
 export const AppPlayList = (props) => {
+  const { artist, album, track, onClick, onAdd, sortBy, addAlbum, getAlbums, 
+          showEditBox, editListPlayLists, position,  editListTracks, 
+          playListTracks, remove, pagination } = props;
 
-  if (props.showEditBox === 'open') {
+  if (showEditBox === 'open') {
     return (
       <div className="App-playlist">
         <SearchResults
-          artist={props.artist}
-          album={props.album}
-          track={props.track}
-          onClick={props.onClick}
-          onAdd={props.onAdd}
-          sortBy={props.sortBy}
-          addAlbum={props.addAlbum}
-          getAlbums={props.getAlbums} />
+          artist={artist}
+          album={album}
+          track={track}
+          onClick={onClick}
+          onAdd={onAdd}
+          sortBy={sortBy}
+          addAlbum={addAlbum}
+          getAlbums={getAlbums} />
         <EditBox
-          show={props.showEditBox}
-          editListPlayLists={props.editListPlayLists}
-          position={props.position}
-          tracks={props.editListTracks}
-          onClick={props.onClick}
-          remove={props.remove}
-          pagination={props.pagination} />
+          show={showEditBox}
+          editListPlayLists={editListPlayLists}
+          position={position}
+          tracks={editListTracks}
+          onClick={onClick}
+          remove={remove}
+          pagination={pagination} />
       </div>
     );
   } else {
     return (
       <div className="App-playlist">
         <SearchResults
-          artist={props.artist}
-          album={props.album}
-          track={props.track}
-          onClick={props.onClick}
-          onAdd={props.onAdd}
-          sortBy={props.sortBy}
-          addAlbum={props.addAlbum}
-          getAlbums={props.getAlbums} />
+          artist={artist}
+          album={album}
+          track={track}
+          onClick={onClick}
+          onAdd={onAdd}
+          sortBy={sortBy}
+          addAlbum={addAlbum}
+          getAlbums={getAlbums} />
         <PlayList
-          artist={props.artist}
-          album={props.album}
-          track={props.track}
-          playListTracks={props.playListTracks}
-          onClick={props.onClick}
-          remove={props.remove} />
+          artist={artist}
+          album={album}
+          track={track}
+          playListTracks={playListTracks}
+          onClick={onClick}
+          remove={remove} />
       </div>
     );
   }

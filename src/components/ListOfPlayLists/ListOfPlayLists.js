@@ -3,10 +3,11 @@ import './ListOfPlayLists.css';
 import { EditList } from '../EditList/EditList.js';
 
 export const ListOfPlayLists = (props) => {
+  const { toggle, show, playlists, getTracks, getPosition } = props;
 
   const handleClick = (e) => {
     e.preventDefault();
-    props.toggle(e);
+    toggle(e);
   }
 
   const generateRandomString = (length) => {
@@ -19,31 +20,31 @@ export const ListOfPlayLists = (props) => {
     return text;
   };
 
-  if (props.show === 'open' && Array.isArray(props.playlists)) {
+  if (show === 'open' && Array.isArray(playlists)) {
     return (
       <div>
         <div className="Close-playlist-container" onClick={handleClick}>
         </div>
         <div className="Playlist-container">
-          <h3>{props.playlists[0].user} Playlists</h3>
+          <h3>{playlists[0].user} Playlists</h3>
           <div className="Playlist-list">
             {
-              props.playlists.map(playlist => {
+              playlists.map(playlist => {
                 return <EditList
                 name={playlist.name}
                 id={playlist.id}
                 count={playlist.count}
                 position={playlist.position}
                 key={generateRandomString(16)}
-                getTracks={props.getTracks}
-                getPosition={props.getPosition} />
+                getTracks={getTracks}
+                getPosition={getPosition} />
               })
             }
           </div>
         </div>
       </div>
     );
-  } else if (props.show === 'open') {
+  } else if (show === 'open') {
     return (
       <div>
         <div className="Close-playlist-container" onClick={handleClick}>
