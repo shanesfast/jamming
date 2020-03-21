@@ -2,38 +2,48 @@ import React from 'react';
 import { TrackList } from '../TrackList/TrackList.js';
 import './PlayList.css';
 
-export const PlayList = (props) => {
+class PlayList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.titleRef = React.createRef();  
+  }
 
-  const handleTitleChange = () => {
-    let title = document.getElementById('title').value;
+  handleTitleChange = () => {
+    let title = this.titleRef.current.value;
 
     if (title.length > 0) {
-      props.onClick.savePlayList(title);
-      document.getElementById('title').value = '';
+      this.props.onClick.savePlayList(title);
+      this.titleRef.current.value = '';
     } else if (title.length < 1) {
       alert('You must enter a title before saving the playlist.');
     }
   }
 
-  const handleClick = (e) => {
+  handleClick = (e) => {
     e.preventDefault();
-    props.onClick.open(e);
+    this.props.onClick.open(e);
   }
 
-  return (
-    <div className="Playlist">
-      <div className="remove-space">
-        <div className="Show-playlist-list" onClick={handleClick}>Edit playlists</div>
+  render() {
+    const { artist, album, track, playListTracks, remove } = this.props;
+
+    return (
+      <div className="Playlist">
+        <div className="remove-space">
+          <div className="Show-playlist-list" onClick={this.handleClick}>Edit playlists</div>
+        </div>
+        <input id='title' placeholder="New Playlist" ref={this.titleRef}></input>
+        <a className="Playlist-save" onClick={this.handleTitleChange}>
+        <b>SAVE TO SPOTIFY</b></a>
+        <TrackList
+          artist={artist}
+          album={album}
+          track={track}
+          playListTracks={playListTracks}
+          remove={remove} />
       </div>
-      <input id='title' placeholder="New Playlist"></input>
-      <a className="Playlist-save" onClick={handleTitleChange}>
-      <b>SAVE TO SPOTIFY</b></a>
-      <TrackList
-        artist={props.artist}
-        album={props.album}
-        track={props.track}
-        playListTracks={props.playListTracks}
-        remove={props.remove} />
-    </div>
-  );
+    );
+  }
 }
+
+export default PlayList;

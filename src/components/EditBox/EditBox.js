@@ -3,45 +3,55 @@ import './EditBox.css';
 import { EditBoxTracks } from '../EditBoxTracks/EditBoxTracks.js';
 import Pagination from '../Pagination/Pagination.js';
 
-export const EditBox = (props) => {
+class EditBox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.newNameRef = React.createRef();  
+  }
 
-  const handleEditListClick = (e) => {
+  handleEditListClick = (e) => {
     e.preventDefault();
-    props.onClick.open(e);
+    this.this.props.onClick.open(e);
   }
 
-  const handleUpdateClick = (e) => {
+  handleUpdateClick = (e) => {
     e.preventDefault();
-    let new_name = document.getElementById('edit-title').value;
-    let uris = props.tracks.map(track => { return track.uri; });
+    let new_name = this.newNameRef.current.value;
+    let uris = this.props.tracks.map(track => { return track.uri; });
 
-    props.onClick.updatePlayList(e.target.getAttribute('data-playlist-id'), new_name, uris);
+    this.props.onClick.updatePlayList(e.target.getAttribute('data-playlist-id'), new_name, uris);
   }
 
-  const onChangePage = (pageOfItems) => {
-    props.pagination.onChangePage(pageOfItems);
+  onChangePage = (pageOfItems) => {
+    this.props.pagination.onChangePage(pageOfItems);
   }
 
-  if (props.show === 'open') {
-    return (
-      <div className="Editlist">
-        <div className="remove-space">
-          <div className="Show-playlist-list" onClick={handleEditListClick}>
-            Edit playlists</div>
+  render() {
+    const {show, editListPlayLists, tracks, remove, pagination, position} = this.props;
+
+    if (show === 'open') {
+      return (
+        <div className="Editlist">
+          <div className="remove-space">
+            <div className="Show-playlist-list" onClick={this.handleEditListClick}>
+              Edit playlists</div>
+          </div>
+          <input id="edit-title" placeholder={editListPlayLists[position].name} ref={this.newNameRef}></input>
+          <a className="Editlist-save" onClick={this.handleUpdateClick}
+            data-playlist-id={editListPlayLists[position].id}>
+          <b data-playlist-id={editListPlayLists[position].id}>UPDATE ON SPOTIFY</b></a>
+          <div className="Track-counter">Number of tracks: {tracks.length}</div>
+          <EditBoxTracks
+            tracks={tracks}
+            remove={remove}
+            pagination={pagination} />
+          <Pagination items={tracks} onChangePage={this.onChangePage} />
         </div>
-        <input id="edit-title" placeholder={props.editListPlayLists[props.position].name}></input>
-        <a className="Editlist-save" onClick={handleUpdateClick}
-           data-playlist-id={props.editListPlayLists[props.position].id}>
-        <b data-playlist-id={props.editListPlayLists[props.position].id}>UPDATE ON SPOTIFY</b></a>
-        <div className="Track-counter">Number of tracks: {props.tracks.length}</div>
-        <EditBoxTracks
-          tracks={props.tracks}
-          remove={props.remove}
-          pagination={props.pagination} />
-        <Pagination items={props.tracks} onChangePage={onChangePage} />
-      </div>
-    );
-  } else {
-    return null;
+      );
+    } else {
+      return null;
+    }
   }
 }
+
+export default EditBox;
