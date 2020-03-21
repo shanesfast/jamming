@@ -3,10 +3,7 @@ import { TrackList } from '../TrackList/TrackList.js';
 import './PlayList.css';
 
 class PlayList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.titleRef = React.createRef();  
-  }
+  titleRef = React.createRef();  
 
   handleTitleChange = () => {
     let title = this.titleRef.current.value;

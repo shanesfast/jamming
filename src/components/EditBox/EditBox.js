@@ -4,14 +4,11 @@ import { EditBoxTracks } from '../EditBoxTracks/EditBoxTracks.js';
 import Pagination from '../Pagination/Pagination.js';
 
 class EditBox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.newNameRef = React.createRef();  
-  }
+  newNameRef = React.createRef();  
 
   handleEditListClick = (e) => {
     e.preventDefault();
-    this.this.props.onClick.open(e);
+    this.props.onClick.open(e);
   }
 
   handleUpdateClick = (e) => {
