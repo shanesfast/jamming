@@ -9,28 +9,28 @@ const sortByOptions = {
 }
 
 export const SearchResults = (props) => {
+  const { sortBy, onClick, artist, getAlbums, album, addAlbum, track, onAdd } = props;
 
   const renderSortByOptions = () => {
-    return Object.keys(sortByOptions).map(sortByOption => {
-      let sortByOptionValue = sortByOption;
-      return <h3 key={ sortByOptionValue }
-              options={ sortByOptionValue }
-              className={ getSortByClass(sortByOptionValue) }
+    return Object.keys(sortByOptions).map(sortValue => {
+      return <h3 key={ sortValue }
+              options={ sortValue }
+              className={ getSortByClass(sortValue) }
               onClick={ handleClick }>
-                { sortByOption }
+                { sortValue }
               </h3>
     });
   }
 
   const getSortByClass = (sortByOption) => {
-    if (props.sortBy === sortByOption) {
+    if (sortBy === sortByOption) {
       return "active";
     }
   }
 
   const handleClick = (e) => {
-    let sortByOptionValue = e.target.innerHTML;
-    props.onClick.handleSortByChange(sortByOptionValue);
+    let sortValue = e.target.innerHTML;
+    onClick.handleSortByChange(sortValue);
   }
 
   const generateRandomString = (length) => {
@@ -43,7 +43,7 @@ export const SearchResults = (props) => {
     return text;
   };
 
-  if (Array.isArray(props.artist) && props.sortBy === "Artist") {
+  if (Array.isArray(artist) && sortBy === "Artist") {
     return (
       <div className="SearchResults">
         <h2>Results</h2>
@@ -52,22 +52,22 @@ export const SearchResults = (props) => {
         </div>
         <div className="ResultList">
           {
-            props.artist.map(artists =>
+            artist.map(artists =>
             {
               return (
                 <ResultList
                   name={artists.name}
                   img={artists.img[0]}
                   artistId={artists.id}
-                  sortBy={props.sortBy}
+                  sortBy={sortBy}
                   key={generateRandomString(16)}
-                  getAlbums={props.getAlbums} />
+                  getAlbums={getAlbums} />
             )})
           }
         </div>
       </div>
     );
-  } else if (Array.isArray(props.album) && props.sortBy === "Album") {
+  } else if (Array.isArray(album) && sortBy === "Album") {
     return (
       <div className="SearchResults">
         <h2>Results</h2>
@@ -76,23 +76,23 @@ export const SearchResults = (props) => {
         </div>
         <div className="ResultList">
           {
-            props.album.map(albums =>
+            album.map(albums =>
             {
               return (
                 <ResultList
                   albumName={albums.albumName}
                   artistName={albums.artistName[0].name}
                   img={albums.img[0]}
-                  sortBy={props.sortBy}
+                  sortBy={sortBy}
                   key={generateRandomString(16)}
                   albumId={albums.id}
-                  addAlbum={props.addAlbum} />
+                  addAlbum={addAlbum} />
             )})
           }
         </div>
       </div>
     );
-  } else if (Array.isArray(props.track) && props.sortBy === "Track") {
+  } else if (Array.isArray(track) && sortBy === "Track") {
     return (
       <div className="SearchResults">
         <h2>Results</h2>
@@ -101,7 +101,7 @@ export const SearchResults = (props) => {
         </div>
         <div className="ResultList">
           {
-            props.track.map(tracks =>
+            track.map(tracks =>
             {
               return (
                 <ResultList
@@ -114,9 +114,9 @@ export const SearchResults = (props) => {
                     albumName: tracks.albumName,
                     uri: tracks.uri
                   }}
-                  sortBy={props.sortBy}
+                  sortBy={sortBy}
                   key={generateRandomString(16)}
-                  onAdd={props.onAdd} />
+                  onAdd={onAdd} />
             )})
           }
         </div>
