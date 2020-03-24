@@ -209,7 +209,7 @@ class App extends Component {
     Spotify.getAccess();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, nextState) {
     Spotify.getAccess();
   }
 

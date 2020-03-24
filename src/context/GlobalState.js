@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from 'react';
 import AppReducer from './AppReducer';
-import { stat } from 'fs';
+import { Spotify } from '../Spotify.js';
 
 const initialState = {
   musicInfo: {
@@ -23,6 +23,33 @@ export const GlobalContext = createContext(initialState);
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
+  // Actions
+  function updateSearch(terms) {
+    if (terms.length > 0) {
+      Spotify.searchArtist(terms)
+      .then(artists => {
+        dispatch({ type: 'UPDATE_SEARCH', payload: artists });
+      });
+      Spotify.searchAlbum(terms)
+      .then(albums => {
+        dispatch({ type: 'UPDATE_SEARCH', payload: albums });
+      });
+      Spotify.searchTracks(terms)
+      .then(tracks => {
+        dispatch({ type: 'UPDATE_SEARCH', payload: tracks });
+      });
+    } else {
+      dispatch({
+        type: 'UPDATE_SEARCH',
+        payload: {
+          artist: '',
+          album: '',
+          track: ''
+        }
+      })
+    }
+  }
+
   return (<GlobalContext.Provider value={{
     editBox: state.editBox,
     editList: state.editList,
@@ -32,7 +59,8 @@ export const GlobalProvider = ({ children }) => {
     pageOfItems: state.pageOfItems,
     playListTracks: state.playListTracks,
     position: state.position,
-    sortBy: state.sortBy
+    sortBy: state.sortBy,
+    updateSearch
   }}>
     {children}
   </GlobalContext.Provider>);

@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { GlobalContext } from '../../context/GlobalState';
 import { SearchResults } from '../SearchResults/SearchResults.js';
 import PlayList from '../PlayList/PlayList.js';
 import EditBox from '../EditBox/EditBox.js';
 import './AppPlayList.css';
 
 export const AppPlayList = (props) => {
-  const { artist, album, track, onClick, onAdd, sortBy, addAlbum, getAlbums, 
+  const { musicInfo } = useContext(GlobalContext);
+  console.log(musicInfo);
+  const { artist, album, track } = musicInfo;
+  const { onClick, onAdd, sortBy, addAlbum, getAlbums, 
           showEditBox, editListPlayLists, position,  editListTracks, 
           playListTracks, remove, pagination } = props;
 

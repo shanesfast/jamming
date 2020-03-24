@@ -1,12 +1,16 @@
-import React from 'react';
+import React, {useState, useContext} from 'react'
+import { GlobalContext } from '../../context/GlobalState';
 import { DebounceInput } from 'react-debounce-input';
+
 import './SearchBar.css';
 
 export const SearchBar = (props) => {
 
+  const { updateSearch } = useContext(GlobalContext);
+
   const handleSearch = (e) => {
     const terms = e.target.value;
-    props.onChange(terms);
+    updateSearch(terms);
   }
 
   return (
