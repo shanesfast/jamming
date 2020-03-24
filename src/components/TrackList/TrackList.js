@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { GlobalContext } from '../../context/GlobalState';
+
 import './TrackList.css';
 
 export const TrackList = (props) => {
-  const { remove, playListTracks } = props;
+  const [state, setState] = useContext(GlobalContext);
+  const { playListTracks } = state;
+  console.log(playListTracks);
+  const { remove } = props;
 
   const removeTrack = (e) => {
     e.preventDefault();

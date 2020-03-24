@@ -83,27 +83,6 @@ class App extends Component {
     });
   }
 
-  addTrack = (trackInfo) => {
-    if (this.state.editBox === 'open') {
-      if (this.state.editListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
-        return;
-      }
-      this.setState(prevState => ({
-          editListTracks: [...prevState.editListTracks, trackInfo]
-        })
-      );
-      return;
-    }
-
-    if (this.state.playListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
-      return;
-    }
-    this.setState(prevState => ({
-        playListTracks: [...prevState.playListTracks, trackInfo]
-      })
-    );
-  }
-
   removeTrack = (uri, list) => {
     let trackArray;
 

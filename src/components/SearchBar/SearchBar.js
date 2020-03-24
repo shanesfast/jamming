@@ -27,7 +27,6 @@ export const SearchBar = (props) => {
       if(state.sortBy === 'Track') { 
         Spotify.searchTracks(terms)
         .then(tracks => {
-          console.log(tracks);
           setState(state => ({...state, track: tracks}));
         });
       }

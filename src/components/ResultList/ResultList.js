@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { GlobalContext } from '../../context/GlobalState';
+
 import './ResultList.css';
 
 export const ResultList = (props) => {
-  const { onAdd, trackInfo, sortBy, 
+  const [state, setState] = useContext(GlobalContext);
+  const { editBox, editListTracks, playListTracks } = state;
+  
+  const { trackInfo, sortBy, 
           img, name, artistId, albumName, artistName, albumId } = props;
 
   const addTrack = () => {
-    onAdd(trackInfo);
+    if (editBox === 'open') {
+      if (editListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
+        return;
+      }
+      return setState(state => ({...state.editListTracks, trackInfo}));
+    }
+
+    if (playListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
+      return;
+    }
+    return setState(state => ({...state, playListTracks: [...playListTracks, trackInfo] }) );
   }
 
   const addAlbum = (e) => {
