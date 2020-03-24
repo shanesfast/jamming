@@ -1,16 +1,39 @@
-import React, {useState, useContext} from 'react'
+import React, { useContext } from 'react'
 import { GlobalContext } from '../../context/GlobalState';
 import { DebounceInput } from 'react-debounce-input';
+import { Spotify } from '../../Spotify.js';
 
 import './SearchBar.css';
 
 export const SearchBar = (props) => {
 
-  const { updateSearch } = useContext(GlobalContext);
+  const [state, setState] = useContext(GlobalContext);
 
   const handleSearch = (e) => {
     const terms = e.target.value;
-    updateSearch(terms);
+    if (terms.length > 0) {
+      if (state.sortBy === 'Artist') {
+        Spotify.searchArtist(terms)
+        .then(artists => {
+          setState(state => ({...state, artist: artists}));
+        });
+      }
+      if (state.sortBy === 'Album') {
+        Spotify.searchAlbum(terms)
+        .then(albums => {
+          setState(state => ({...state, album: albums}));
+        });
+      }
+      if(state.sortBy === 'Track') { 
+        Spotify.searchTracks(terms)
+        .then(tracks => {
+          console.log(tracks);
+          setState(state => ({...state, track: tracks}));
+        });
+      }
+    } else {
+      setState(state => ({...state, artist: '', album: '', track: ''}));
+    }
   }
 
   return (

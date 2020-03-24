@@ -34,7 +34,7 @@ export const ResultList = (props) => {
             onClick={getAlbums}></img>
           <h1 data-artist-id={artistId}
             data-artist-name={name}
-            onClick={getAlbums}>{ name }</h1>
+            onClick={getAlbums}>{name}</h1>
         </div>
       </div>
     );

@@ -1,14 +1,10 @@
-import React, { useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalState';
+import React from 'react';
 import { SearchResults } from '../SearchResults/SearchResults.js';
 import PlayList from '../PlayList/PlayList.js';
 import EditBox from '../EditBox/EditBox.js';
 import './AppPlayList.css';
 
 export const AppPlayList = (props) => {
-  const { musicInfo } = useContext(GlobalContext);
-  console.log(musicInfo);
-  const { artist, album, track } = musicInfo;
   const { onClick, onAdd, sortBy, addAlbum, getAlbums, 
           showEditBox, editListPlayLists, position,  editListTracks, 
           playListTracks, remove, pagination } = props;
@@ -17,9 +13,9 @@ export const AppPlayList = (props) => {
     return (
       <div className="App-playlist">
         <SearchResults
-          artist={artist}
-          album={album}
-          track={track}
+          // artist={artist}
+          // album={album}
+          // track={track}
           onClick={onClick}
           onAdd={onAdd}
           sortBy={sortBy}
@@ -39,18 +35,18 @@ export const AppPlayList = (props) => {
     return (
       <div className="App-playlist">
         <SearchResults
-          artist={artist}
-          album={album}
-          track={track}
+          // artist={artist}
+          // album={album}
+          // track={track}
           onClick={onClick}
           onAdd={onAdd}
           sortBy={sortBy}
           addAlbum={addAlbum}
           getAlbums={getAlbums} />
         <PlayList
-          artist={artist}
-          album={album}
-          track={track}
+          // artist={artist}
+          // album={album}
+          // track={track}
           playListTracks={playListTracks}
           onClick={onClick}
           remove={remove} />

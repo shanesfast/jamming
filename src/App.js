@@ -24,35 +24,6 @@ class App extends Component {
     pageOfItems: []
   };
 
-  updateSearch = (terms) => {
-    if (terms.length > 0) {
-      Spotify.searchArtist(terms)
-      .then(artists => {
-        this.setState({
-          artist: artists
-        });
-      });
-      Spotify.searchAlbum(terms)
-      .then(albums => {
-        this.setState({
-          album: albums
-        });
-      });
-      Spotify.searchTracks(terms)
-      .then(tracks => {
-        this.setState({
-          track: tracks
-        });
-      });
-    } else {
-      this.setState({
-        artist: '',
-        album: '',
-        track: ''
-      })
-    }
-  }
-
   savePlayList = (title) => {
     let uris = [];
     this.state.playListTracks.map(track => {
