@@ -13,9 +13,6 @@ export const AppPlayList = (props) => {
     return (
       <div className="App-playlist">
         <SearchResults
-          // artist={artist}
-          // album={album}
-          // track={track}
           onClick={onClick}
           onAdd={onAdd}
           sortBy={sortBy}
@@ -35,18 +32,12 @@ export const AppPlayList = (props) => {
     return (
       <div className="App-playlist">
         <SearchResults
-          // artist={artist}
-          // album={album}
-          // track={track}
           onClick={onClick}
           onAdd={onAdd}
           sortBy={sortBy}
           addAlbum={addAlbum}
           getAlbums={getAlbums} />
         <PlayList
-          // artist={artist}
-          // album={album}
-          // track={track}
           playListTracks={playListTracks}
           onClick={onClick}
           remove={remove} />

@@ -34,9 +34,9 @@ class EditBox extends React.Component {
               Edit playlists</div>
           </div>
           <input id="edit-title" placeholder={editListPlayLists[position].name} ref={this.newNameRef}></input>
-          <a className="Editlist-save" onClick={this.handleUpdateClick}
+          <button className="Editlist-save" onClick={this.handleUpdateClick}
             data-playlist-id={editListPlayLists[position].id}>
-          <b data-playlist-id={editListPlayLists[position].id}>UPDATE ON SPOTIFY</b></a>
+          <b data-playlist-id={editListPlayLists[position].id}>UPDATE ON SPOTIFY</b></button>
           <div className="Track-counter">Number of tracks: {tracks.length}</div>
           <EditBoxTracks
             tracks={tracks}

@@ -113,21 +113,21 @@ class Pagination extends React.Component {
         return (
             <ul className="pagination">
                 <li className={pager.currentPage === 1 ? 'disabled' : ''}>
-                    <a onClick={() => this.setPage(1)}>First</a>
+                    <button onClick={() => this.setPage(1)}>First</button>
                 </li>
                 <li className={pager.currentPage === 1 ? 'disabled' : ''}>
-                    <a onClick={() => this.setPage(pager.currentPage - 1)}>&#60;</a>
+                    <button onClick={() => this.setPage(pager.currentPage - 1)}>&#60;</button>
                 </li>
                 {pager.pages.map((page, index) =>
                     <li key={index} className={pager.currentPage === page ? 'active' : ''}>
-                        <a onClick={() => this.setPage(page)}>{page}</a>
+                        <button onClick={() => this.setPage(page)}>{page}</button>
                     </li>
                 )}
                 <li className={pager.currentPage === pager.totalPages ? 'disabled' : ''}>
-                    <a onClick={() => this.setPage(pager.currentPage + 1)}>&#62;</a>
+                    <button onClick={() => this.setPage(pager.currentPage + 1)}>&#62;</button>
                 </li>
                 <li className={pager.currentPage === pager.totalPages ? 'disabled' : ''}>
-                    <a onClick={() => this.setPage(pager.totalPages)}>Last</a>
+                    <button onClick={() => this.setPage(pager.totalPages)}>Last</button>
                 </li>
             </ul>
         );

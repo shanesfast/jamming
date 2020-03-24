@@ -114,7 +114,7 @@ export const Spotify = {
             if (num === 99) { // check to see if the trackCount needs to be updated
               trackCount +=100;
             }
-            playlistTracks = [...playlistTracks, // using spread operator to update the playlistTracks array
+            return playlistTracks = [...playlistTracks, // using spread operator to update the playlistTracks array
               {
                 track: item.track.name,
                 artist: item.track.artists[0].name,

@@ -10,7 +10,7 @@ const sortByOptions = {
 }
 
 export const SearchResults = (props) => {
-  const [state, setState] = useContext(GlobalContext);
+  const [state] = useContext(GlobalContext);
   const { artist, album, track } = state;
   const { sortBy, onClick, getAlbums, addAlbum, onAdd } = props;
 

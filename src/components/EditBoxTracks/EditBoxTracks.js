@@ -1,15 +1,13 @@
 import React from 'react';
+import useTrack from '../../hooks/useTrack';
+
 import './EditBoxTracks.css';
 
 export const EditBoxTracks = (props) => {
-  const { remove, tracks, pagination } = props;
+  const { removeTrack, editListTracks, pagination } = useTrack();
+  // const { remove, tracks, pagination } = props;
 
-  const removeTrack = (e) => {
-    e.preventDefault();
-    remove(e.target.getAttribute('data-uri'), 'editListTracks');
-  }
-
-  if (Array.isArray(tracks) && tracks.length > 0) {
+  if (Array.isArray(editListTracks) && editListTracks.length > 0) {
     return (
       <div className="TrackList">
         {
@@ -20,9 +18,9 @@ export const EditBoxTracks = (props) => {
                   <h3>{track.name}</h3>
                   <p>{track.artistName} | {track.albumName}</p>
                 </div>
-                <a className="Track-action"
+                <button className="Track-action"
                   data-uri={track.uri}
-                  onClick={removeTrack}>-</a>
+                  onClick={() => removeTrack(track.uri, true)}>-</button>
               </div>
             );
           })

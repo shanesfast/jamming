@@ -32,8 +32,8 @@ export const PlayList = (props) => {
         <div className="Show-playlist-list" onClick={handleClick}>Edit playlists</div>
       </div>
       <input id='title' placeholder="New Playlist" ref={titleRef}></input>
-      <a className="Playlist-save" onClick={handleTitleChange}>
-      <b>SAVE TO SPOTIFY</b></a>
+      <button className="Playlist-save" onClick={handleTitleChange}>
+      <b>SAVE TO SPOTIFY</b></button>
       <TrackList
         artist={artist}
         album={album}

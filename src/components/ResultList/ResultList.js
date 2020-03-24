@@ -1,28 +1,13 @@
-import React, { useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalState';
+import React from 'react';
+import useTrack from '../../hooks/useTrack';
 
 import './ResultList.css';
 
 export const ResultList = (props) => {
-  const [state, setState] = useContext(GlobalContext);
-  const { editBox, editListTracks, playListTracks } = state;
+  const { addTrack } = useTrack();
   
   const { trackInfo, sortBy, 
           img, name, artistId, albumName, artistName, albumId } = props;
-
-  const addTrack = () => {
-    if (editBox === 'open') {
-      if (editListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
-        return;
-      }
-      return setState(state => ({...state.editListTracks, trackInfo}));
-    }
-
-    if (playListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
-      return;
-    }
-    return setState(state => ({...state, playListTracks: [...playListTracks, trackInfo] }) );
-  }
 
   const addAlbum = (e) => {
     addAlbum(
@@ -62,10 +47,10 @@ export const ResultList = (props) => {
             <h3>{albumName}</h3>
             <p>{ artistName }</p>
           </div>
-          <a className="Track-action"
+          <button className="Track-action"
             data-id={albumId}
             data-album={albumName}
-            onClick={addAlbum}>+</a>
+            onClick={addAlbum}>+</button>
         </div>
       </div>
     );
@@ -76,7 +61,7 @@ export const ResultList = (props) => {
           <h3>{ name }</h3>
           <p>{ artistName } | { albumName }</p>
         </div>
-        <a className="Track-action" onClick={addTrack}>+</a>
+        <button className="Track-action" onClick={() => addTrack(trackInfo)}>+</button>
       </div>
     );
   }
