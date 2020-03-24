@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import './App.css';
 import { SearchBar } from './components/SearchBar/SearchBar.js';
 import { AppPlayList } from './components/AppPlayList/AppPlayList.js';
 import { ListOfPlayLists } from './components/ListOfPlayLists/ListOfPlayLists.js';
 import { Spotify } from './Spotify.js';
+
+import { GlobalProvider } from './context/GlobalState';
+
+import './App.css';
 
 class App extends Component {
 
@@ -212,40 +215,42 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <h1>Quick J<i className="highlight">amm</i>in&#39;</h1>
-        <SearchBar onChange={this.updateSearch} />
-        <AppPlayList
-          artist={this.state.artist}
-          album={this.state.album}
-          track={this.state.track}
-          playListTracks={this.state.playListTracks}
-          onClick={{
-            handleSortByChange: this.handleSortByChange,
-            savePlayList: this.savePlayList,
-            updatePlayList: this.updatePlaylist,
-            open: this.openPlayLists
-          }}
-          onAdd={this.addTrack}
-          remove={this.removeTrack}
-          sortBy={this.state.sortBy}
-          addAlbum={this.addEntireAlbum}
-          getAlbums={this.getAlbums}
-          showEditBox={this.state.editBox}
-          editListPlayLists={this.state.editListPlayLists}
-          editListTracks={this.state.editListTracks}
-          position={this.state.position}
-          pagination={{
-            pageOfItems: this.state.pageOfItems,
-            onChangePage: this.onChangePage
-          }} />
-        <ListOfPlayLists
-          show={this.state.editList}
-          toggle={this.openPlayLists}
-          playlists={this.state.editListPlayLists}
-          getTracks={this.getTracksFromPlayList}
-          getPosition={this.getPosition} />
-      </div>
+      <GlobalProvider>
+        <div className="App">
+          <h1>Quick J<i className="highlight">amm</i>in&#39;</h1>
+          <SearchBar onChange={this.updateSearch} />
+          <AppPlayList
+            artist={this.state.artist}
+            album={this.state.album}
+            track={this.state.track}
+            playListTracks={this.state.playListTracks}
+            onClick={{
+              handleSortByChange: this.handleSortByChange,
+              savePlayList: this.savePlayList,
+              updatePlayList: this.updatePlaylist,
+              open: this.openPlayLists
+            }}
+            onAdd={this.addTrack}
+            remove={this.removeTrack}
+            sortBy={this.state.sortBy}
+            addAlbum={this.addEntireAlbum}
+            getAlbums={this.getAlbums}
+            showEditBox={this.state.editBox}
+            editListPlayLists={this.state.editListPlayLists}
+            editListTracks={this.state.editListTracks}
+            position={this.state.position}
+            pagination={{
+              pageOfItems: this.state.pageOfItems,
+              onChangePage: this.onChangePage
+            }} />
+          <ListOfPlayLists
+            show={this.state.editList}
+            toggle={this.openPlayLists}
+            playlists={this.state.editListPlayLists}
+            getTracks={this.getTracksFromPlayList}
+            getPosition={this.getPosition} />
+        </div>
+      </GlobalProvider>
     );
   }
 }
