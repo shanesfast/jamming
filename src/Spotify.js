@@ -33,7 +33,12 @@ let userID;
 
 export const Spotify = {
 
-  //gets authorization token using Spotify's Implicit Grant method
+  // checks if a user is already signed in
+  signedIn() {
+    if (accessToken && userID) return true;
+  },
+
+  // gets authorization token using Spotify's Implicit Grant method
   getAccess() {
     if (accessToken) {
       return accessToken;
