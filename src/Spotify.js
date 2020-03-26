@@ -39,7 +39,7 @@ export const Spotify = {
   },
 
   // gets authorization token using Spotify's Implicit Grant method
-  getAccess() {
+  getAccess(signal) {
     if (accessToken) {
       return accessToken;
     } else if (window.location.href.match(/access_token=([^&]*)/)) {
@@ -56,7 +56,7 @@ export const Spotify = {
     // gets user ID
     fetch("https://api.spotify.com/v1/me", { headers: {
        'Authorization': 'Bearer ' + accessToken
-     }
+     }, signal: signal
     })
     .then(response => {
       return response.json()
@@ -109,7 +109,7 @@ export const Spotify = {
       })
       .then(response => { return response.json(); })
       .then(jsonResponse => {
-        if (jsonResponse.items.length !== 0) {    //ensures there is data coming in
+        if (jsonResponse.items && jsonResponse.items.length !== 0) {    //ensures there is data coming in
           return jsonResponse.items.map((item, num) => { // map appends playlistTracks array with current data
             if (num === 99) { // check to see if the trackCount needs to be updated
               trackCount +=100;

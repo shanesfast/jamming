@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { GlobalContext } from '../../context/GlobalState';
+import { GlobalContext } from '../../context/GlobalContext';
 import { DebounceInput } from 'react-debounce-input';
 import { Spotify } from '../../Spotify.js';
 

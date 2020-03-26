@@ -1,16 +1,18 @@
 import React from 'react';
 import useTrack from '../../hooks/useTrack';
+// import usePagination from '../../hooks/usePagination';
 
 import './EditBoxTracks.css';
 
-export const EditBoxTracks = (props) => {
-  const { removeTrack, editListTracks, pagination } = useTrack();
+const EditBoxTracks = (props) => {
+  const { removeTrack, editListTracks } = useTrack();
+  // const { pageOfItems } = usePagination();
 
   if (Array.isArray(editListTracks) && editListTracks.length > 0) {
     return (
       <div className="TrackList">
         {
-          pagination.pageOfItems.map(track => {
+          editListTracks.map(track => {
             return (
               <div key={track.uri} className="Track">
                 <div className="Track-information" id="track">
@@ -34,3 +36,5 @@ export const EditBoxTracks = (props) => {
     );
   }
 }
+
+export default EditBoxTracks;

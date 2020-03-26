@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalState';
+import { GlobalContext } from '../../context/GlobalContext';
 import { ResultList } from '../ResultList/ResultList.js';
 import './SearchResults.css';
 
@@ -11,8 +11,8 @@ const sortByOptions = {
 
 export const SearchResults = (props) => {
   const [state] = useContext(GlobalContext);
-  const { artist, album, track } = state;
-  const { sortBy, onClick, getAlbums, addAlbum, onAdd } = props;
+  const { artist, album, track, sortBy } = state;
+  const { onClick, getAlbums, addAlbum, onAdd } = props;
 
   const renderSortByOptions = () => {
     return Object.keys(sortByOptions).map(sortValue => {

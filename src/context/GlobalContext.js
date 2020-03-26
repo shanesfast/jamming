@@ -9,11 +9,11 @@ export const GlobalProvider = ({ children }) => {
     track: '',
     sortBy: "Track",
     playListTracks: [],
-    openEditList: true,
+    editListIsOpen: false,
     editListPlayLists: [{}],
     editListTracks: [],
-    editBox: 'closed',
-    position: 0,
+    editBoxIsOpen: false,
+    playListPosition: 0,
     pageOfItems: []
   });
 

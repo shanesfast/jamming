@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { GlobalContext } from "../context/GlobalState";
 import PropTypes from 'prop-types';
 
 const usePagination = () => {
   const [state, setState] = useContext(GlobalContext);
-  const { pageOfItems, track } = state;
+  const { pageOfItems, editListTracks } = state;
 
   const [pagerState, setPagerState] = useState({ 
     pager: {}, 
@@ -13,12 +13,12 @@ const usePagination = () => {
   });
   let { initialPage, pager, pageSize } = pagerState;
 
-  useEffect(function() {
-    // set page if items array isn't empty
-    if (track && track.length) {
-        setPage(initialPage);
-    }
-  });
+  // useEffect(function() {
+  //   // set page if items array isn't empty
+  //   if (editListTracks && editListTracks.length) {
+  //       setPage(initialPage);
+  //   }
+  // });
 
   function onChangePage() { 
     setState({ ...state, pageOfItems: pageOfItems });
@@ -30,10 +30,10 @@ const usePagination = () => {
     }
 
     // get new pager object for specified page
-    pager = getPager(track.length, page, pageSize);
+    pager = getPager(editListTracks.length, page, pageSize);
 
-    // get new page of track from track array
-    var pageOfItems = track.slice(pager.startIndex, pager.endIndex + 1);
+    // get new page of Tracks from editListTracks array
+    var pageOfItems = editListTracks.slice(pager.startIndex, pager.endIndex + 1);
 
     setPagerState({ pager: pager });
     onChangePage(pageOfItems);
@@ -94,12 +94,12 @@ const usePagination = () => {
     initialPage,
     pager,
     setPage,
-    track
+    editListTracks
   }
 };
 
 usePagination.propTypes = {
-  track: PropTypes.array.isRequired,
+  editListTracks: PropTypes.array.isRequired,
   initialPage: PropTypes.number,
   pageSize: PropTypes.number
 }

@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import { GlobalContext } from '../../context/GlobalState';
+import { GlobalContext } from '../../context/GlobalContext';
 import useTrack from '../../hooks/useTrack';
 import { TrackList } from '../TrackList/TrackList.js';
 import './PlayList.css';
@@ -21,11 +21,6 @@ export const PlayList = (props) => {
       alert('You must enter a title before saving the playlist.');
     }
   }
-
-  // const handleClick = (e) => {
-  //   e.preventDefault();
-  //   props.onClick.open(e);
-  // }
 
   return (
     <div className="Playlist">

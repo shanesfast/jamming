@@ -1,13 +1,13 @@
 import { useContext } from 'react';
-import { GlobalContext } from "../context/GlobalState";
+import { GlobalContext } from "../context/GlobalContext";
 import { Spotify } from '../Spotify.js';
 
 const useTrack = () => {
   const [state, setState] = useContext(GlobalContext);
-  const { editBox, openEditList, editListTracks, editListPlayLists, playListTracks, position } = state;
+  const { editBoxIsOpen, editListIsOpen, editListTracks, editListPlayLists, playListTracks, playListPosition } = state;
 
   function addTrack(trackInfo) {
-    if (editBox === 'open') {
+    if (editBoxIsOpen === true) {
       if (editListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
         return;
       }
@@ -75,50 +75,58 @@ const useTrack = () => {
         setState({
           ...state,
           editListTracks: tracks,
-          openEditList: false,
-          editBox: 'open'
+          editListIsOpen: false,
+          editBoxIsOpen: true
         });
       }
     });
   }
 
-  function getPosition(spot) {
-    if (spot === position) {
-      return;
-    } else {
-      setState({ ...state, position: spot });
-    }
-  }
-
   function openPlayLists(e) {
-    console.log(openEditList);
     e.preventDefault();
 
-    if (openEditList === true) {
-      setState({ ...state, openEditList: false });
+    if (editListIsOpen === true) {
+      setState({ ...state, editListIsOpen: false });
       return;
     }
 
     Spotify.getPlayLists()
     .then(playlists => {
-      setState({ ...state, editListPlayLists: playlists, openEditList: true });
+      setState({ ...state, editListPlayLists: playlists, editListIsOpen: true });
     });
-    console.log(openEditList);
+  }
+
+  function savePlayList(title) {
+    let uris = [];
+    playListTracks.map(track => {
+      uris = [...uris, track.uri];
+      return null;
+    })
+    Spotify.createPlayList(title, uris);
+    setState({ ...state, playListTracks: [] })
+  }
+
+  function updatePlayList(playlist_id, new_name, uris_array) {
+    if (new_name !== editListPlayLists[playListPosition].name && new_name.length > 0) {
+      Spotify.updatePlaylistName(playlist_id, new_name);
+    }
+
+    Spotify.updatePlaylistTracks(playlist_id, uris_array);
   }
 
   return {
     addTrack,
-    editBox,
+    editBoxIsOpen,
+    editListIsOpen,
     editListPlayLists, 
     editListTracks,
-    getPosition,
     getTracksFromPlayList,
     openPlayLists,
     playListTracks,
-    position,
+    playListPosition,
     removeTrack,
-    state, 
-    setState
+    savePlayList,
+    updatePlayList,
   }
 };
 
