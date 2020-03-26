@@ -5,7 +5,6 @@ import './EditBoxTracks.css';
 
 export const EditBoxTracks = (props) => {
   const { removeTrack, editListTracks, pagination } = useTrack();
-  // const { remove, tracks, pagination } = props;
 
   if (Array.isArray(editListTracks) && editListTracks.length > 0) {
     return (

@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { GlobalContext } from "../context/GlobalState";
+import { Spotify } from '../Spotify.js';
 
 const useTrack = () => {
   const [state, setState] = useContext(GlobalContext);
-  const { editBox, editListTracks, playListTracks } = state;
+  const { editBox, openEditList, editListTracks, editListPlayLists, playListTracks, position } = state;
 
   function addTrack(trackInfo) {
     if (editBox === 'open') {
@@ -53,12 +54,71 @@ const useTrack = () => {
     remove(trackArray, removeThis);
   }
 
+  function getTracksFromPlayList(playlist_id) {
+    Spotify.getTracksFromPlayList(playlist_id)
+    .then(data => {
+      if (Array.isArray(data)) {
+        return data.map(track => {
+          return {
+            artistName: track.artist,
+            albumName: track.album,
+            name: track.track,
+            uri: track.uri
+          }
+        });
+      } else if (data === undefined) {
+        return []; // the state expects an array, so an empty
+      }            // array is returned if there is no data to avoid errors
+    })
+    .then(tracks => {
+      if (tracks) {
+        setState({
+          ...state,
+          editListTracks: tracks,
+          openEditList: false,
+          editBox: 'open'
+        });
+      }
+    });
+  }
+
+  function getPosition(spot) {
+    if (spot === position) {
+      return;
+    } else {
+      setState({ ...state, position: spot });
+    }
+  }
+
+  function openPlayLists(e) {
+    console.log(openEditList);
+    e.preventDefault();
+
+    if (openEditList === true) {
+      setState({ ...state, openEditList: false });
+      return;
+    }
+
+    Spotify.getPlayLists()
+    .then(playlists => {
+      setState({ ...state, editListPlayLists: playlists, openEditList: true });
+    });
+    console.log(openEditList);
+  }
+
   return {
     addTrack,
-    editBox, 
+    editBox,
+    editListPlayLists, 
     editListTracks,
+    getPosition,
+    getTracksFromPlayList,
+    openPlayLists,
     playListTracks,
+    position,
     removeTrack,
+    state, 
+    setState
   }
 };
 

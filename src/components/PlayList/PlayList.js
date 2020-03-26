@@ -1,5 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { GlobalContext } from '../../context/GlobalState';
+import useTrack from '../../hooks/useTrack';
 import { TrackList } from '../TrackList/TrackList.js';
 import './PlayList.css';
 
@@ -7,6 +8,8 @@ export const PlayList = (props) => {
   const titleRef = useRef();
   const [state] = useContext(GlobalContext);
   const { artist, album, track, playListTracks } = state; 
+
+  const { openPlayLists } = useTrack();
 
   const handleTitleChange = () => {
     let title = titleRef.current.value;
@@ -19,17 +22,15 @@ export const PlayList = (props) => {
     }
   }
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    props.onClick.open(e);
-  }
-
-  const { remove } = props;
+  // const handleClick = (e) => {
+  //   e.preventDefault();
+  //   props.onClick.open(e);
+  // }
 
   return (
     <div className="Playlist">
       <div className="remove-space">
-        <div className="Show-playlist-list" onClick={handleClick}>Edit playlists</div>
+        <div className="Show-playlist-list" onClick={openPlayLists}>Edit playlists</div>
       </div>
       <input id='title' placeholder="New Playlist" ref={titleRef}></input>
       <button className="Playlist-save" onClick={handleTitleChange}>
@@ -39,7 +40,7 @@ export const PlayList = (props) => {
         album={album}
         track={track}
         playListTracks={playListTracks}
-        remove={remove} />
+      />
     </div>
   );
 }

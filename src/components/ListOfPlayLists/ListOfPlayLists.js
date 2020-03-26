@@ -1,53 +1,43 @@
-import React from 'react';
-import './ListOfPlayLists.css';
+import React, { useEffect } from 'react';
+import useTrack from '../../hooks/useTrack';
 import { EditList } from '../EditList/EditList.js';
 
+import './ListOfPlayLists.css';
+
 export const ListOfPlayLists = (props) => {
-  const { toggle, show, playlists, getTracks, getPosition } = props;
+  const { openEditList, editListPlayLists, openPlayLists } = useTrack();
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    toggle(e);
-  }
+  // const generateRandomString = (length) => {
+  //   let text = '';
+  //   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-  const generateRandomString = (length) => {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  //   for (let i = 0; i < length; i++) {
+  //     text += possible.charAt(Math.floor(Math.random() * possible.length));
+  //   }
+  //   return text;
+  // };
 
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  };
+  useEffect(function() {
+    console.log('a change has occurred');
+  }, [openEditList]);
 
-  if (show === 'open' && Array.isArray(playlists)) {
+  if (openEditList === true && Array.isArray(editListPlayLists)) {
     return (
       <div>
-        <div className="Close-playlist-container" onClick={handleClick}>
+        <div className="Close-playlist-container" onClick={openPlayLists}>
         </div>
         <div className="Playlist-container">
-          <h3>{playlists[0].user} Playlists</h3>
+          <h3>{editListPlayLists[0].user} Playlists</h3>
           <div className="Playlist-list">
-            {
-              playlists.map(playlist => {
-                return <EditList
-                name={playlist.name}
-                id={playlist.id}
-                count={playlist.count}
-                position={playlist.position}
-                key={generateRandomString(16)}
-                getTracks={getTracks}
-                getPosition={getPosition} />
-              })
-            }
+            <EditList />
           </div>
         </div>
       </div>
     );
-  } else if (show === 'open') {
+  } else if (openEditList === true) {
     return (
       <div>
-        <div className="Close-playlist-container" onClick={handleClick}>
+        <div className="Close-playlist-container" onClick={openPlayLists}>
         </div>
         <div className="Playlist-container">
           <h3>Playlists</h3>

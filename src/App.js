@@ -44,78 +44,17 @@ class App extends Component {
     Spotify.updatePlaylistTracks(playlist_id, uris_array);
   }
 
-  openPlayLists = (e) => {
-    if (this.state.editList === 'open') {
-      this.setState({ editList: 'closed' });
-    } else {
-      this.setState({ editList: 'open' });
-      Spotify.getPlayLists()
-      .then(playlists => {
-        this.setState({ editListPlayLists: playlists });
-      });
-    }
-  }
-
-  getTracksFromPlayList = (playlist_id) => {
-    Spotify.getTracksFromPlayList(playlist_id)
-    .then(data => {
-      if (Array.isArray(data)) {
-        return data.map(track => {
-          return {
-            artistName: track.artist,
-            albumName: track.album,
-            name: track.track,
-            uri: track.uri
-          }
-        });
-      } else if (data === undefined) {
-        return []; // the state expects an array, so an empty
-      }           // array is returned if there is no data to avoid errors
-    })
-    .then(tracks => {
-      if (tracks) {
-        this.setState({
-          editListTracks: tracks,
-          editList: 'closed',
-          editBox: 'open'
-        });
-      }
-    });
-  }
-
-  removeTrack = (uri, list) => {
-    let trackArray;
-
-    if (list === 'editListTracks') {
-      trackArray = [...this.state.editListTracks]
-    } else {
-      trackArray = [...this.state.playListTracks];
-    }
-
-    let removeThis = trackArray.find(savedTrack => {
-      if (savedTrack.uri === uri) {
-        return savedTrack;
-      } else {
-        return null;
-      }
-    });
-
-    function remove(array, element) {
-      const index = array.indexOf(element);
-
-      if (index !== -1) {
-        array.splice(index, 1);
-      }
-    }
-
-    remove(trackArray, removeThis);
-
-    if (list === 'editListTracks') {
-      this.setState({ editListTracks: trackArray });
-    } else {
-      this.setState({ playListTracks: trackArray });
-    }
-  }
+  // openPlayLists = (e) => {
+  //   if (this.state.editList === 'open') {
+  //     this.setState({ editList: 'closed' });
+  //   } else {
+  //     this.setState({ editList: 'open' });
+  //     Spotify.getPlayLists()
+  //     .then(playlists => {
+  //       this.setState({ editListPlayLists: playlists });
+  //     });
+  //   }
+  // }
 
   addEntireAlbum = (id, name) => {
     Spotify.getTracksFromAlbum(id, name)
@@ -142,18 +81,13 @@ class App extends Component {
     });
   }
 
-  getPosition = (spot) => {
-    if (spot === this.state.position) {
-      return;
-    } else {
-      this.setState({ position: spot });
-    }
-  }
-
-  onChangePage = (pageOfItems) => { // handles pagination
-        // update state with new page of items
-        this.setState({ pageOfItems: pageOfItems });
-    }
+  // getPosition = (spot) => {
+  //   if (spot === this.state.position) {
+  //     return;
+  //   } else {
+  //     this.setState({ position: spot });
+  //   }
+  // }
 
   componentDidMount() {
     Spotify.getAccess();
@@ -193,12 +127,7 @@ class App extends Component {
               pageOfItems: this.state.pageOfItems,
               onChangePage: this.onChangePage
             }} />
-          <ListOfPlayLists
-            show={this.state.editList}
-            toggle={this.openPlayLists}
-            playlists={this.state.editListPlayLists}
-            getTracks={this.getTracksFromPlayList}
-            getPosition={this.getPosition} />
+          <ListOfPlayLists />
         </div>
       </GlobalProvider>
     );

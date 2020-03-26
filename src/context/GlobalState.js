@@ -9,7 +9,7 @@ export const GlobalProvider = ({ children }) => {
     track: '',
     sortBy: "Track",
     playListTracks: [],
-    editList: 'closed',
+    openEditList: true,
     editListPlayLists: [{}],
     editListTracks: [],
     editBox: 'closed',
