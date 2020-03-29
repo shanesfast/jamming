@@ -6,13 +6,13 @@ import { Spotify } from './Spotify.js';
 
 import { GlobalProvider, GlobalContext } from './context/GlobalContext';
 import { PositionProvider } from "./context/PositionContext";
+import { SearchProvider } from './context/SearchContext.js';
 
 import './App.css';
 
 const App = () => {
   const [state, setState] = useContext(GlobalContext);
-  const { artist, album, track, sortBy, playListTracks, 
-          editListPlayLists, editListTracks, editBoxIsOpen } = state;
+  const { editListPlayLists, editListTracks, editBoxIsOpen } = state;
 
   // const addEntireAlbum = (id, name) => {
   //   Spotify.getTracksFromAlbum(id, name)
@@ -33,12 +33,6 @@ const App = () => {
     })
   }
 
-  const handleSortByChange = (sortByOption) => {
-    setState({
-      sortBy: sortByOption
-    });
-  }
-
   useEffect(() => {
     let abortController = new AbortController();
     let signal = abortController.signal;
@@ -54,25 +48,24 @@ const App = () => {
     <GlobalProvider>
       <div className="App">
         <h1>Quick J<i className="highlight">amm</i>in&#39;</h1>
-        <SearchBar />
-        <PositionProvider>
-          <AppPlayList
-            artist={artist}
-            album={album}
-            track={track}
-            playListTracks={playListTracks}
-            onClick={{
-              handleSortByChange: handleSortByChange,
-            }}
-            sortBy={sortBy}
-            // addAlbum={addEntireAlbum}
-            getAlbums={getAlbums}
-            showEditBox={editBoxIsOpen}
-            editListPlayLists={editListPlayLists}
-            editListTracks={editListTracks}
-            />
-          <ListOfPlayLists />
-        </PositionProvider>
+        <SearchProvider>
+          <SearchBar />
+          <PositionProvider>
+            <AppPlayList
+              // artist={artist}
+              // album={album}
+              // track={track}
+              // playListTracks={playListTracks}
+              // sortBy={sortBy}
+              // addAlbum={addEntireAlbum}
+              getAlbums={getAlbums}
+              showEditBox={editBoxIsOpen}
+              editListPlayLists={editListPlayLists}
+              editListTracks={editListTracks}
+              />
+            <ListOfPlayLists />
+          </PositionProvider>
+        </SearchProvider>
       </div>
     </GlobalProvider>
   );

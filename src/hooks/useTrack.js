@@ -4,7 +4,8 @@ import { Spotify } from '../Spotify.js';
 
 const useTrack = () => {
   const [state, setState] = useContext(GlobalContext);
-  const { editBoxIsOpen, editListIsOpen, editListTracks, editListPlayLists, playListTracks, playListPosition } = state;
+  const { editBoxIsOpen, editListIsOpen, editListTracks, editListPlayLists, 
+          playListTracks, playListPosition } = state;
 
   function addTrack(trackInfo) {
     if (editBoxIsOpen === true) {

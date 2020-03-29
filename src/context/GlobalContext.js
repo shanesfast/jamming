@@ -4,10 +4,6 @@ export const GlobalContext = createContext([{}, () => {}]);
 
 export const GlobalProvider = ({ children }) => {
   const [state, setState] = useState({
-    artist: '',
-    album: '',
-    track: '',
-    sortBy: "Track",
     playListTracks: [],
     editListIsOpen: false,
     editListPlayLists: [{}],
