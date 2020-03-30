@@ -10,7 +10,6 @@ const EditBox = () => {
 
   const { state } = useContext(PositionContext);
   const { playListPosition } = state;
-  console.log(state);
   
   const { editBoxIsOpen, editListPlayLists, editListTracks, 
           openPlayLists, updatePlayList } = useTrack();

@@ -1,40 +1,35 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import useTrack from '../../hooks/useTrack';
+import useSpotifyApiCalls from '../../hooks/useSpotifyApiCalls';
+import { SearchContext } from '../../context/SearchContext';
 
 import './ResultList.css';
 
 export const ResultList = (props) => {
   const { addTrack } = useTrack();
-  
-  const { trackInfo, sortBy, 
-          img, name, artistId, albumName, artistName, albumId } = props;
+  const { dispatch } = useContext(SearchContext);
 
-  const addAlbum = (e) => {
-    addAlbum(
-      e.target.getAttribute('data-id'),
-      e.target.getAttribute('data-album')
-    );
+  const { getAlbumsFromArtist, getTracksFromAlbum } = useSpotifyApiCalls();
+  
+  const { trackInfo, sortBy, img, name,
+          artistId, albumName, artistName, albumId } = props;
+
+  const addAlbum = (id, name) => {
+    getTracksFromAlbum(id, name);
   }
 
-  const getAlbums = (e) => {
-    getAlbums(
-      e.target.getAttribute('data-artist-id'),
-      e.target.getAttribute('data-artist-name')
-    );
+  const getAlbums = (id, name) => {
+    dispatch({ type: 'UPDATE_SORT_BY', option: "Album" });
+    dispatch({ type: 'UPDATE_SEARCH_TERMS', search: '' }); // This prevents the Search Reducer from overriding
+    getAlbumsFromArtist(id, name);                         // the reslults of the following API call to get albums for one Artist
   }
 
   if (sortBy === "Artist") {
     return (
       <div className="Track">
-        <div className="Track-information">
-          <img src={img.url}
-            alt={name}
-            data-artist-id={artistId}
-            data-artist-name={name}
-            onClick={getAlbums}></img>
-          <h1 data-artist-id={artistId}
-            data-artist-name={name}
-            onClick={getAlbums}>{name}</h1>
+        <div className="Track-information" onClick={() => getAlbums(artistId, name)}>
+          <img src={img.url} alt={name}></img>
+          <h1>{name}</h1>
         </div>
       </div>
     );
@@ -47,10 +42,7 @@ export const ResultList = (props) => {
             <h3>{albumName}</h3>
             <p>{ artistName }</p>
           </div>
-          <button className="Track-action"
-            data-id={albumId}
-            data-album={albumName}
-            onClick={addAlbum}>+</button>
+          <button className="Track-action" onClick={() => addAlbum(albumId, albumName)}>+</button>
         </div>
       </div>
     );

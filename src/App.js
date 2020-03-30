@@ -1,37 +1,26 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { SearchBar } from './components/SearchBar/SearchBar.js';
 import { AppPlayList } from './components/AppPlayList/AppPlayList.js';
 import { ListOfPlayLists } from './components/ListOfPlayLists/ListOfPlayLists.js';
 import { Spotify } from './Spotify.js';
 
-import { GlobalProvider, GlobalContext } from './context/GlobalContext';
+import { GlobalProvider } from './context/GlobalContext';
 import { PositionProvider } from "./context/PositionContext";
 import { SearchProvider } from './context/SearchContext.js';
 
 import './App.css';
 
 const App = () => {
-  const [state, setState] = useContext(GlobalContext);
-  const { editListPlayLists, editListTracks, editBoxIsOpen } = state;
 
-  // const addEntireAlbum = (id, name) => {
-  //   Spotify.getTracksFromAlbum(id, name)
-  //   .then(tracks => {
-  //     tracks.forEach(track => {
-  //       addTrack(track);
-  //     });
-  //   });
+  // const getAlbums = (id, name) => {
+  //   Spotify.getAlbumsFromArtist(id, name)
+  //   .then(album => {
+  //     setState({
+  //       album: album,
+  //       sortBy: "Album"
+  //     })
+  //   })
   // }
-
-  const getAlbums = (id, name) => {
-    Spotify.getAlbumsFromArtist(id, name)
-    .then(album => {
-      setState({
-        album: album,
-        sortBy: "Album"
-      })
-    })
-  }
 
   useEffect(() => {
     let abortController = new AbortController();
@@ -51,18 +40,7 @@ const App = () => {
         <SearchProvider>
           <SearchBar />
           <PositionProvider>
-            <AppPlayList
-              // artist={artist}
-              // album={album}
-              // track={track}
-              // playListTracks={playListTracks}
-              // sortBy={sortBy}
-              // addAlbum={addEntireAlbum}
-              getAlbums={getAlbums}
-              showEditBox={editBoxIsOpen}
-              editListPlayLists={editListPlayLists}
-              editListTracks={editListTracks}
-              />
+            <AppPlayList />
             <ListOfPlayLists />
           </PositionProvider>
         </SearchProvider>
