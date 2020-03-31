@@ -1,12 +1,12 @@
 import React, { useContext, useRef } from 'react';
-import { GlobalContext } from '../../context/GlobalContext';
+import { PlayListContext } from '../../context/PlayListContext';
 import useTrack from '../../hooks/useTrack';
 import { TrackList } from '../TrackList/TrackList.js';
 import './PlayList.css';
 
 export const PlayList = (props) => {
   const titleRef = useRef();
-  const [state] = useContext(GlobalContext);
+  const [state] = useContext(PlayListContext);
   const { artist, album, track, playListTracks } = state; 
 
   const { openPlayLists } = useTrack();

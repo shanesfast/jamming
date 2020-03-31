@@ -1,9 +1,9 @@
 import { useContext } from 'react';
-import { GlobalContext } from "../context/GlobalContext";
+import { PlayListContext } from "../context/PlayListContext";
 import { Spotify } from '../Spotify.js';
 
 const useTrack = () => {
-  const [state, setState] = useContext(GlobalContext);
+  const [state, setState] = useContext(PlayListContext);
   const { editBoxIsOpen, editListIsOpen, editListTracks, editListPlayLists, 
           playListTracks, playListPosition } = state;
 

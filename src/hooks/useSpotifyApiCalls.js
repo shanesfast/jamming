@@ -3,7 +3,6 @@ import useTrack from './useTrack';
 import { SearchContext } from '../context/SearchContext';
 import { Spotify } from '../Spotify';
 
-
 const useSpotifyApiCalls = () => {
   const [artistResult, setArtistResult] = useState();
   const [albumResult, setAlbumResult] = useState();
@@ -47,14 +46,15 @@ const useSpotifyApiCalls = () => {
           });
   }
 
-  function getTracksFromAlbum(id, name) {
-    Spotify.getTracksFromAlbum(id, name)
+  function getTracksFromAlbum(id, name, signal) {
+    Spotify.getTracksFromAlbum(id, name, signal)
     .then(tracks => { tracks.forEach(track => { addTrack(track) }) });
   }
 
-  function getAlbumsFromArtist(id, name) {
-    Spotify.getAlbumsFromArtist(id, name)
-    .then(albums => { return setAlbumResult(albums) });
+  function getAlbumsFromArtist(id, name, signal) {
+    Spotify.getAlbumsFromArtist(id, name, signal)
+    .then(albums => { 
+      return setAlbumResult(albums) });
   }
 
   return {

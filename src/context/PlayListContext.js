@@ -1,8 +1,8 @@
 import React, { createContext, useState} from 'react';
 
-export const GlobalContext = createContext([{}, () => {}]);
+export const PlayListContext = createContext([{}, () => {}]);
 
-export const GlobalProvider = ({ children }) => {
+export const PlayListProvider = ({ children }) => {
   const [state, setState] = useState({
     playListTracks: [],
     editListIsOpen: false,
@@ -14,8 +14,8 @@ export const GlobalProvider = ({ children }) => {
   });
 
   return (
-    <GlobalContext.Provider value={[state, setState]}>
+    <PlayListContext.Provider value={[state, setState]}>
       {children}
-    </GlobalContext.Provider>
+    </PlayListContext.Provider>
   );
 }

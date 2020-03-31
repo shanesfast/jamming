@@ -5,11 +5,8 @@ import PlayList from '../PlayList/PlayList.js';
 import EditBox from '../EditBox/EditBox.js';
 import './AppPlayList.css';
 
-export const AppPlayList = (props) => {
+export const AppPlayList = () => {
   const { editBoxIsOpen } = useTrack();
-
-  // const { onClick, onAdd, sortBy, addAlbum, getAlbums, 
-  //         playListTracks, remove } = props;
 
   if (editBoxIsOpen === true) {
     return (
@@ -21,18 +18,8 @@ export const AppPlayList = (props) => {
   } else {
     return (
       <div className="App-playlist">
-        <SearchResults
-          // onClick={onClick}
-          // onAdd={onAdd}
-          // sortBy={sortBy}
-          // addAlbum={addAlbum}
-          // getAlbums={getAlbums} 
-        />
-        <PlayList
-          // playListTracks={playListTracks}
-          // onClick={onClick}
-          // remove={remove} 
-        />
+        <SearchResults />
+        <PlayList />
       </div>
     );
   }

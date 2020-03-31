@@ -284,12 +284,12 @@ export const Spotify = {
     }
   },
 
-  getAlbumsFromArtist(id, artistName) {
+  getAlbumsFromArtist(id, artistName, signal) {
     const albumRequest = new Request('https://api.spotify.com/v1/artists/' +
     id + '/albums', {
     	headers: {
         'Authorization': 'Bearer ' + accessToken
-      }
+      }, signal: signal
     })
 
     // GET call to retrieve album data
@@ -441,9 +441,10 @@ export const Spotify = {
     })
   },
 
-  getTracksFromAlbum(id, name) {
+  getTracksFromAlbum(id, name, signal) {
     const spotifyWrap = new SpotifyWrapper({
-      token: accessToken
+      token: accessToken,
+      signal: signal
     });
     return spotifyWrap.album.getTracks(id)
     .then(data => {
