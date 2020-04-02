@@ -62,3 +62,9 @@
     width: 90%;
   }
 }
+
+.TrackList {
+  width: 100%;
+  border-top: 1px solid #6f6f6f;
+  overflow-y: scroll;
+}

@@ -3,53 +3,34 @@ import { PlayListContext } from "../context/PlayListContext";
 import { Spotify } from '../Spotify.js';
 
 const useTrack = () => {
-  const [state, setState] = useContext(PlayListContext);
+  const { state, dispatch } = useContext(PlayListContext);
   const { editBoxIsOpen, editListIsOpen, editListTracks, editListPlayLists, 
           playListTracks, playListPosition } = state;
 
   function addTrack(trackInfo) {
-    if (editBoxIsOpen === true) {
-      if (editListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
-        return;
-      }
-      return setState(state => ({...state, editListTracks: [...editListTracks, trackInfo] }) );
-    }
+    if (editBoxIsOpen === true) return dispatch({ type: 'UPDATE_EDIT_LIST_TRACKS', tracks: trackInfo });
 
-    if (playListTracks.find(savedTrack => savedTrack.uri === trackInfo.uri)) {
-      return;
-    }
-    return setState(state => ({...state, playListTracks: [...playListTracks, trackInfo] }) );
+    return dispatch({ type: 'UPDATE_PLAY_LIST_TRACKS', tracks: trackInfo });
   }
 
   function removeTrack(uri, editList=false) {
     let trackArray;
 
-    if (editList === true) {
-      trackArray = [...editListTracks]
-    } else {
-      trackArray = [...playListTracks];
-    }
+    if (editList === true) trackArray = [...editListTracks];
+    else trackArray = [...playListTracks];
 
     let removeThis = trackArray.find(savedTrack => {
-      if (savedTrack.uri === uri) {
-        return savedTrack;
-      } else {
-        return null;
-      }
+      if (savedTrack.uri === uri) return savedTrack;
+      else return null;
     });
 
     function remove(array, element) {
       const index = array.indexOf(element);
 
-      if (index !== -1) {
-        array.splice(index, 1);
-      }
+      if (index !== -1) array.splice(index, 1);
 
-      if (editList === true) {
-        setState(state => ({...state, editListTracks: trackArray }) );
-      } else {
-        setState(state => ({...state, playListTracks: trackArray }) );
-      }
+      if (editList === true) dispatch({ type: 'REMOVE_EDIT_LIST_TRACKS', tracks: trackArray });
+      else dispatch({ type: 'REMOVE_PLAY_LIST_TRACKS', tracks: trackArray });
     }
 
     remove(trackArray, removeThis);
@@ -73,12 +54,9 @@ const useTrack = () => {
     })
     .then(tracks => {
       if (tracks) {
-        setState({
-          ...state,
-          editListTracks: tracks,
-          editListIsOpen: false,
-          editBoxIsOpen: true
-        });
+        dispatch({ type: 'UPDATE_EDIT_LIST_TRACKS', tracks: tracks });
+        dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
+        dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: true });
       }
     });
   }
@@ -87,13 +65,13 @@ const useTrack = () => {
     e.preventDefault();
 
     if (editListIsOpen === true) {
-      setState({ ...state, editListIsOpen: false });
-      return;
+      return dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
     }
 
     Spotify.getPlayLists()
     .then(playlists => {
-      setState({ ...state, editListPlayLists: playlists, editListIsOpen: true });
+      dispatch({ type: 'UPDATE_EDIT_PLAY_LISTS', lists: playlists });
+      dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: true });
     });
   }
 
@@ -104,7 +82,7 @@ const useTrack = () => {
       return null;
     })
     Spotify.createPlayList(title, uris);
-    setState({ ...state, playListTracks: [] })
+    dispatch({ type: 'UPDATE_PLAY_LIST_TRACKS', tracks: [] });
   }
 
   function updatePlayList(playlist_id, new_name, uris_array) {
