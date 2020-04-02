@@ -25,10 +25,9 @@ export const SearchResults = (props) => {
     });
   }
 
-  const setSortByClass = (sortByOption) => {
-    if (sortBy === sortByOption) {
-      return "active";
-    }
+  const setSortByClass = (sortValue) => {
+    if (sortBy === sortValue) return "active";
+    if (sortBy === 'AlbumsByArtist' && sortValue === 'Album') return "active";
   }
 
   const handleSortBy = (e) => {
