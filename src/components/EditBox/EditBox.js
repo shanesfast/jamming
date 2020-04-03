@@ -7,7 +7,6 @@ import './EditBox.css';
 
 const EditBox = () => {
   const newNameRef = useRef();
-  const playListId = useRef();
 
   const { state } = useContext(PositionContext);
   const { playListPosition } = state;
@@ -21,12 +20,10 @@ const EditBox = () => {
     openPlayLists(e);
   }
 
-  const handleUpdateClick = (e) => {
-    e.preventDefault();
-    let new_name = newNameRef.current.value;
+  const handleUpdateClick = (playListId) => {
+    let newName = newNameRef.current.value;
     let uris = editListTracks.map(track => { return track.uri; });
-    console.log(playListId.current);
-    updatePlayList(e.target.getAttribute('data-playlist-id'), new_name, uris);
+    updatePlayList(playListId, newName, uris);
   }
 
   if (editBoxIsOpen === true) {
@@ -37,9 +34,8 @@ const EditBox = () => {
               Edit playlists</div>
           </div>
           <input id="edit-title" placeholder={editListPlayLists[playListPosition].name} ref={newNameRef}></input>
-          <button className="Editlist-save" onClick={handleUpdateClick} ref={playListId}
-            data-playlist-id={editListPlayLists[playListPosition].id}>
-          <b data-playlist-id={editListPlayLists[playListPosition].id}>UPDATE ON SPOTIFY</b></button>
+          <button className="Editlist-save" onClick={() => handleUpdateClick(editListPlayLists[playListPosition].id)}>
+          <b>UPDATE ON SPOTIFY</b></button>
           <div className="Track-counter">Number of tracks: {editListTracks.length}</div>
           <EditBoxTracks />
           {/* <Pagination /> */}

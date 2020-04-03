@@ -75,7 +75,7 @@ const useTrack = () => {
       return null;
     })
     Spotify.createPlayList(title, uris);
-    dispatch({ type: 'UPDATE_PLAY_LIST_TRACKS', tracks: [] });
+    dispatch({ type: 'CLEAR_PLAY_LIST_TRACKS', tracks: [] });
   }
 
   function updatePlayList(playlist_id, new_name, uris_array) {

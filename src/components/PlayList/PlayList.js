@@ -8,13 +8,13 @@ export const PlayList = (props) => {
   const { state } = useContext(PlayListContext);
   const { playListTracks } = state; 
 
-  const { openPlayLists, removeTrack } = useTrack();
+  const { openPlayLists, removeTrack, savePlayList } = useTrack();
 
   const handleTitleChange = () => {
     let title = titleRef.current.value;
 
     if (title.length > 0) {
-      props.onClick.savePlayList(title);
+      savePlayList(title);
       titleRef.current.value = '';
     } else if (title.length < 1) {
       alert('You must enter a title before saving the playlist.');
