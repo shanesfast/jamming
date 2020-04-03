@@ -9,7 +9,6 @@ const useTrack = () => {
 
   function addTrack(trackInfo) {
     if (editBoxIsOpen === true) return dispatch({ type: 'UPDATE_EDIT_LIST_TRACKS', tracks: trackInfo });
-
     return dispatch({ type: 'UPDATE_PLAY_LIST_TRACKS', tracks: trackInfo });
   }
 
@@ -19,21 +18,15 @@ const useTrack = () => {
     if (editList === true) trackArray = [...editListTracks];
     else trackArray = [...playListTracks];
 
-    let removeThis = trackArray.find(savedTrack => {
-      if (savedTrack.uri === uri) return savedTrack;
-      else return null;
-    });
-
     function remove(array, element) {
       const index = array.indexOf(element);
+      array.splice(index, 1);
 
-      if (index !== -1) array.splice(index, 1);
-
-      if (editList === true) dispatch({ type: 'REMOVE_EDIT_LIST_TRACKS', tracks: trackArray });
-      else dispatch({ type: 'REMOVE_PLAY_LIST_TRACKS', tracks: trackArray });
+      if (editList === true) dispatch({ type: 'REMOVE_EDIT_LIST_TRACKS', tracks: array });
+      else dispatch({ type: 'REMOVE_PLAY_LIST_TRACKS', tracks: array });
     }
 
-    remove(trackArray, removeThis);
+    remove(trackArray, uri);
   }
 
   function getTracksFromPlayList(playlist_id) {
@@ -54,7 +47,7 @@ const useTrack = () => {
     })
     .then(tracks => {
       if (tracks) {
-        dispatch({ type: 'UPDATE_EDIT_LIST_TRACKS', tracks: tracks });
+        dispatch({ type: 'SET_EDIT_LIST_TRACKS', tracks: tracks });
         dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
         dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: true });
       }

@@ -20,8 +20,7 @@ const EditBoxTracks = (props) => {
                   <p>{track.artistName} | {track.albumName}</p>
                 </div>
                 <button className="Track-action"
-                  data-uri={track.uri}
-                  onClick={() => removeTrack(track.uri, true)}>-</button>
+                  onClick={() => removeTrack(track, true)}>-</button>
               </div>
             );
           })

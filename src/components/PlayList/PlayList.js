@@ -20,7 +20,7 @@ export const PlayList = (props) => {
       alert('You must enter a title before saving the playlist.');
     }
   }
-  console.log(playListTracks);
+
   if (playListTracks.length > 0) {
     return (
       <div className="Playlist">
@@ -33,14 +33,13 @@ export const PlayList = (props) => {
         <div className="TrackList">
         {
           playListTracks.map(track => {
-            console.log(track.uri);
             return (
               <div key={track.uri} className="Track">
                 <div className="Track-information" id="track">
                   <h3>{track.name}</h3>
                   <p>{track.artistName} | {track.albumName}</p>
                 </div>
-                <button className="Track-action" onClick={() => removeTrack(track.uri)}>-</button>
+                <button className="Track-action" onClick={() => removeTrack(track)}>-</button>
               </div>
             );
           })
