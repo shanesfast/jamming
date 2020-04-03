@@ -1,53 +1,29 @@
 import React from 'react';
-import './ListOfPlayLists.css';
+import useTrack from '../../hooks/useTrack';
 import { EditList } from '../EditList/EditList.js';
 
+import './ListOfPlayLists.css';
+
 export const ListOfPlayLists = (props) => {
-  const { toggle, show, playlists, getTracks, getPosition } = props;
+  const { editListIsOpen, editListPlayLists, openPlayLists } = useTrack();
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    toggle(e);
-  }
-
-  const generateRandomString = (length) => {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  };
-
-  if (show === 'open' && Array.isArray(playlists)) {
+  if (editListIsOpen === true && Array.isArray(editListPlayLists)) {
     return (
       <div>
-        <div className="Close-playlist-container" onClick={handleClick}>
+        <div className="Close-playlist-container" onClick={openPlayLists}>
         </div>
         <div className="Playlist-container">
-          <h3>{playlists[0].user} Playlists</h3>
+          <h3>{editListPlayLists[0].user} Playlists</h3>
           <div className="Playlist-list">
-            {
-              playlists.map(playlist => {
-                return <EditList
-                name={playlist.name}
-                id={playlist.id}
-                count={playlist.count}
-                position={playlist.position}
-                key={generateRandomString(16)}
-                getTracks={getTracks}
-                getPosition={getPosition} />
-              })
-            }
+            <EditList />
           </div>
         </div>
       </div>
     );
-  } else if (show === 'open') {
+  } else if (editListIsOpen === true) {
     return (
       <div>
-        <div className="Close-playlist-container" onClick={handleClick}>
+        <div className="Close-playlist-container" onClick={openPlayLists}>
         </div>
         <div className="Playlist-container">
           <h3>Playlists</h3>

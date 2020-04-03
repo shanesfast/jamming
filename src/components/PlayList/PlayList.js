@@ -1,43 +1,64 @@
-import React from 'react';
-import { TrackList } from '../TrackList/TrackList.js';
+import React, { useContext, useRef } from 'react';
+import { PlayListContext } from '../../context/PlayListContext';
+import useTrack from '../../hooks/useTrack';
 import './PlayList.css';
 
-class PlayList extends React.Component {
-  titleRef = React.createRef();  
+export const PlayList = (props) => {
+  const titleRef = useRef();
+  const { state } = useContext(PlayListContext);
+  const { playListTracks } = state; 
 
-  handleTitleChange = () => {
-    let title = this.titleRef.current.value;
+  const { openPlayLists, removeTrack, savePlayList } = useTrack();
+
+  const handleTitleChange = () => {
+    let title = titleRef.current.value;
 
     if (title.length > 0) {
-      this.props.onClick.savePlayList(title);
-      this.titleRef.current.value = '';
+      savePlayList(title);
+      titleRef.current.value = '';
     } else if (title.length < 1) {
       alert('You must enter a title before saving the playlist.');
     }
   }
 
-  handleClick = (e) => {
-    e.preventDefault();
-    this.props.onClick.open(e);
-  }
-
-  render() {
-    const { artist, album, track, playListTracks, remove } = this.props;
-
+  if (playListTracks.length > 0) {
     return (
       <div className="Playlist">
         <div className="remove-space">
-          <div className="Show-playlist-list" onClick={this.handleClick}>Edit playlists</div>
+          <div className="Show-playlist-list" onClick={openPlayLists}>Edit playlists</div>
         </div>
-        <input id='title' placeholder="New Playlist" ref={this.titleRef}></input>
-        <a className="Playlist-save" onClick={this.handleTitleChange}>
-        <b>SAVE TO SPOTIFY</b></a>
-        <TrackList
-          artist={artist}
-          album={album}
-          track={track}
-          playListTracks={playListTracks}
-          remove={remove} />
+        <input id='title' placeholder="New Playlist" ref={titleRef}></input>
+        <button className="Playlist-save" onClick={handleTitleChange}>
+        <b>SAVE TO SPOTIFY</b></button>
+        <div className="TrackList">
+        {
+          playListTracks.map(track => {
+            return (
+              <div key={track.uri} className="Track">
+                <div className="Track-information" id="track">
+                  <h3>{track.name}</h3>
+                  <p>{track.artistName} | {track.albumName}</p>
+                </div>
+                <button className="Track-action" onClick={() => removeTrack(track)}>-</button>
+              </div>
+            );
+          })
+        }
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="Playlist">
+        <div className="remove-space">
+          <div className="Show-playlist-list" onClick={openPlayLists}>Edit playlists</div>
+        </div>
+        <input id='title' placeholder="New Playlist" ref={titleRef}></input>
+        <button className="Playlist-save" onClick={handleTitleChange}>
+        <b>SAVE TO SPOTIFY</b></button>
+        <div className="TrackList">
+          <br /><p>Add some tracks!</p>
+        </div>
       </div>
     );
   }

@@ -1,13 +1,10 @@
 import React from 'react';
+import useTrack from '../../hooks/useTrack';
+
 import './TrackList.css';
 
 export const TrackList = (props) => {
-  const { remove, playListTracks } = props;
-
-  const removeTrack = (e) => {
-    e.preventDefault();
-    remove(e.target.getAttribute('data-uri'));
-  }
+  const { removeTrack, playListTracks } = useTrack();
 
   if (playListTracks.length > 0) {
       return (
@@ -20,9 +17,7 @@ export const TrackList = (props) => {
                     <h3>{track.name}</h3>
                     <p>{track.artistName} | {track.albumName}</p>
                   </div>
-                  <a className="Track-action"
-                    data-uri={track.uri}
-                    onClick={removeTrack}>-</a>
+                  <button className="Track-action" onClick={() => removeTrack(track.uri)}>-</button>
                 </div>
               );
             })

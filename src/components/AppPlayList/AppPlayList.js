@@ -1,55 +1,25 @@
 import React from 'react';
+import useTrack from '../../hooks/useTrack';
 import { SearchResults } from '../SearchResults/SearchResults.js';
 import PlayList from '../PlayList/PlayList.js';
 import EditBox from '../EditBox/EditBox.js';
 import './AppPlayList.css';
 
-export const AppPlayList = (props) => {
-  const { artist, album, track, onClick, onAdd, sortBy, addAlbum, getAlbums, 
-          showEditBox, editListPlayLists, position,  editListTracks, 
-          playListTracks, remove, pagination } = props;
+export const AppPlayList = () => {
+  const { editBoxIsOpen } = useTrack();
 
-  if (showEditBox === 'open') {
+  if (editBoxIsOpen === true) {
     return (
       <div className="App-playlist">
-        <SearchResults
-          artist={artist}
-          album={album}
-          track={track}
-          onClick={onClick}
-          onAdd={onAdd}
-          sortBy={sortBy}
-          addAlbum={addAlbum}
-          getAlbums={getAlbums} />
-        <EditBox
-          show={showEditBox}
-          editListPlayLists={editListPlayLists}
-          position={position}
-          tracks={editListTracks}
-          onClick={onClick}
-          remove={remove}
-          pagination={pagination} />
+        <SearchResults />
+        <EditBox />
       </div>
     );
   } else {
     return (
       <div className="App-playlist">
-        <SearchResults
-          artist={artist}
-          album={album}
-          track={track}
-          onClick={onClick}
-          onAdd={onAdd}
-          sortBy={sortBy}
-          addAlbum={addAlbum}
-          getAlbums={getAlbums} />
-        <PlayList
-          artist={artist}
-          album={album}
-          track={track}
-          playListTracks={playListTracks}
-          onClick={onClick}
-          remove={remove} />
+        <SearchResults />
+        <PlayList />
       </div>
     );
   }

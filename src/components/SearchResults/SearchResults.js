@@ -1,138 +1,129 @@
-import React from 'react';
-import { ResultList } from '../ResultList/ResultList.js';
+import React, { useContext, useEffect } from 'react';
+import { SearchContext } from '../../context/SearchContext';
+import useSpotifyApiCalls from '../../hooks/useSpotifyApiCalls';
+import useTrack from '../../hooks/useTrack';
+
 import './SearchResults.css';
 
-const sortByOptions = {
-  "Artist": "Artist",
-  "Album": "Album",
-  "Track": "Track"
-}
+const sortByOptions = ['Artist', 'Album', 'Track'];
+let aborts = [];
 
 export const SearchResults = (props) => {
-  const { sortBy, onClick, artist, getAlbums, album, addAlbum, track, onAdd } = props;
+  const { state, dispatch } = useContext(SearchContext);
+  const { artist, album, track, searchTerms, sortBy } = state;
+  const { artistResult, albumResult, getAlbumsFromArtist, getTracksFromAlbum, trackResult } = useSpotifyApiCalls();
+  const { addTrack } = useTrack();
 
   const renderSortByOptions = () => {
-    return Object.keys(sortByOptions).map(sortValue => {
+    return sortByOptions.map(sortValue => {
       return <h3 key={ sortValue }
               options={ sortValue }
-              className={ getSortByClass(sortValue) }
-              onClick={ handleClick }>
+              className={ setSortByClass(sortValue) }
+              onClick={ handleSortBy }>
                 { sortValue }
               </h3>
     });
   }
 
-  const getSortByClass = (sortByOption) => {
-    if (sortBy === sortByOption) {
-      return "active";
-    }
+  const setSortByClass = (sortValue) => {
+    if (sortBy === sortValue) return "active";
+    if (sortBy === 'AlbumsByArtist' && sortValue === 'Album') return "active";
   }
 
-  const handleClick = (e) => {
+  const handleSortBy = (e) => {
     let sortValue = e.target.innerHTML;
-    onClick.handleSortByChange(sortValue);
+    dispatch({ type: 'UPDATE_SORT_BY', option: sortValue });
   }
 
-  const generateRandomString = (length) => {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const getAlbums = (id, name) => {
+    aborts.map(abortThis => abortThis.abort());
+    aborts = [];
+    let aborter = new AbortController();
+    aborts.push(aborter);
 
-    for (let i = 0; i < length; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    dispatch({ type: 'UPDATE_SORT_BY', option: 'AlbumsByArtist' });
+    getAlbumsFromArtist(id, name, aborter.signal);
+  }
+
+  const addAlbum = (id, name) => {
+    aborts.map(abortThis => abortThis.abort());
+    aborts = [];
+    let aborter = new AbortController();
+    aborts.push(aborter);
+
+    getTracksFromAlbum(id, name, aborter.signal);
+  }
+
+  useEffect(() => {
+    const updateSearchResults = () => {
+      if (sortBy === 'Artist') dispatch({ type: 'UPDATE_ARTIST_SEARCH', result: artistResult });
+      if (sortBy === 'Track') dispatch({ type: 'UPDATE_TRACK_SEARCH', result: trackResult });
+      if (sortBy === 'Album' || sortBy === 'AlbumsByArtist') {
+        dispatch({ type: 'UPDATE_ALBUM_SEARCH', result: albumResult });
+      }
+
+      if (searchTerms.length < 1) dispatch({ type: 'CLEAR_SEARCH' });
     }
-    return text;
-  };
 
-  if (Array.isArray(artist) && sortBy === "Artist") {
-    return (
-      <div className="SearchResults">
-        <h2>Results</h2>
-        <div className="SearchFilters">
-          { renderSortByOptions() }
-        </div>
-        <div className="ResultList">
-          {
-            artist.map(artists =>
-            {
-              return (
-                <ResultList
-                  name={artists.name}
-                  img={artists.img[0]}
-                  artistId={artists.id}
-                  sortBy={sortBy}
-                  key={generateRandomString(16)}
-                  getAlbums={getAlbums} />
-            )})
+    updateSearchResults();
+  }, [albumResult, artistResult, dispatch, searchTerms, sortBy, trackResult]);
+
+  const renderResults = () => {
+    if (Array.isArray(artist) && sortBy === "Artist") {
+      return artist.map(artists => {
+        return (
+          <div className="Track" key={artists.id}>
+            <div className="Track-information" onClick={() => getAlbums(artists.id, artists.name)}>
+              <img src={artists.img[0].url} alt={artists.name}></img>
+              <h1>{artists.name}</h1>
+            </div>
+          </div>
+      )})
+    }
+    if (Array.isArray(album) && (sortBy === "Album" || sortBy === 'AlbumsByArtist')) {
+      return album.map(albums => {
+          return (
+            <div className="Track" key={albums.id}>
+              <div className="Track-information" id="album">
+                <img src={albums.img[0].url} alt={albums.albumName} id="album"></img>
+                <h3>{albums.albumName}</h3>
+                <p>{ albums.artistName[0].name }</p>
+              </div>
+              <button className="Track-action" onClick={() => addAlbum(albums.id, albums.albumName)}>+</button>
+            </div>
+      )})
+    }
+    if (Array.isArray(track) && sortBy === "Track") {
+      return track.map(tracks => {
+          let trackInfo = {
+            name: tracks.name,
+            artistName: tracks.artistName[0].name,
+            albumName: tracks.albumName,
+            uri: tracks.uri
           }
-        </div>
-      </div>
-    );
-  } else if (Array.isArray(album) && sortBy === "Album") {
-    return (
-      <div className="SearchResults">
-        <h2>Results</h2>
-        <div className="SearchFilters">
-          { renderSortByOptions() }
-        </div>
-        <div className="ResultList">
-          {
-            album.map(albums =>
-            {
-              return (
-                <ResultList
-                  albumName={albums.albumName}
-                  artistName={albums.artistName[0].name}
-                  img={albums.img[0]}
-                  sortBy={sortBy}
-                  key={generateRandomString(16)}
-                  albumId={albums.id}
-                  addAlbum={addAlbum} />
-            )})
-          }
-        </div>
-      </div>
-    );
-  } else if (Array.isArray(track) && sortBy === "Track") {
-    return (
-      <div className="SearchResults">
-        <h2>Results</h2>
-        <div className="SearchFilters">
-          { renderSortByOptions() }
-        </div>
-        <div className="ResultList">
-          {
-            track.map(tracks =>
-            {
-              return (
-                <ResultList
-                  name={tracks.name}
-                  artistName={tracks.artistName[0].name}
-                  albumName={tracks.albumName}
-                  trackInfo={{
-                    name: tracks.name,
-                    artistName: tracks.artistName[0].name,
-                    albumName: tracks.albumName,
-                    uri: tracks.uri
-                  }}
-                  sortBy={sortBy}
-                  key={generateRandomString(16)}
-                  onAdd={onAdd} />
-            )})
-          }
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className="SearchResults">
-        <h2>Results</h2>
-        <div className="SearchFilters">
-          { renderSortByOptions() }
-        </div>
-        <div className="ResultList">
-          <br /><p>Search for something.</p>
-        </div>
-      </div>
-    );
+          return (
+            <div className="Track" key={tracks.uri}>
+              <div className="Track-information" id="track">
+                <h3>{ tracks.name }</h3>
+                <p>{ tracks.artistName[0].name } | { tracks.albumName }</p>
+              </div>
+              <button className="Track-action" onClick={() => addTrack(trackInfo)}>+</button>
+            </div>
+      )})
+    }
+
+    return (<><br /><p>Search for something.</p></>);
   }
+
+  return (
+    <div className="SearchResults">
+      <h2>Results</h2>
+      <div className="SearchFilters">
+        { renderSortByOptions() }
+      </div>
+      <div className="ResultList">
+        { renderResults() }
+      </div>
+    </div>
+  );
 }

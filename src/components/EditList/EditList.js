@@ -1,25 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import useTrack from '../../hooks/useTrack';
+import { PositionContext } from '../../context/PositionContext';
+
 import './EditList.css';
 
 export const EditList = (props) => {
-  const { getTracks, getPosition, name, count, position, id } = props;
+  const { dispatch } = useContext(PositionContext);
+  const { editListPlayLists, getTracksFromPlayList } = useTrack();
 
-  const handleClick = (e) => {
+  const handleClick = (e, playlistId, newplayListPosition) => {
     e.preventDefault();
-    let playlist_id = e.target.getAttribute('id');
-    let position = e.target.getAttribute('position');
-    getTracks(playlist_id);
-    getPosition(position);
+    getTracksFromPlayList(playlistId);
+    dispatch({ type: 'UPDATE_POSITION', position: newplayListPosition });
   }
 
   return (
-    <div className="List-item">
-      <p><i className="Title">{name}</i> <br />
-      <i className="Count">{count} Tracks</i></p>
-      <p><i className="Edit-btn"
-            onClick={handleClick}
-            position={position}
-            id={id}>edit</i> | <i className="Delete-btn">delete</i></p>
-    </div>
+    editListPlayLists.map(playlist => 
+      <div className="List-item" key={playlist.id}>
+        <p><i className="Title">{playlist.name}</i> <br />
+        <i className="Count">{playlist.count} Tracks</i></p>
+        <p><i className="Edit-btn" onClick={(e) => handleClick(e, playlist.id, playlist.position)}
+           >edit</i> | <i className="Delete-btn">delete</i></p>
+      </div>
+    )
   );
 }

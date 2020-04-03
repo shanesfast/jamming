@@ -33,8 +33,13 @@ let userID;
 
 export const Spotify = {
 
-  //gets authorization token using Spotify's Implicit Grant method
-  getAccess() {
+  // checks if a user is already signed in
+  signedIn() {
+    if (accessToken && userID) return true;
+  },
+
+  // gets authorization token using Spotify's Implicit Grant method
+  getAccess(signal) {
     if (accessToken) {
       return accessToken;
     } else if (window.location.href.match(/access_token=([^&]*)/)) {
@@ -51,7 +56,7 @@ export const Spotify = {
     // gets user ID
     fetch("https://api.spotify.com/v1/me", { headers: {
        'Authorization': 'Bearer ' + accessToken
-     }
+     }, signal: signal
     })
     .then(response => {
       return response.json()
@@ -104,12 +109,12 @@ export const Spotify = {
       })
       .then(response => { return response.json(); })
       .then(jsonResponse => {
-        if (jsonResponse.items.length !== 0) {    //ensures there is data coming in
+        if (jsonResponse.items && jsonResponse.items.length !== 0) {    //ensures there is data coming in
           return jsonResponse.items.map((item, num) => { // map appends playlistTracks array with current data
             if (num === 99) { // check to see if the trackCount needs to be updated
               trackCount +=100;
             }
-            playlistTracks = [...playlistTracks, // using spread operator to update the playlistTracks array
+            return playlistTracks = [...playlistTracks, // using spread operator to update the playlistTracks array
               {
                 track: item.track.name,
                 artist: item.track.artists[0].name,
@@ -279,12 +284,12 @@ export const Spotify = {
     }
   },
 
-  getAlbumsFromArtist(id, artistName) {
+  getAlbumsFromArtist(id, artistName, signal) {
     const albumRequest = new Request('https://api.spotify.com/v1/artists/' +
     id + '/albums', {
     	headers: {
         'Authorization': 'Bearer ' + accessToken
-      }
+      }, signal: signal
     })
 
     // GET call to retrieve album data
@@ -436,9 +441,10 @@ export const Spotify = {
     })
   },
 
-  getTracksFromAlbum(id, name) {
+  getTracksFromAlbum(id, name, signal) {
     const spotifyWrap = new SpotifyWrapper({
-      token: accessToken
+      token: accessToken,
+      signal: signal
     });
     return spotifyWrap.album.getTracks(id)
     .then(data => {

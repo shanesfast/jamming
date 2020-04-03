@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react'
+import { SearchContext } from '../../context/SearchContext';
 import { DebounceInput } from 'react-debounce-input';
+
 import './SearchBar.css';
 
 export const SearchBar = (props) => {
 
+  const { dispatch } = useContext(SearchContext);
+
   const handleSearch = (e) => {
     const terms = e.target.value;
-    props.onChange(terms);
+    dispatch({ type: 'UPDATE_SEARCH_TERMS', search: terms });
+    if (terms.length === 0) dispatch({type: 'CLEAR_SEARCH'});
   }
 
   return (
