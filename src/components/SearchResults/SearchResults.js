@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { SearchContext } from '../../context/SearchContext';
-import useSpotifyApiCalls from '../../hooks/useSpotifyApiCalls';
+import useSpotify from '../../hooks/useSpotify';
 import useTrack from '../../hooks/useTrack';
 
 import './SearchResults.css';
@@ -11,7 +11,7 @@ let aborts = [];
 export const SearchResults = (props) => {
   const { state, dispatch } = useContext(SearchContext);
   const { artist, album, track, searchTerms, sortBy } = state;
-  const { artistResult, albumResult, getAlbumsFromArtist, getTracksFromAlbum, trackResult } = useSpotifyApiCalls();
+  const { artistResult, albumResult, getAlbumsFromArtist, getTracksFromAlbum, trackResult } = useSpotify();
   const { addTrack } = useTrack();
 
   const renderSortByOptions = () => {

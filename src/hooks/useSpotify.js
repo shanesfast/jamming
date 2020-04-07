@@ -3,7 +3,7 @@ import useTrack from './useTrack';
 import { SearchContext } from '../context/SearchContext';
 import { Spotify } from '../Spotify';
 
-const useSpotifyApiCalls = () => {
+const useSpotify = () => {
   const [artistResult, setArtistResult] = useState();
   const [albumResult, setAlbumResult] = useState();
   const [trackResult, setTrackResult] = useState();
@@ -66,4 +66,4 @@ const useSpotifyApiCalls = () => {
   }
 }
 
-export default useSpotifyApiCalls;
+export default useSpotify;
