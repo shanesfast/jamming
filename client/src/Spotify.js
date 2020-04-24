@@ -1,8 +1,6 @@
 import 'whatwg-fetch';
 import SpotifyWrapper from 'spotify-wrapper';
 
-require('dotenv').config();
-
 const client_id = '4160d0ec3a004092acdbba03d6e30a03';
 const redirect_uri = process.env.REACT_APP_REDIRECT_URI;
 
@@ -42,7 +40,6 @@ export const Spotify = {
 
   // gets authorization token using Spotify's Implicit Grant method
   getAccess(signal) {
-    console.log(redirect_uri);
     if (accessToken) {
       return accessToken;
     } else if (window.location.href.match(/access_token=([^&]*)/)) {

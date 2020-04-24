@@ -1,2 +1,6 @@
+# Node packages
+/client/node_modules/
 /node_modules/
-/.env
+
+# Environment Variables
+.env
