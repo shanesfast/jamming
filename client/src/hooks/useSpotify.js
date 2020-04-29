@@ -73,25 +73,28 @@ const useSpotify = () => {
     const urlRequest = url + "?client_id=" + spotifyClientID + "&response_type=token&redirect_uri="
           + spotifyRedirectUri + "&scope=" + scope + "&state=" + state;
 
-    if (spotifyAccessToken) authDispatch({ type: 'PRIOR_SESSION' });
-    else if (window.location.href.match(/access_token=([^&]*)/)) {
-      let accessTokenArr = window.location.href.match(/access_token=([^&]*)/);
-      authDispatch({ type: 'SET_ACCESS_TOKEN', token: accessTokenArr[1].toString() });
-    } 
-    else window.location = urlRequest;
+    let popup = window.open(urlRequest, 'Sign in with Spotify', 'width=800,height=600');
 
-    // Abort username request if it is taking too long
-    const controller = new AbortController();
-    const signal = controller.signal;
-    setTimeout(()=> controller.abort(), 6000);
+    window.spotifyCallback = (token) => {
+      popup.close()
 
-    // gets user ID
-    fetch("https://api.spotify.com/v1/me", { headers: {
-       'Authorization': 'Bearer ' + spotifyAccessToken
-     }, signal })
-    .then(response => { return response.json() })
-    .then(response => { authDispatch({ type: 'SET_USERNAME', username: response.id }); })
-    .catch(err => { console.log(err) });
+      authDispatch({ type: 'SET_ACCESS_TOKEN', token });
+      localStorage.setItem('token', token);
+
+      // Abort username request if it is taking too long
+      const controller = new AbortController();
+      const signal = controller.signal;
+      setTimeout(()=> controller.abort(), 6000);
+
+      // gets user ID
+      fetch("https://api.spotify.com/v1/me", { headers: {
+        'Authorization': 'Bearer ' + spotifyAccessToken
+      }, signal })
+      .then(response => { return response.json() })
+      .then(response => { authDispatch({ type: 'SET_USERNAME', username: response.id }); })
+      .catch(err => { console.log(err) });
+    }
+    console.log('callback was called');
   }
 
   return {

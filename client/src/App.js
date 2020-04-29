@@ -17,6 +17,10 @@ const App = () => {
 
   useEffect(() => {
     if (spotifyAccessToken) dispatch({ type: 'PRIOR_SESSION' });
+    else if (window.location.href.match(/access_token=([^&]*)/)) {
+      let token = window.location.href.match(/access_token=([^&]*)/)[1].toString();
+      window.opener.spotifyCallback(token);
+    } 
   }, [dispatch, isAuthenticated, spotifyAccessToken])
 
   const mainApp = (
