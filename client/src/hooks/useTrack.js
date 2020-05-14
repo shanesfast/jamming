@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import { PlayListContext } from "../context/PlayListContext";
 import { Spotify } from '../Spotify.js';
 
@@ -6,6 +7,9 @@ const useTrack = () => {
   const { state, dispatch } = useContext(PlayListContext);
   const { editBoxIsOpen, editListIsOpen, editListTracks, editListPlayLists, 
           playListTracks, playListPosition } = state;
+
+  const { state: authState } = useContext(AuthContext);
+  const { spotifyAccessToken, spotifyUsername } = authState;
 
   function addTrack(trackInfo) {
     if (editBoxIsOpen === true) return dispatch({ type: 'UPDATE_EDIT_LIST_TRACKS', tracks: trackInfo });
@@ -30,9 +34,47 @@ const useTrack = () => {
   }
 
   function getTracksFromPlayList(playlist_id) {
-    Spotify.getTracksFromPlayList(playlist_id)
+    let trackCount = 0; // number of songs in increments of 100
+    let iterationCount = 1; // tracks number of times API call is made
+    let offset = 0; // offsets track number for API call
+    let playlistTracks = []; // used to store tracks gathered from each API call
+
+    function fetchTracks() {
+      return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlist_id}/tracks?offset=${offset}&limit=100`,
+        { headers: {
+          'Authorization': 'Bearer ' + spotifyAccessToken
+        }
+      })
+      .then(response => { return response.json() })
+      .then(jsonResponse => {
+        if (jsonResponse.items && jsonResponse.items.length) { 
+          return jsonResponse.items.map((item, num) => {
+            if (num === 99) {
+              trackCount +=100;
+            }
+            return playlistTracks = [...playlistTracks,
+              {
+                track: item.track.name,
+                artist: item.track.artists[0].name,
+                album: item.track.album.name,
+                uri: item.track.uri
+              }
+            ];
+          });
+        } else return playlistTracks;
+      })
+      .then(jsonResponse => {
+        if (trackCount / iterationCount === 100) {
+          iterationCount += 1;
+          offset += 100;
+          return fetchTracks();
+        } else return playlistTracks;
+      })
+    }
+
+    fetchTracks()
     .then(data => {
-      if (Array.isArray(data)) {
+      if (data) {
         return data.map(track => {
           return {
             artistName: track.artist,
@@ -41,9 +83,7 @@ const useTrack = () => {
             uri: track.uri
           }
         });
-      } else if (data === undefined) {
-        return []; // the state expects an array, so an empty
-      }            // array is returned if there is no data to avoid errors
+      } else return [];
     })
     .then(tracks => {
       if (tracks) {
@@ -51,7 +91,8 @@ const useTrack = () => {
         dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
         dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: true });
       }
-    });
+    })
+    .catch(err => { alert(`Getting tracks from playlist error: ${err.message}`); });
   }
 
   function openPlayLists(e) {
@@ -61,11 +102,32 @@ const useTrack = () => {
       return dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
     }
 
-    Spotify.getPlayLists()
+    fetch("https://api.spotify.com/v1/me/playlists", { headers: {
+      'Authorization': 'Bearer ' + spotifyAccessToken
+      }
+    })
+    .then(response => { return response.json() })
+    .then(jsonResponse => {
+      if (jsonResponse.items.length) {
+        return jsonResponse.items.map((items, num) => {
+          return {
+            name: items.name,
+            count: items.tracks.total,
+            id: items.id,
+            user: spotifyUsername,
+            position: num
+          }
+        });
+      } else {
+        return;
+      }
+
+    })
     .then(playlists => {
       dispatch({ type: 'UPDATE_EDIT_PLAY_LISTS', lists: playlists });
       dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: true });
-    });
+    })
+    .catch(err => { alert(`Getting playlists error: ${err.message}`); });
   }
 
   function savePlayList(title) {

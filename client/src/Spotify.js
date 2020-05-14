@@ -1,92 +1,10 @@
 import SpotifyWrapper from 'spotify-wrapper';
 import 'whatwg-fetch';
 
-const client_id = '4160d0ec3a004092acdbba03d6e30a03';
-const redirect_uri = process.env.REACT_APP_REDIRECT_URI;
-
-const url = 'https://accounts.spotify.com/authorize';
-const scope = 'user-read-private user-read-email ' +
-'playlist-modify-private playlist-read-private ' +
-'playlist-modify-public playlist-read-collaborative';
-
-// Generates a random string containing numbers and letters
-// @param  {number} length The length of the string
-// @return {string} The generated string
-function generateRandomString(length) {
-  let text = '';
-  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-
-let state = generateRandomString(16);
-
-const urlRequest = url + "?client_id=" + client_id + "&response_type=token&redirect_uri="
-+ redirect_uri + "&scope=" + scope + "&state=" + state;
-
 let accessToken;
-let expiration;
 let userID;
 
 export const Spotify = {
-  // gets authorization token using Spotify's Implicit Grant method
-  getAccess(signal) {
-    if (accessToken) {
-      return accessToken;
-    } else if (window.location.href.match(/access_token=([^&]*)/)) {
-        let accessTokenArr = window.location.href.match(/access_token=([^&]*)/);
-        let expirationArr = window.location.href.match(/expires_in=([^&]*)/);
-        accessToken = accessTokenArr[1].toString();
-        expiration = expirationArr[1];
-        window.setTimeout(() => accessToken = '', expiration * 1000);
-        window.history.pushState('Access Token', null, '/');
-    } else {
-        window.location = urlRequest;
-    }
-
-    // gets user ID
-    fetch("https://api.spotify.com/v1/me", { headers: {
-       'Authorization': 'Bearer ' + accessToken
-     }, signal: signal
-    })
-    .then(response => {
-      return response.json()
-    })
-    .then(jsonResponse => {
-      userID = jsonResponse.id;
-    })
-    .catch(err => { console.log(err) });
-  },
-
-  // gets all playlists from a user account
-  getPlayLists() {
-    return fetch("https://api.spotify.com/v1/me/playlists", { headers: {
-      'Authorization': 'Bearer ' + accessToken
-      }
-    })
-    .then(response => {return response.json();})
-    .then(jsonResponse => {
-      if (jsonResponse.items.length !== 0) {
-        return jsonResponse.items.map((items, num) => {
-          return {
-            name: items.name,
-            count: items.tracks.total,
-            id: items.id,
-            user: userID,
-            position: num
-          }
-        });
-      } else {
-        return;
-      }
-
-    })
-    .catch(err => { console.log(err); });
-  },
-
   // Gets tracks from a users playList
   getTracksFromPlayList(playlist_id) {
     let trackCount = 0; // keeps track of the number of songs while making API calls ( in increments of 100)
