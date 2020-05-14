@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-
-import useTrack from './useTrack';
-
+import SpotifyWrapper from 'spotify-wrapper';
+import 'whatwg-fetch';
 import { AuthContext } from '../context/AuthContext';
 import { SearchContext } from '../context/SearchContext';
-
 import { Spotify } from '../Spotify';
+import useTrack from './useTrack';
+
 
 const useSpotify = () => {
   const [artistResult, setArtistResult] = useState();
@@ -33,24 +33,74 @@ const useSpotify = () => {
   }, [searchTerms, sortBy]);
 
   function searchArtist(terms) {
-    Spotify.searchArtist(terms)
-            .then(artists => {
-              return setArtistResult(artists);
-            });
+    const spotifyWrap = new SpotifyWrapper({
+      token: spotifyAccessToken
+    });
+    
+    spotifyWrap.search.artists(terms)
+    .then(data => {
+      if (data.artists.items && data.artists.items.length) {
+        return data.artists.items.map((artist) => {
+          return {
+            name: artist.name,
+            img: artist.images.length ? artist.images : [{url: './missing_photo.jpg'}],
+            id: artist.id
+          };
+        });
+      } else return 'empty';
+    })
+    .then(artists => {
+      return setArtistResult(artists);
+    })
+    .catch(err => alert(err.message));
   }
 
   function searchAlbum(terms) {
-    Spotify.searchAlbum(terms)
-          .then(albums => {
-            return setAlbumResult(albums);
-          });
+    const spotifyWrap = new SpotifyWrapper({
+      token: spotifyAccessToken
+    });
+
+    spotifyWrap.search.albums(terms)
+    .then(data => {
+      if (data.albums.items && data.albums.items.length) {
+        return data.albums.items.map((album, i) => {
+          return {
+            albumName: album.name,
+            artistName: album.artists.length ? album.artists : 'No Artist Found',
+            img: album.images.length? album.images : [{url: './missing_photo.jpg'}],
+            id: album.id
+          }
+        });
+      } else return 'empty';
+    })
+    .then(albums => {
+      return setAlbumResult(albums);
+    })
+    .catch(err => alert(err.message));
   }
 
   function searchTrack(terms) {
-    Spotify.searchTracks(terms)
-          .then(tracks => {
-            return setTrackResult(tracks);
-          });
+    const spotifyWrap = new SpotifyWrapper({
+      token: spotifyAccessToken
+    });
+    
+    spotifyWrap.search.tracks(terms)
+    .then(data => {
+      if (data.tracks.items && data.tracks.items.length) {
+        return data.tracks.items.map((track) => {
+          return {
+            name: track.name,
+            artistName: track.artists.length ? track.artists : 'No Artist Found',
+            albumName: track.album.name,
+            uri: track.uri
+          } 
+        });
+      } else return 'empty';
+    })
+    .then(tracks => {
+      return setTrackResult(tracks);
+    })
+    .catch(err => alert(err.message));
   }
 
   function getTracksFromAlbum(id, name, signal) {

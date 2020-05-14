@@ -1,5 +1,5 @@
-import 'whatwg-fetch';
 import SpotifyWrapper from 'spotify-wrapper';
+import 'whatwg-fetch';
 
 const client_id = '4160d0ec3a004092acdbba03d6e30a03';
 const redirect_uri = process.env.REACT_APP_REDIRECT_URI;
@@ -32,12 +32,6 @@ let expiration;
 let userID;
 
 export const Spotify = {
-
-  // checks if a user is already signed in
-  signedIn() {
-    if (accessToken && userID) return true;
-  },
-
   // gets authorization token using Spotify's Implicit Grant method
   getAccess(signal) {
     if (accessToken) {
@@ -328,117 +322,6 @@ export const Spotify = {
         }
       }
     });
-  },
-
-  // all search methods below use the Spotify Wrapper API (https://github.com/willianjusten/spotify-wrapper)
-  // to get data from Spotify
-  searchArtist(terms) {
-    const spotifyWrap = new SpotifyWrapper({
-      token: accessToken
-    });
-    return spotifyWrap.search.artists(terms)
-    .then(data => {
-      if (data.artists.items) {
-        if (data.artists.items.length !== 0) {
-          return data.artists.items.map((artist, i) => {
-            if (data.artists.items[i].images.length === 0) {
-              return {
-                name: artist.name,
-                img: [{url: './missing_photo.jpg'}],
-                id: artist.id
-              }
-            } else {
-              return {
-                name: artist.name,
-                img: artist.images,
-                id: artist.id
-              };
-            }
-          });
-        }
-      } else {
-        return 'empty';
-      }
-    })
-  },
-
-  searchAlbum(terms) {
-    const spotifyWrap = new SpotifyWrapper({
-      token: accessToken
-    });
-    return spotifyWrap.search.albums(terms)
-    .then(data => {
-      if (data.albums.items) {
-        if (data.albums.items.length !== 0) {
-          return data.albums.items.map((album, i) => {
-            if (data.albums.items[i].images.length === 0) {
-              return {
-                albumName: album.name,
-                artistName: album.artists,
-                img: [{url: './missing_photo.jpg'}],
-                id: album.id
-              }
-            } else if (data.albums.items[i].artists.length === 0) {
-                return {
-                  albumName: album.name,
-                  artistName: 'NoArtistFound',
-                  img: album.images,
-                  id: album.id
-                };
-            } else if (data.albums.items[i].images.length === 0
-              && data.albums.items[i].artists.length === 0) {
-                return {
-                  albumName: album.name,
-                  artistName: 'NoArtistFound',
-                  img: [{url: './missing_photo.jpg'}],
-                  id: album.id
-                };
-            } else {
-                return {
-                  albumName: album.name,
-                  artistName: album.artists,
-                  img: album.images,
-                  id: album.id
-                };
-            }
-          });
-        }
-      } else {
-        return 'Null';
-      }
-    })
-  },
-
-  searchTracks(terms) {
-    const spotifyWrap = new SpotifyWrapper({
-      token: accessToken
-    });
-    return spotifyWrap.search.tracks(terms)
-    .then(data => {
-      if (data.tracks.items) {
-        if (data.tracks.items.length !== 0) {
-          return data.tracks.items.map((track, i) => {
-            if (data.tracks.items[i].artists.length === 0) {
-              return {
-                name: track.name,
-                artistName: 'NoArtistFound',
-                albumName: track.album.name,
-                uri: track.uri
-              }
-            } else {
-              return {
-                name: track.name,
-                artistName: track.artists,
-                albumName: track.album.name,
-                uri: track.uri
-              };
-            }
-          });
-        }
-      } else {
-        return 'empty';
-      }
-    })
   },
 
   getTracksFromAlbum(id, name, signal) {
