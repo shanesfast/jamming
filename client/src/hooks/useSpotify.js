@@ -120,6 +120,7 @@ const useSpotify = () => {
     'playlist-modify-public playlist-read-collaborative';
     const spotifyRedirectUri = process.env.REACT_APP_REDIRECT_URI;
     const url = 'https://accounts.spotify.com/authorize';
+
     const urlRequest = url + "?client_id=" + spotifyClientID + "&response_type=token&redirect_uri="
           + spotifyRedirectUri + "&scope=" + scope + "&state=" + state;
 
@@ -127,7 +128,7 @@ const useSpotify = () => {
 
     window.spotifyCallback = (token) => {
       popup.close()
-
+      console.log(token);
       authDispatch({ type: 'SET_ACCESS_TOKEN', token });
       localStorage.setItem('token', token);
 
@@ -138,13 +139,12 @@ const useSpotify = () => {
 
       // gets user ID
       fetch("https://api.spotify.com/v1/me", { headers: {
-        'Authorization': 'Bearer ' + spotifyAccessToken
+        'Authorization': 'Bearer ' + token
       }, signal })
       .then(response => { return response.json() })
       .then(response => { authDispatch({ type: 'SET_USERNAME', username: response.id }); })
       .catch(err => { console.log(err) });
     }
-    console.log('callback was called');
   }
 
   return {

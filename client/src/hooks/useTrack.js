@@ -131,12 +131,61 @@ const useTrack = () => {
   }
 
   function savePlayList(title) {
-    let uris = [];
-    playListTracks.map(track => {
-      uris = [...uris, track.uri];
-      return null;
+    let tracks = [];
+    playListTracks.map(track => { return tracks = [...tracks, track.uri] });
+
+    const titleRequest = new Request('https://api.spotify.com/v1/users/' + spotifyUsername +
+    '/playlists', {
+    	method: 'POST',
+    	headers: {
+    		'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + spotifyAccessToken
+      },
+      body: JSON.stringify({ name: title })
+    });
+
+    console.log(spotifyUsername);
+
+    function addPlayList() { 
+      return fetch(titleRequest)
+      .then(response => {
+        return response.json();
+      })
+      .then(jsonResponse => {
+        console.log(jsonResponse);
+        return jsonResponse.id;
+      })
+      .catch(err => { alert(`Adding playlist error: ${err.message}`) });
+    }
+
+    function addTracks(trackRequest)  {
+      return fetch(trackRequest)
+      .then(response => {
+        return response.json();
+      })
+      .then(jsonResponse => {
+        return jsonResponse;
+      })
+      .catch(err => { alert(`Adding tracks to playlist error: ${err.message}`); });
+    }
+
+    
+    addPlayList()
+    .then(playListID => {
+      let trackRequest = new Request('https://api.spotify.com/v1/users/' +
+      spotifyUsername + '/playlists/' + playListID + '/tracks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + spotifyAccessToken
+        },
+        body: JSON.stringify({ uris: tracks })
+      });
+
+      return trackRequest;
     })
-    Spotify.createPlayList(title, uris);
+    .then(trackRequest => { return addTracks(trackRequest) });
+    
     dispatch({ type: 'CLEAR_PLAY_LIST_TRACKS', tracks: [] });
   }
 
