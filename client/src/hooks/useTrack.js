@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { PlayListContext } from "../context/PlayListContext";
-import { Spotify } from '../Spotify.js';
 
 const useTrack = () => {
   const { state, dispatch } = useContext(PlayListContext);
@@ -189,12 +188,72 @@ const useTrack = () => {
     dispatch({ type: 'CLEAR_PLAY_LIST_TRACKS', tracks: [] });
   }
 
-  function updatePlayList(playlist_id, new_name, uris_array) {
-    if (new_name !== editListPlayLists[playListPosition].name && new_name.length > 0) {
-      Spotify.updatePlaylistName(playlist_id, new_name);
+  function updatePlayList(playlistId, newName, urisArray) {
+    // Update playlist name if it changed
+    if (newName !== editListPlayLists[playListPosition].name && newName.length > 0) {
+      fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlistId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + spotifyAccessToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: newName })
+      }
+    )
+    .catch(err => alert(`Error updating playlist name: ${err.message}`));
     }
-
-    Spotify.updatePlaylistTracks(playlist_id, uris_array);
+    console.log(urisArray);
+    // Update playlist Tracks
+    const urisLength = urisArray.length;
+    if (urisLength > 100) { // uses the Add Track to Playlist Endpoint if there are more than 100 tracks
+      let trackOffset = Math.floor(urisLength / 100);
+      let first100 = [...urisArray.slice(0, 100)];
+      return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlistId}/tracks`,
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + spotifyAccessToken,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ uris: first100 })
+        }
+      )
+      .then(response => response.json())
+      .then(jsonResponse => console.log(jsonResponse))
+      .then(() => {
+        for (let i = 0; i <= trackOffset; i++) {
+          let offset_uris = [...urisArray.slice(trackOffset * 100, (trackOffset * 100) + 100)];
+          return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlistId}/tracks`,
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + spotifyAccessToken,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ uris: offset_uris })
+            }
+          )
+          .then(response => response.json())
+          .then(jsonResponse => console.log(jsonResponse))
+          .catch(err => alert(`Error updating tracks: ${err.message}`));
+        }
+      });
+    } else { // use replace tracks endpoint if less than 100 tracks
+      return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlistId}/tracks`,
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + spotifyAccessToken,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ uris: urisArray })
+        }
+      )
+      .then(response => response.json())
+      .then(jsonResponse => console.log(jsonResponse))
+      .catch(err => alert(`Error updating tracks: ${err.message}`));
+    }
   }
 
   return {
