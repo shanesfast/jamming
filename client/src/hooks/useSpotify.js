@@ -3,7 +3,6 @@ import SpotifyWrapper from 'spotify-wrapper';
 import 'whatwg-fetch';
 import { AuthContext } from '../context/AuthContext';
 import { SearchContext } from '../context/SearchContext';
-import { Spotify } from '../Spotify';
 import useTrack from './useTrack';
 
 
@@ -103,13 +102,69 @@ const useSpotify = () => {
     searchSpotify();
   }, [searchTerms, sortBy, spotifyAccessToken]);
 
-  function getTracksFromAlbum(id, name, signal) {
-    Spotify.getTracksFromAlbum(id, name, signal)
+  function getTracksFromAlbum(id, name) {
+    const spotifyWrap = new SpotifyWrapper({
+      token: spotifyAccessToken
+    });
+
+    return spotifyWrap.album.getTracks(id)
+    .then(data => {
+      if (data.items && data.items.length) {
+        return data.items.map((track, i) => {
+          if (data.items[i].artists.length) {
+            return {
+              name: track.name,
+              artistName: track.artists[0].name,
+              albumName: name,
+              uri: track.uri
+            }
+          } else {
+            return {
+              name: track.name,
+              artistName: 'NoArtistFound',
+              albumName: name,
+              uri: track.uri
+            }
+          }
+        })
+      }
+    })
     .then(tracks => { tracks.forEach(track => { addTrack(track) }) });
   }
 
-  function getAlbumsFromArtist(id, name, signal) {
-    Spotify.getAlbumsFromArtist(id, name, signal)
+  function getAlbumsFromArtist(id, artistName) {
+    const albumRequest = new Request('https://api.spotify.com/v1/artists/' +
+    id + '/albums', {
+    	headers: {
+        'Authorization': 'Bearer ' + spotifyAccessToken
+      }
+    })
+
+    fetch(albumRequest)
+    .then(response => { return response.json() })
+    .then(jsonResponse => { return jsonResponse })
+    .catch(err => { console.log(err) })
+    .then(data => {
+      if (data.items && data.items.length) {
+        return data.items.map((albums) => {
+          if (albums.images.length) {
+            return {
+              albumName: albums.name,
+              artistName: [{name: artistName}],
+              id: albums.id,
+              img: albums.images
+            }
+          } else {
+            return {
+              albumName: albums.name,
+              artistName: [{name: artistName}],
+              id: albums.id,
+              img: [{url: './missing_photo.jpg'}]
+            }
+          }
+        });
+      }
+    })
     .then(albums => { 
       return setAlbumResult(albums) });
   }
