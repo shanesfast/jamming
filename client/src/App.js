@@ -1,40 +1,46 @@
-import React, { useEffect } from 'react';
-import { SearchBar } from './components/SearchBar/SearchBar.js';
-import { AppPlayList } from './components/AppPlayList/AppPlayList.js';
-import { ListOfPlayLists } from './components/ListOfPlayLists/ListOfPlayLists.js';
-import { Spotify } from './Spotify.js';
+import React, { useContext, useEffect } from 'react';
+import { AppPlayList } from './components/AppPlayList/AppPlayList';
+import { ListOfPlayLists } from './components/ListOfPlayLists/ListOfPlayLists';
+import { SearchBar } from './components/SearchBar/SearchBar';
+import { SignInBox } from './components/SignInBox/SignInBox';
 
+import { AuthContext } from './context/AuthContext';
 import { PlayListProvider } from './context/PlayListContext';
-import { PositionProvider } from "./context/PositionContext";
-import { SearchProvider } from './context/SearchContext.js';
+import { PositionProvider } from './context/PositionContext';
+import { SearchProvider } from './context/SearchContext';
 
 import './App.css';
 
 const App = () => {
+  const { state, dispatch } = useContext(AuthContext);
+  const { isAuthenticated, spotifyAccessToken } = state;
 
   useEffect(() => {
-    let abortController = new AbortController();
-    let signal = abortController.signal;
+    if (spotifyAccessToken) dispatch({ type: 'PRIOR_SESSION' });
+    else if (window.location.href.match(/access_token=([^&]*)/)) {
+      let token = window.location.href.match(/access_token=([^&]*)/)[1].toString();
+      window.opener.spotifyCallback(token);
+    } 
+  }, [dispatch, isAuthenticated, spotifyAccessToken])
 
-    Spotify.getAccess(signal);
-
-    return function cleanup() {
-      abortController.abort();
-    }
-  }, [])
+  const mainApp = (
+    <>
+      <SearchBar />
+      <PositionProvider>
+        <AppPlayList />
+        <ListOfPlayLists />
+      </PositionProvider>
+    </>
+  );
 
   return (
     <PlayListProvider>
-      <div className="App">
-        <h1>Quick J<i className="highlight">amm</i>in&#39;</h1>
-        <SearchProvider>
-          <SearchBar />
-          <PositionProvider>
-            <AppPlayList />
-            <ListOfPlayLists />
-          </PositionProvider>
-        </SearchProvider>
-      </div>
+      <SearchProvider>
+        <div className="App">
+          <h1>Quick J<i className="highlight">amm</i>in&#39;</h1>
+          { isAuthenticated ? mainApp : <SignInBox /> }
+        </div>
+      </SearchProvider>
     </PlayListProvider>
   );
 }
