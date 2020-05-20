@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import SpotifyWrapper from 'spotify-wrapper';
+import { v4 as uuidv4 } from 'uuid';
 import 'whatwg-fetch';
 import { AuthContext } from '../context/AuthContext';
 import { SearchContext } from '../context/SearchContext';
@@ -177,22 +178,24 @@ const useSpotify = () => {
     const url = 'https://accounts.spotify.com/authorize';
 
     const urlRequest = url + "?client_id=" + spotifyClientID + "&response_type=token&redirect_uri="
-          + spotifyRedirectUri + "&scope=" + scope + "&state=" + state;
+          + spotifyRedirectUri + "&scope=" + scope + "&state=" + uuidv4() + "&show_dialog=true";
 
     let popup = window.open(urlRequest, 'Sign in with Spotify', 'width=800,height=600');
 
-    window.spotifyCallback = (token) => {
-      popup.close()
-      console.log(token);
+    window.spotifyCallback = (token, expire) => {
+      popup.close();
       authDispatch({ type: 'SET_ACCESS_TOKEN', token });
       localStorage.setItem('token', token);
+
+      // Clear token from local storage after it expires
+      setTimeout(() => localStorage.clear('token'), expire);
 
       // Abort username request if it is taking too long
       const controller = new AbortController();
       const signal = controller.signal;
-      setTimeout(()=> controller.abort(), 6000);
+      setTimeout(() => controller.abort(), 6000);
 
-      // gets user ID
+      // gets username
       fetch("https://api.spotify.com/v1/me", { headers: {
         'Authorization': 'Bearer ' + token
       }, signal })

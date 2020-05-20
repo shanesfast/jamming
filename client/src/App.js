@@ -1,15 +1,15 @@
 import React, { useContext, useEffect } from 'react';
+import './App.css';
 import { AppPlayList } from './components/AppPlayList/AppPlayList';
 import { ListOfPlayLists } from './components/ListOfPlayLists/ListOfPlayLists';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { SignInBox } from './components/SignInBox/SignInBox';
-
 import { AuthContext } from './context/AuthContext';
 import { PlayListProvider } from './context/PlayListContext';
 import { PositionProvider } from './context/PositionContext';
 import { SearchProvider } from './context/SearchContext';
 
-import './App.css';
+
 
 const App = () => {
   const { state, dispatch } = useContext(AuthContext);
@@ -18,8 +18,9 @@ const App = () => {
   useEffect(() => {
     if (spotifyAccessToken) dispatch({ type: 'PRIOR_SESSION' });
     else if (window.location.href.match(/access_token=([^&]*)/)) {
-      let token = window.location.href.match(/access_token=([^&]*)/)[1].toString();
-      window.opener.spotifyCallback(token);
+      const token = window.location.href.match(/access_token=([^&]*)/)[1].toString();
+      const expire = window.location.href.match(/expires_in=([^&]*)/)[1].toString();
+      window.opener.spotifyCallback(token, expire);
     } 
   }, [dispatch, isAuthenticated, spotifyAccessToken])
 
