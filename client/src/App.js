@@ -19,8 +19,7 @@ const App = () => {
     if (spotifyAccessToken) dispatch({ type: 'PRIOR_SESSION' });
     else if (window.location.href.match(/access_token=([^&]*)/)) {
       const token = window.location.href.match(/access_token=([^&]*)/)[1].toString();
-      const expire = window.location.href.match(/expires_in=([^&]*)/)[1].toString();
-      window.opener.spotifyCallback(token, expire);
+      window.opener.spotifyCallback(token);
     } 
   }, [dispatch, isAuthenticated, spotifyAccessToken])
 

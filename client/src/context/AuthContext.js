@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: false,
     spotifyAccessToken: localStorage.getItem('token'),
     spotifyClientID: '4160d0ec3a004092acdbba03d6e30a03',
-    spotifyUsername: null
+    spotifyUsername: localStorage.getItem('username')
   });
 
   return (

@@ -37,12 +37,17 @@ const useTrack = () => {
     let iterationCount = 1; // tracks number of times API call is made
     let offset = 0; // offsets track number for API call
     let playlistTracks = []; // used to store tracks gathered from each API call
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
 
     function fetchTracks() {
       return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlist_id}/tracks?offset=${offset}&limit=100`,
         { headers: {
           'Authorization': 'Bearer ' + spotifyAccessToken
-        }
+        },
+        signal
       })
       .then(response => { return response.json() })
       .then(jsonResponse => {
@@ -101,9 +106,15 @@ const useTrack = () => {
       return dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
     }
 
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+
     fetch("https://api.spotify.com/v1/me/playlists", { headers: {
       'Authorization': 'Bearer ' + spotifyAccessToken
-      }
+      },
+      signal
     })
     .then(response => { return response.json() })
     .then(jsonResponse => {
@@ -133,6 +144,11 @@ const useTrack = () => {
     let tracks = [];
     playListTracks.map(track => { return tracks = [...tracks, track.uri] });
 
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+    console.log(spotifyAccessToken)
     const titleRequest = new Request('https://api.spotify.com/v1/users/' + spotifyUsername +
     '/playlists', {
     	method: 'POST',
@@ -140,10 +156,9 @@ const useTrack = () => {
     		'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + spotifyAccessToken
       },
-      body: JSON.stringify({ name: title })
+      body: JSON.stringify({ name: title }),
+      signal
     });
-
-    console.log(spotifyUsername);
 
     function addPlayList() { 
       return fetch(titleRequest)

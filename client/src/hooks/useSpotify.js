@@ -134,11 +134,17 @@ const useSpotify = () => {
   }
 
   function getAlbumsFromArtist(id, artistName) {
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+
     const albumRequest = new Request('https://api.spotify.com/v1/artists/' +
     id + '/albums', {
     	headers: {
         'Authorization': 'Bearer ' + spotifyAccessToken
-      }
+      },
+      signal
     })
 
     fetch(albumRequest)
@@ -182,26 +188,30 @@ const useSpotify = () => {
 
     let popup = window.open(urlRequest, 'Sign in with Spotify', 'width=800,height=600');
 
-    window.spotifyCallback = (token, expire) => {
+    window.spotifyCallback = (token) => {
       popup.close();
       authDispatch({ type: 'SET_ACCESS_TOKEN', token });
       localStorage.setItem('token', token);
 
       // Clear token from local storage after it expires
-      setTimeout(() => localStorage.clear('token'), expire);
+      const expireInMs = 86400000;
+      setTimeout(() => localStorage.clear('token'), expireInMs);
 
-      // Abort username request if it is taking too long
-      const controller = new AbortController();
-      const signal = controller.signal;
-      setTimeout(() => controller.abort(), 6000);
+      // Gets then Sets Spotify Username
+      const usernameRequest = new Request('https://api.spotify.com/v1/me', 
+      { headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
 
-      // gets username
-      fetch("https://api.spotify.com/v1/me", { headers: {
-        'Authorization': 'Bearer ' + token
-      }, signal })
+      fetch(usernameRequest)
       .then(response => { return response.json() })
-      .then(response => { authDispatch({ type: 'SET_USERNAME', username: response.id }); })
-      .catch(err => { console.log(err) });
+      .then(response => { 
+        authDispatch({ type: 'SET_USERNAME', username: response.id })
+        localStorage.setItem('username', response.id)
+        setTimeout(() => localStorage.clear('username'), expireInMs);
+      })
+      .catch(err => { console.log(`Get Spotify Username Error: ${err}`) });
     }
   }
 
