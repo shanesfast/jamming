@@ -148,7 +148,7 @@ const useTrack = () => {
     const controller = new AbortController();
     const signal = controller.signal;
     setTimeout(() => controller.abort(), 6000);
-    console.log(spotifyAccessToken)
+
     const titleRequest = new Request('https://api.spotify.com/v1/users/' + spotifyUsername +
     '/playlists', {
     	method: 'POST',
@@ -193,7 +193,8 @@ const useTrack = () => {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + spotifyAccessToken
         },
-        body: JSON.stringify({ uris: tracks })
+        body: JSON.stringify({ uris: tracks }),
+        signal
       });
 
       return trackRequest;
@@ -204,6 +205,11 @@ const useTrack = () => {
   }
 
   function updatePlayList(playlistId, newName, urisArray) {
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+
     // Update playlist name if it changed
     if (newName !== editListPlayLists[playListPosition].name && newName.length > 0) {
       fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlistId}`,
@@ -213,7 +219,8 @@ const useTrack = () => {
           'Authorization': 'Bearer ' + spotifyAccessToken,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name: newName })
+        body: JSON.stringify({ name: newName }),
+        signal
       }
     )
     .catch(err => alert(`Error updating playlist name: ${err.message}`));
@@ -231,7 +238,8 @@ const useTrack = () => {
             'Authorization': 'Bearer ' + spotifyAccessToken,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ uris: first100 })
+          body: JSON.stringify({ uris: first100 }),
+          signal
         }
       )
       .then(response => response.json())
@@ -246,7 +254,8 @@ const useTrack = () => {
                 'Authorization': 'Bearer ' + spotifyAccessToken,
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({ uris: offset_uris })
+              body: JSON.stringify({ uris: offset_uris }),
+              signal
             }
           )
           .then(response => response.json())
@@ -262,7 +271,8 @@ const useTrack = () => {
             'Authorization': 'Bearer ' + spotifyAccessToken,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ uris: urisArray })
+          body: JSON.stringify({ uris: urisArray }),
+          signal
         }
       )
       .then(response => response.json())
