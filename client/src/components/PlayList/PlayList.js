@@ -24,12 +24,10 @@ export const PlayList = (props) => {
   if (playListTracks.length > 0) {
     return (
       <div className="Playlist">
-        <div className="remove-space">
-          <div className="Show-playlist-list" onClick={openPlayLists}>Edit playlists</div>
-        </div>
-        <input id='title' placeholder="New Playlist" ref={titleRef}></input>
+        <input id='title' placeholder="New Playlist Title" ref={titleRef}></input>
         <button className="Playlist-save" onClick={handleTitleChange}>
         <b>SAVE TO SPOTIFY</b></button>
+        <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
         <div className="TrackList">
         {
           playListTracks.map(track => {
@@ -50,14 +48,12 @@ export const PlayList = (props) => {
   } else {
     return (
       <div className="Playlist">
-        <div className="remove-space">
-          <div className="Show-playlist-list" onClick={openPlayLists}>Edit playlists</div>
-        </div>
-        <input id='title' placeholder="New Playlist" ref={titleRef}></input>
+        <input id='title' placeholder="New Playlist Title" ref={titleRef}></input>
         <button className="Playlist-save" onClick={handleTitleChange}>
         <b>SAVE TO SPOTIFY</b></button>
+        <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
         <div className="TrackList">
-          <br /><p>Add some tracks!</p>
+          <br /><p className="empty-playlist-message">Add some tracks.</p>
         </div>
       </div>
     );
