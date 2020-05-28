@@ -9,5 +9,6 @@
   .App-playlist {
     align-items: center;
     flex-direction: column;
+    margin-top: 1rem;
   }
 }

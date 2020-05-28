@@ -2,12 +2,14 @@
   display: flex;
   flex-direction: column;
   width: 45%;
+  height: 100%;
   padding: .88rem;
   background-color: rgba(56, 73, 113, 0.86);
   box-shadow: 2px 5px 4px 1px #000000;
 }
 
 .SearchResults h2 {
+  font-size: 1.563rem;
   border-bottom: 1px solid #6f6f6f;
   padding: 0.5rem 0;
 }
@@ -20,6 +22,7 @@
 }
 
 .SearchFilters h3 {
+  font-size: 1.3rem;
   transition: color .25s;
 }
 
@@ -40,16 +43,13 @@
     background: transparent;
 }
 
-@media only screen and (max-width: 1020px) {
-  .SearchResults {
-    width: 90%;
-    margin-bottom: 2rem;
-  }
-}
-
 .ResultList {
   width: 100%;
   overflow-y: scroll;
+}
+
+.ResultList p {
+  font-size: 1.3rem;
 }
 
 .Track {
@@ -118,4 +118,11 @@
 #album {
   text-align: center;
   cursor: default;
+}
+
+@media only screen and (max-width: 1020px) {
+  .SearchResults {
+    width: 90%;
+    margin-bottom: 2rem;
+  }
 }
