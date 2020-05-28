@@ -73,6 +73,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 0.5rem;
 }
 
 .Track-information h1 { /* this is for artist-name search results */
@@ -107,10 +108,6 @@
 
 .Track-action:hover {
   color: rgba(265, 265, 265, .5);
-}
-
-#track {
-  height: 80px;
 }
 
 #album {

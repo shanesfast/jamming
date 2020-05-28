@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import { SearchContext } from '../../context/SearchContext';
 import useSpotify from '../../hooks/useSpotify';
 import useTrack from '../../hooks/useTrack';
-
 import './SearchResults.css';
+
 
 const sortByOptions = ['Artist', 'Album', 'Track'];
 let aborts = [];
@@ -103,7 +103,7 @@ export const SearchResults = (props) => {
           }
           return (
             <div className="Track" key={tracks.uri}>
-              <div className="Track-information" id="track">
+              <div className="Track-information">
                 <h3>{ tracks.name }</h3>
                 <p>{ tracks.artistName[0].name } | { tracks.albumName }</p>
               </div>
