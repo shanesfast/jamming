@@ -5,4 +5,5 @@
   font-weight: 500;
   color: #e4e4e4;
   overflow-y: scroll;
+  scrollbar-width: none;
 }
