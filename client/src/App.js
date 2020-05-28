@@ -37,7 +37,7 @@ const App = () => {
     <PlayListProvider>
       <SearchProvider>
         <div className="App">
-          <h1>Quick J<i className="highlight">amm</i>in&#39;</h1>
+          <h1 className="main-header">Quick J<i className="highlight">amm</i>in&#39;</h1>
           { isAuthenticated ? mainApp : <SignInBox /> }
         </div>
       </SearchProvider>
