@@ -100,7 +100,6 @@ placeholder text in the input elements */
 }
 
 button {
-  background-color: transparent;
-  border: none;
+  background-color: #59d44b;
   color: #e4e4e4;
 }
