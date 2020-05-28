@@ -1,7 +1,8 @@
 .App {
   height: 100vh;
-  margin: 0 10% 0 10%;
+  padding: 0 15% 0 15%;
   font-family: 'Work Sans', sans-serif;
   font-weight: 500;
   color: #e4e4e4;
+  overflow-y: scroll;
 }
