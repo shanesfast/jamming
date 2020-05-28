@@ -49,6 +49,7 @@ table {
 
 html {
   font-size: 18px;
+  scrollbar-width: none;
 }
 
 h1 {
@@ -101,5 +102,6 @@ placeholder text in the input elements */
 
 button {
   background-color: #59d44b;
-  color: #e4e4e4;
+  border-color: cadetblue;
+  color: cadetblue;
 }
