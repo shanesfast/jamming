@@ -112,7 +112,7 @@ export const SearchResults = (props) => {
       )})
     }
 
-    return (<><br /><p>Search for something.</p></>);
+    return (<><br /><p className="empty-search-message">Search for something.</p></>);
   }
 
   return (
