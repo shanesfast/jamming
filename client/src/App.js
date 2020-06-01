@@ -9,8 +9,6 @@ import { PlayListProvider } from './context/PlayListContext';
 import { PositionProvider } from './context/PositionContext';
 import { SearchProvider } from './context/SearchContext';
 
-
-
 const App = () => {
   const { state, dispatch } = useContext(AuthContext);
   const { isAuthenticated, spotifyAccessToken } = state;
@@ -21,7 +19,7 @@ const App = () => {
       const token = window.location.href.match(/access_token=([^&]*)/)[1].toString();
       window.opener.spotifyCallback(token);
     } 
-  }, [dispatch, isAuthenticated, spotifyAccessToken])
+  }, [dispatch, spotifyAccessToken]);
 
   const mainApp = (
     <>

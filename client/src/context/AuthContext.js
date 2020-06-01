@@ -7,9 +7,10 @@ const getCookieValue = (type) => {
     .split('; ')
     .find(row => row.startsWith(`${type}`))
     .split('=')[1];
-
+    
     return cookieValue;
   }
+  console.log('outside of if stmt')
 }
 
 export const AuthContext = createContext([{}, () => {}]);
