@@ -192,7 +192,12 @@ const useSpotify = () => {
       popup.close();
       authDispatch({ type: 'SET_ACCESS_TOKEN', token });
       const expireAt = new Date().setHours(24);
-      document.cookie = `token=${token}; expires=${expireAt}; secure;`;
+
+      if (process.env.NODE_ENV === 'production') {
+        document.cookie = `secure_token=${token}; expires=${expireAt}; secure;`;
+      }
+
+      else document.cookie = `token=${token}; expires=${expireAt};`;
 
       // Gets then Sets Spotify Username
       const usernameRequest = new Request('https://api.spotify.com/v1/me', 
@@ -205,7 +210,12 @@ const useSpotify = () => {
       .then(response => { return response.json() })
       .then(response => { 
         authDispatch({ type: 'SET_USERNAME', username: response.id })
-        document.cookie = `username=${response.id}; expires=${expireAt}; secure;`;
+
+        if (process.env.NODE_ENV === 'production') {
+          document.cookie = `secure_username=${response.id}; expires=${expireAt}; secure;`;
+        }
+
+        else document.cookie = `username=${response.id}; expires=${expireAt};`;
       })
       .catch(err => { console.log(`Get Spotify Username Error: ${err}`) });
     }
