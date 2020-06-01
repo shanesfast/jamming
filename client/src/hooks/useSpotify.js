@@ -191,11 +191,8 @@ const useSpotify = () => {
     window.spotifyCallback = (token) => {
       popup.close();
       authDispatch({ type: 'SET_ACCESS_TOKEN', token });
-      localStorage.setItem('token', token);
-
-      // Clear token from local storage after it expires
-      const expireInMs = 86400000;
-      setTimeout(() => localStorage.clear('token'), expireInMs);
+      const expireAt = new Date().setHours(24);
+      document.cookie = `token=${token}; expires=${expireAt}`;
 
       // Gets then Sets Spotify Username
       const usernameRequest = new Request('https://api.spotify.com/v1/me', 
@@ -208,8 +205,7 @@ const useSpotify = () => {
       .then(response => { return response.json() })
       .then(response => { 
         authDispatch({ type: 'SET_USERNAME', username: response.id })
-        localStorage.setItem('username', response.id)
-        setTimeout(() => localStorage.clear('username'), expireInMs);
+        document.cookie = `username=${response.id}; expires=${expireAt}`;
       })
       .catch(err => { console.log(`Get Spotify Username Error: ${err}`) });
     }
