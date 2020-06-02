@@ -13,7 +13,6 @@ const getCookieValue = (type) => {
     
     return cookieValue;
   }
-  console.log('outside of if stmt')
 }
 
 export const AuthContext = createContext([{}, () => {}]);
