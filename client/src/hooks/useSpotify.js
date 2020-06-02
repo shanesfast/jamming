@@ -191,7 +191,7 @@ const useSpotify = () => {
     window.spotifyCallback = (token) => {
       popup.close();
       authDispatch({ type: 'SET_ACCESS_TOKEN', token });
-      const expireAt = new Date().setHours(24);
+      const expireAt = new Date().setHours(1);
 
       if (process.env.NODE_ENV === 'production') {
         document.cookie = `secure_token=${token}; expires=${expireAt}; secure;`;
