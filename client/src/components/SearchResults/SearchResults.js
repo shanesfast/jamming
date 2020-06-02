@@ -27,6 +27,9 @@ export const SearchResults = (props) => {
 
   const setSortByClass = (sortValue) => {
     if (sortBy === sortValue) return "active";
+
+    // When you click on an artist, it brings up that artists albums in the album filter section
+    // This ensures that the 'album' filter button is selected after clicking on an artist
     if (sortBy === 'AlbumsByArtist' && sortValue === 'Album') return "active";
   }
 
