@@ -1,7 +1,6 @@
 {
   "name": "quick-jammin",
   "version": "1.0.0",
-  "description": "A playlist management application for Spotify.",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -11,16 +10,6 @@
     "dev": "concurrently \"npm run server\" \"npm run start\"",
     "heroku-postbuild": "NPM_CONFIG_PRODCTION=false npm install && npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shanesfast/jamming.git"
-  },
-  "author": "Shane Quick",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/shanesfast/jamming/issues"
-  },
-  "homepage": "https://github.com/shanesfast/jamming#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "concurrently": "^5.1.0",
