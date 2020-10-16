@@ -1,0 +1,132 @@
+.SearchResults {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  height: 100%;
+  padding: .88rem;
+  background-color: rgba(56, 73, 113, 0.86);
+  box-shadow: 2px 5px 4px 1px #000000;
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.SearchResults h2 {
+  font-size: 1.563rem;
+  border-bottom: 1px solid #6f6f6f;
+  padding: 0.5rem 0;
+}
+
+.SearchFilters {
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #6f6f6f;
+}
+
+.SearchFilters h3 {
+  font-size: 1.3rem;
+  transition: color .25s;
+}
+
+.SearchFilters h3.active,
+.SearchFilters h3.active:hover {
+  color: #59d44b;
+  border-top: 1px solid #59d44b;
+  border-bottom: 1px solid #59d44b;
+}
+
+.SearchFilters h3:hover {
+  cursor: pointer;
+  color: #a942f4;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.ResultList {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding-right: 0.8rem;
+  scrollbar-width: none;
+}
+
+.empty-search-message {
+  text-align: center;
+  margin-top: 12rem;
+  font-size: 1.3rem;
+  color: #8e8b8b94;
+}
+
+.Track {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(256, 256, 256, 0.8);
+}
+
+.Track img { /* this is for album image search results */
+  height: 100px;
+  width: 100px;
+  align-self: center;
+}
+
+.Track img:hover {
+  cursor: pointer;
+}
+
+.Track-information {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.Track-information h1 { /* this is for artist-name search results */
+  background-color: rgba(1, 12, 63, 0);
+  font-size: 0.9rem;
+  max-width: 100%;
+  padding: 0;
+  margin-top: 2%;
+}
+
+.Track-information h1:hover {
+  cursor: pointer;
+}
+
+.Track-information h3 {
+  margin-bottom: .22rem;
+  font-size: 1.3rem;
+}
+
+.Track-information p {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(256, 256, 256, 0.8);
+}
+
+.Track-action {
+  cursor: pointer;
+  padding: .5rem;
+  font-size: 1.05rem;
+  transition: color .25s;
+}
+
+.Track-action:hover {
+  color: rgba(265, 265, 265, .5);
+}
+
+#album {
+  text-align: center;
+  cursor: default;
+}
+
+@media only screen and (max-width: 1020px) {
+  .SearchResults {
+    width: 90%;
+    height: 50%;
+    margin-bottom: 2rem;
+  }
+}

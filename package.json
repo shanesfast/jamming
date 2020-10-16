@@ -1,26 +1,15 @@
 {
-  "name": "jamming",
+  "name": "quick-jammin",
   "version": "1.0.0",
-  "description": "Express server files for Quick Jammin'",
-  "main": "server.js",
   "scripts": {
-    "client-install": "npm install --prefix client",
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODCTION=false npm install --prefix client && npm run build --prefix client"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "server": "cd server && nodemon server.js",
+    "dev": "concurrently \"npm run server\" \"npm run start\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODCTION=false npm install && npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shanesfast/jamming.git"
-  },
-  "author": "Shane Quick",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/shanesfast/jamming/issues"
-  },
-  "homepage": "https://github.com/shanesfast/jamming#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "concurrently": "^5.1.0",
@@ -29,9 +18,31 @@
     "find-config": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.10",
-    "uuid": "^8.0.0"
+    "uuid": "^8.0.0",
+    "eslint-plugin-flowtype": "^4.6.0",
+    "minimist": "^1.2.5",
+    "mkdirp": "^1.0.3",
+    "react": "^16.4.1",
+    "react-debounce-input": "^3.2.0",
+    "react-dom": "^16.3.2",
+    "react-scripts": "^3.4.0",
+    "spotify-wrapper": "^2.0.5",
+    "typescript": "^3.8.3",
+    "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
