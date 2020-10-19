@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
-import useTrack from '../../hooks/useTrack';
+import usePlaylist from '../../hooks/usePlaylist';
 import { PositionContext } from '../../context/PositionContext';
 
 import './EditList.css';
 
 export const EditList = (props) => {
   const { dispatch } = useContext(PositionContext);
-  const { editListPlayLists, getTracksFromPlayList } = useTrack();
+  const { editListPlayLists, getTracksFromPlayList } = usePlaylist();
 
   const handleClick = (e, playlistId, newplayListPosition) => {
     e.preventDefault();

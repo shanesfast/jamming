@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import useTrack from '../../hooks/useTrack';
+import usePlaylist from '../../hooks/usePlaylist';
 import { PositionContext } from '../../context/PositionContext';
 import EditBoxTracks from '../EditBoxTracks/EditBoxTracks';
 
@@ -12,7 +12,7 @@ const EditBox = () => {
   const { playListPosition } = state;
   
   const { editBoxIsOpen, editListPlayLists, editListTracks, 
-          openPlayLists, updatePlayList } = useTrack();
+          openPlayLists, updatePlayList } = usePlaylist();
     
 
   const handleEditListClick = (e) => {

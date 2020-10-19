@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import 'whatwg-fetch';
 import { AuthContext } from '../context/AuthContext';
 import { SearchContext } from '../context/SearchContext';
-import useTrack from './useTrack';
+import usePlaylist from './usePlaylist';
 
 
 const useSpotify = () => {
@@ -18,7 +18,7 @@ const useSpotify = () => {
   const { state: authState, dispatch: authDispatch } = useContext(AuthContext);
   const { spotifyAccessToken, spotifyClientID } = authState;
 
-  const { addTrack } = useTrack();
+  const { addTrack } = usePlaylist();
 
   useEffect(() => {
     function searchArtist(terms) {

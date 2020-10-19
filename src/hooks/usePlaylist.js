@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { PlayListContext } from "../context/PlayListContext";
 
-const useTrack = () => {
+const usePlaylist = () => {
   const { state, dispatch } = useContext(PlayListContext);
   const { editBoxIsOpen, editListIsOpen, editListTracks, editListPlayLists, 
           playListTracks, playListPosition } = state;
@@ -297,4 +297,4 @@ const useTrack = () => {
   }
 };
 
-export default useTrack;
+export default usePlaylist;

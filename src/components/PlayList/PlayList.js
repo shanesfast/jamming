@@ -1,6 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { PlayListContext } from '../../context/PlayListContext';
-import useTrack from '../../hooks/useTrack';
+import usePlaylist from '../../hooks/usePlaylist';
 import './PlayList.css';
 
 export const PlayList = (props) => {
@@ -8,7 +8,7 @@ export const PlayList = (props) => {
   const { state } = useContext(PlayListContext);
   const { playListTracks } = state; 
 
-  const { openPlayLists, removeTrack, savePlayList } = useTrack();
+  const { openPlayLists, removeTrack, savePlayList } = usePlaylist();
 
   const handleTitleChange = () => {
     let title = titleRef.current.value;

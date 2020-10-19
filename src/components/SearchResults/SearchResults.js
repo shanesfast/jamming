@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { SearchContext } from '../../context/SearchContext';
 import useSpotify from '../../hooks/useSpotify';
-import useTrack from '../../hooks/useTrack';
+import usePlaylist from '../../hooks/usePlaylist';
 import './SearchResults.css';
 
 
@@ -12,7 +12,7 @@ export const SearchResults = (props) => {
   const { state, dispatch } = useContext(SearchContext);
   const { artist, album, track, searchTerms, sortBy } = state;
   const { artistResult, albumResult, getAlbumsFromArtist, getTracksFromAlbum, trackResult } = useSpotify();
-  const { addTrack } = useTrack();
+  const { addTrack } = usePlaylist();
 
   const renderSortByOptions = () => {
     return sortByOptions.map(sortValue => {

@@ -1,11 +1,11 @@
 import React from 'react';
-import useTrack from '../../hooks/useTrack';
+import usePlaylist from '../../hooks/usePlaylist';
 import { EditList } from '../EditList/EditList.js';
 
 import './ListOfPlayLists.css';
 
 export const ListOfPlayLists = (props) => {
-  const { editListIsOpen, editListPlayLists, openPlayLists } = useTrack();
+  const { editListIsOpen, editListPlayLists, openPlayLists } = usePlaylist();
 
   if (editListIsOpen === true && Array.isArray(editListPlayLists)) {
     return (

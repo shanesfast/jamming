@@ -1,11 +1,11 @@
 import React from 'react';
-import useTrack from '../../hooks/useTrack';
+import usePlaylist from '../../hooks/usePlaylist';
 // import usePagination from '../../hooks/usePagination';
 
 import './EditBoxTracks.css';
 
 const EditBoxTracks = (props) => {
-  const { removeTrack, editListTracks } = useTrack();
+  const { removeTrack, editListTracks } = usePlaylist();
   // const { pageOfItems } = usePagination();
 
   if (Array.isArray(editListTracks) && editListTracks.length > 0) {
