@@ -6,7 +6,6 @@ import { AuthContext } from '../context/AuthContext';
 import { SearchContext } from '../context/SearchContext';
 import usePlaylist from './usePlaylist';
 
-
 const useSpotify = () => {
   const [artistResult, setArtistResult] = useState();
   const [albumResult, setAlbumResult] = useState();
@@ -16,9 +15,9 @@ const useSpotify = () => {
   const { searchTerms, sortBy } = state;
 
   const { state: authState, dispatch: authDispatch } = useContext(AuthContext);
-  const { spotifyAccessToken, spotifyClientID } = authState;
+  const { spotifyAccessToken, spotifyClientID, spotifyUsername } = authState;
 
-  const { addTrack } = usePlaylist();
+  const { addTrack, updateEditPlaylist } = usePlaylist();
 
   useEffect(() => {
     function searchArtist(terms) {
@@ -176,6 +175,71 @@ const useSpotify = () => {
       return setAlbumResult(albums) });
   }
 
+  function getTracksFromPlayList(playlist_id) {
+    let trackCount = 0; // number of songs in increments of 100
+    let iterationCount = 1; // tracks number of times API call is made
+    let offset = 0; // offsets track number for API call
+    let playlistTracks = []; // used to store tracks gathered from each API call
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+
+    function fetchTracks() {
+      return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlist_id}/tracks?offset=${offset}&limit=100`,
+        { headers: {
+          'Authorization': 'Bearer ' + spotifyAccessToken
+        },
+        signal
+      })
+      .then(response => { return response.json() })
+      .then(jsonResponse => {
+        if (jsonResponse.items && jsonResponse.items.length) { 
+          return jsonResponse.items.map((item, num) => {
+            if (num === 99) {
+              trackCount +=100;
+            }
+            return playlistTracks = [...playlistTracks,
+              {
+                track: item.track.name,
+                artist: item.track.artists[0].name,
+                album: item.track.album.name,
+                uri: item.track.uri
+              }
+            ];
+          });
+        } else return playlistTracks;
+      })
+      .then(jsonResponse => {
+        if (trackCount / iterationCount === 100) {
+          iterationCount += 1;
+          offset += 100;
+          return fetchTracks();
+        } else return playlistTracks;
+      })
+    }
+
+    fetchTracks()
+    .then(data => {
+      if (data) {
+        return data.map(track => {
+          return {
+            artistName: track.artist,
+            albumName: track.album,
+            name: track.track,
+            uri: track.uri
+          }
+        });
+      } else return [];
+    })
+    .then(tracks => {
+      if (tracks) {
+        updateEditPlaylist(tracks);
+      }
+    })
+    .catch(err => { alert(`Getting tracks from playlist error: ${err.message}`); });
+  }
+
   function getSpotifyAccess() {
     const scope = 'user-read-private user-read-email ' +
     'playlist-modify-private playlist-read-private ' +
@@ -226,6 +290,7 @@ const useSpotify = () => {
     albumResult,
     getAlbumsFromArtist,
     getTracksFromAlbum,
+    getTracksFromPlayList,
     getSpotifyAccess,
     trackResult
   }

@@ -32,71 +32,10 @@ const usePlaylist = () => {
     remove(trackArray, uri);
   }
 
-  function getTracksFromPlayList(playlist_id) {
-    let trackCount = 0; // number of songs in increments of 100
-    let iterationCount = 1; // tracks number of times API call is made
-    let offset = 0; // offsets track number for API call
-    let playlistTracks = []; // used to store tracks gathered from each API call
-    // Abort username request if it is taking too long
-    const controller = new AbortController();
-    const signal = controller.signal;
-    setTimeout(() => controller.abort(), 6000);
-
-    function fetchTracks() {
-      return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlist_id}/tracks?offset=${offset}&limit=100`,
-        { headers: {
-          'Authorization': 'Bearer ' + spotifyAccessToken
-        },
-        signal
-      })
-      .then(response => { return response.json() })
-      .then(jsonResponse => {
-        if (jsonResponse.items && jsonResponse.items.length) { 
-          return jsonResponse.items.map((item, num) => {
-            if (num === 99) {
-              trackCount +=100;
-            }
-            return playlistTracks = [...playlistTracks,
-              {
-                track: item.track.name,
-                artist: item.track.artists[0].name,
-                album: item.track.album.name,
-                uri: item.track.uri
-              }
-            ];
-          });
-        } else return playlistTracks;
-      })
-      .then(jsonResponse => {
-        if (trackCount / iterationCount === 100) {
-          iterationCount += 1;
-          offset += 100;
-          return fetchTracks();
-        } else return playlistTracks;
-      })
-    }
-
-    fetchTracks()
-    .then(data => {
-      if (data) {
-        return data.map(track => {
-          return {
-            artistName: track.artist,
-            albumName: track.album,
-            name: track.track,
-            uri: track.uri
-          }
-        });
-      } else return [];
-    })
-    .then(tracks => {
-      if (tracks) {
-        dispatch({ type: 'SET_EDIT_LIST_TRACKS', tracks: tracks });
-        dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
-        dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: true });
-      }
-    })
-    .catch(err => { alert(`Getting tracks from playlist error: ${err.message}`); });
+  function updateEditPlaylist(tracks) {
+    dispatch({ type: 'SET_EDIT_LIST_TRACKS', tracks: tracks });
+    dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
+    dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: true });
   }
 
   function openPlayLists(e) {
@@ -287,7 +226,7 @@ const usePlaylist = () => {
     editListIsOpen,
     editListPlayLists, 
     editListTracks,
-    getTracksFromPlayList,
+    updateEditPlaylist,
     openPlayLists,
     playListTracks,
     playListPosition,
