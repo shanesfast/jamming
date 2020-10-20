@@ -32,51 +32,24 @@ const usePlaylist = () => {
     remove(trackArray, uri);
   }
 
-  function updateEditPlaylist(tracks) {
+  function updateEditPlaylistTracks(tracks) {
     dispatch({ type: 'SET_EDIT_LIST_TRACKS', tracks: tracks });
     dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
     dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: true });
   }
 
-  function openPlayLists(e) {
-    e.preventDefault();
-
+  function closeEditPlayLists() {
     if (editListIsOpen === true) {
-      return dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
+      dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
+      return true;
     }
 
-    // Abort username request if it is taking too long
-    const controller = new AbortController();
-    const signal = controller.signal;
-    setTimeout(() => controller.abort(), 6000);
+    return false;
+  }
 
-    fetch("https://api.spotify.com/v1/me/playlists", { headers: {
-      'Authorization': 'Bearer ' + spotifyAccessToken
-      },
-      signal
-    })
-    .then(response => { return response.json() })
-    .then(jsonResponse => {
-      if (jsonResponse.items.length) {
-        return jsonResponse.items.map((items, num) => {
-          return {
-            name: items.name,
-            count: items.tracks.total,
-            id: items.id,
-            user: spotifyUsername,
-            position: num
-          }
-        });
-      } else {
-        return;
-      }
-
-    })
-    .then(playlists => {
-      dispatch({ type: 'UPDATE_EDIT_PLAY_LISTS', lists: playlists });
-      dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: true });
-    })
-    .catch(err => { alert(`Getting playlists error: ${err.message}`); });
+  function populateUserPlayLists(playlists) {
+    dispatch({ type: 'UPDATE_EDIT_PLAY_LISTS', lists: playlists });
+    dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: true });
   }
 
   function savePlayList(title) {
@@ -222,16 +195,17 @@ const usePlaylist = () => {
 
   return {
     addTrack,
+    closeEditPlayLists,
     editBoxIsOpen,
     editListIsOpen,
     editListPlayLists, 
     editListTracks,
-    updateEditPlaylist,
-    openPlayLists,
     playListTracks,
     playListPosition,
     removeTrack,
     savePlayList,
+    populateUserPlayLists,
+    updateEditPlaylistTracks,
     updatePlayList,
   }
 };

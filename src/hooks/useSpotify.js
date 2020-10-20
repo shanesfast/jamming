@@ -17,7 +17,7 @@ const useSpotify = () => {
   const { state: authState, dispatch: authDispatch } = useContext(AuthContext);
   const { spotifyAccessToken, spotifyClientID, spotifyUsername } = authState;
 
-  const { addTrack, updateEditPlaylist } = usePlaylist();
+  const { addTrack, closeEditPlayLists, populateUserPlayLists, updateEditPlaylistTracks } = usePlaylist();
 
   useEffect(() => {
     function searchArtist(terms) {
@@ -234,10 +234,46 @@ const useSpotify = () => {
     })
     .then(tracks => {
       if (tracks) {
-        updateEditPlaylist(tracks);
+        updateEditPlaylistTracks(tracks);
       }
     })
     .catch(err => { alert(`Getting tracks from playlist error: ${err.message}`); });
+  }
+
+  function openPlayLists(e) {
+    e.preventDefault();
+
+    if (closeEditPlayLists() === true) return;
+
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+
+    fetch("https://api.spotify.com/v1/me/playlists", { headers: {
+      'Authorization': 'Bearer ' + spotifyAccessToken
+      },
+      signal
+    })
+    .then(response => { return response.json() })
+    .then(jsonResponse => {
+      if (jsonResponse.items.length) {
+        return jsonResponse.items.map((items, num) => {
+          return {
+            name: items.name,
+            count: items.tracks.total,
+            id: items.id,
+            user: spotifyUsername,
+            position: num
+          }
+        });
+      } else {
+        return;
+      }
+
+    })
+    .then(playlists => populateUserPlayLists(playlists))
+    .catch(err => { alert(`Getting playlists error: ${err.message}`); });
   }
 
   function getSpotifyAccess() {
@@ -292,6 +328,7 @@ const useSpotify = () => {
     getTracksFromAlbum,
     getTracksFromPlayList,
     getSpotifyAccess,
+    openPlayLists,
     trackResult
   }
 }

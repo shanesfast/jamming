@@ -1,11 +1,13 @@
 import React from 'react';
 import usePlaylist from '../../hooks/usePlaylist';
+import useSpotify from '../../hooks/useSpotify';
 import { EditList } from '../EditList/EditList.js';
 
 import './ListOfPlayLists.css';
 
 export const ListOfPlayLists = (props) => {
-  const { editListIsOpen, editListPlayLists, openPlayLists } = usePlaylist();
+  const { editListIsOpen, editListPlayLists } = usePlaylist();
+  const { openPlayLists } = useSpotify();
 
   if (editListIsOpen === true && Array.isArray(editListPlayLists)) {
     return (
