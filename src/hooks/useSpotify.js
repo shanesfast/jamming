@@ -19,7 +19,7 @@ const useSpotify = () => {
   const { spotifyAccessToken, spotifyClientID, spotifyUsername } = authState;
 
   const { state: playListState } = useContext(PlayListContext);
-  const { playListTracks } = playListState;
+  const { editListPlayLists, playListPosition, playListTracks } = playListState;
 
   const { addTrack, clearPlayListTracks, closeEditPlayLists, populateUserPlayLists, updateEditPlaylistTracks } = usePlaylist();
 
@@ -344,6 +344,83 @@ const useSpotify = () => {
     clearPlayListTracks();
   }
 
+  function updatePlayList(playlistId, newName, urisArray) {
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+
+    // Update playlist name if it changed
+    if (newName !== editListPlayLists[playListPosition].name && newName.length > 0) {
+      fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlistId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + spotifyAccessToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: newName }),
+        signal
+      }
+    )
+    .catch(err => alert(`Error updating playlist name: ${err.message}`));
+    }
+    console.log(urisArray);
+    // Update playlist Tracks
+    const urisLength = urisArray.length;
+    if (urisLength > 100) { // uses the Add Track to Playlist Endpoint if there are more than 100 tracks
+      let trackOffset = Math.floor(urisLength / 100);
+      let first100 = [...urisArray.slice(0, 100)];
+      return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlistId}/tracks`,
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + spotifyAccessToken,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ uris: first100 }),
+          signal
+        }
+      )
+      .then(response => response.json())
+      .then(jsonResponse => console.log(jsonResponse))
+      .then(() => {
+        for (let i = 0; i <= trackOffset; i++) {
+          let offset_uris = [...urisArray.slice(trackOffset * 100, (trackOffset * 100) + 100)];
+          return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlistId}/tracks`,
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + spotifyAccessToken,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ uris: offset_uris }),
+              signal
+            }
+          )
+          .then(response => response.json())
+          .then(jsonResponse => console.log(jsonResponse))
+          .catch(err => alert(`Error updating tracks: ${err.message}`));
+        }
+      });
+    } else { // use replace tracks endpoint if less than 100 tracks
+      return fetch(`https://api.spotify.com/v1/users/${spotifyUsername}/playlists/${playlistId}/tracks`,
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + spotifyAccessToken,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ uris: urisArray }),
+          signal
+        }
+      )
+      .then(response => response.json())
+      .then(jsonResponse => console.log(jsonResponse))
+      .catch(err => alert(`Error updating tracks: ${err.message}`));
+    }
+  }
+
   function getSpotifyAccess() {
     const scope = 'user-read-private user-read-email ' +
     'playlist-modify-private playlist-read-private ' +
@@ -397,8 +474,9 @@ const useSpotify = () => {
     getTracksFromPlayList,
     getSpotifyAccess,
     openPlayLists,
+    savePlayList,
     trackResult,
-    savePlayList
+    updatePlayList
   }
 }
 

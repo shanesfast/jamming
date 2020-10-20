@@ -12,9 +12,8 @@ const EditBox = () => {
   const { state } = useContext(PositionContext);
   const { playListPosition } = state;
   
-  const { editBoxIsOpen, editListPlayLists, editListTracks, updatePlayList } = usePlaylist();
-
-  const { openPlayLists } = useSpotify();
+  const { editBoxIsOpen, editListPlayLists, editListTracks } = usePlaylist();
+  const { openPlayLists, updatePlayList } = useSpotify();
     
 
   const handleEditListClick = (e) => {
