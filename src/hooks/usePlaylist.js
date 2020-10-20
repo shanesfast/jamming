@@ -52,67 +52,7 @@ const usePlaylist = () => {
     dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: true });
   }
 
-  function savePlayList(title) {
-    let tracks = [];
-    playListTracks.map(track => { return tracks = [...tracks, track.uri] });
-
-    // Abort username request if it is taking too long
-    const controller = new AbortController();
-    const signal = controller.signal;
-    setTimeout(() => controller.abort(), 6000);
-
-    const titleRequest = new Request('https://api.spotify.com/v1/users/' + spotifyUsername +
-    '/playlists', {
-    	method: 'POST',
-    	headers: {
-    		'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + spotifyAccessToken
-      },
-      body: JSON.stringify({ name: title }),
-      signal
-    });
-
-    function addPlayList() { 
-      return fetch(titleRequest)
-      .then(response => {
-        return response.json();
-      })
-      .then(jsonResponse => {
-        console.log(jsonResponse);
-        return jsonResponse.id;
-      })
-      .catch(err => { alert(`Adding playlist error: ${err.message}`) });
-    }
-
-    function addTracks(trackRequest)  {
-      return fetch(trackRequest)
-      .then(response => {
-        return response.json();
-      })
-      .then(jsonResponse => {
-        return jsonResponse;
-      })
-      .catch(err => { alert(`Adding tracks to playlist error: ${err.message}`); });
-    }
-
-    
-    addPlayList()
-    .then(playListID => {
-      let trackRequest = new Request('https://api.spotify.com/v1/users/' +
-      spotifyUsername + '/playlists/' + playListID + '/tracks', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + spotifyAccessToken
-        },
-        body: JSON.stringify({ uris: tracks }),
-        signal
-      });
-
-      return trackRequest;
-    })
-    .then(trackRequest => { return addTracks(trackRequest) });
-    
+  function clearPlayListTracks() {
     dispatch({ type: 'CLEAR_PLAY_LIST_TRACKS', tracks: [] });
   }
 
@@ -195,6 +135,7 @@ const usePlaylist = () => {
 
   return {
     addTrack,
+    clearPlayListTracks,
     closeEditPlayLists,
     editBoxIsOpen,
     editListIsOpen,
@@ -203,7 +144,6 @@ const usePlaylist = () => {
     playListTracks,
     playListPosition,
     removeTrack,
-    savePlayList,
     populateUserPlayLists,
     updateEditPlaylistTracks,
     updatePlayList,

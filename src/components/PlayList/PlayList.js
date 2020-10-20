@@ -9,8 +9,8 @@ export const PlayList = (props) => {
   const { state } = useContext(PlayListContext);
   const { playListTracks } = state; 
 
-  const { removeTrack, savePlayList } = usePlaylist();
-  const { openPlayLists } = useSpotify();
+  const { removeTrack } = usePlaylist();
+  const { openPlayLists, savePlayList } = useSpotify();
 
   const handleTitleChange = () => {
     let title = titleRef.current.value;

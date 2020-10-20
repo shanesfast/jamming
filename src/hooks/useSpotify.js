@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import 'whatwg-fetch';
 import { AuthContext } from '../context/AuthContext';
 import { SearchContext } from '../context/SearchContext';
+import { PlayListContext } from '../context/PlayListContext';
 import usePlaylist from './usePlaylist';
 
 const useSpotify = () => {
@@ -17,7 +18,10 @@ const useSpotify = () => {
   const { state: authState, dispatch: authDispatch } = useContext(AuthContext);
   const { spotifyAccessToken, spotifyClientID, spotifyUsername } = authState;
 
-  const { addTrack, closeEditPlayLists, populateUserPlayLists, updateEditPlaylistTracks } = usePlaylist();
+  const { state: playListState } = useContext(PlayListContext);
+  const { playListTracks } = playListState;
+
+  const { addTrack, clearPlayListTracks, closeEditPlayLists, populateUserPlayLists, updateEditPlaylistTracks } = usePlaylist();
 
   useEffect(() => {
     function searchArtist(terms) {
@@ -276,6 +280,70 @@ const useSpotify = () => {
     .catch(err => { alert(`Getting playlists error: ${err.message}`); });
   }
 
+  function savePlayList(title) {
+    let tracks = [];
+    playListTracks.map(track => { return tracks = [...tracks, track.uri] });
+
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+
+    const titleRequest = new Request('https://api.spotify.com/v1/users/' + spotifyUsername +
+    '/playlists', {
+    	method: 'POST',
+    	headers: {
+    		'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + spotifyAccessToken
+      },
+      body: JSON.stringify({ name: title }),
+      signal
+    });
+
+    function addPlayList() { 
+      return fetch(titleRequest)
+      .then(response => {
+        return response.json();
+      })
+      .then(jsonResponse => {
+        console.log(jsonResponse);
+        return jsonResponse.id;
+      })
+      .catch(err => { alert(`Adding playlist error: ${err.message}`) });
+    }
+
+    function addTracks(trackRequest)  {
+      return fetch(trackRequest)
+      .then(response => {
+        return response.json();
+      })
+      .then(jsonResponse => {
+        return jsonResponse;
+      })
+      .catch(err => { alert(`Adding tracks to playlist error: ${err.message}`); });
+    }
+
+    
+    addPlayList()
+    .then(playListID => {
+      let trackRequest = new Request('https://api.spotify.com/v1/users/' +
+      spotifyUsername + '/playlists/' + playListID + '/tracks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + spotifyAccessToken
+        },
+        body: JSON.stringify({ uris: tracks }),
+        signal
+      });
+
+      return trackRequest;
+    })
+    .then(trackRequest => { return addTracks(trackRequest) });
+
+    clearPlayListTracks();
+  }
+
   function getSpotifyAccess() {
     const scope = 'user-read-private user-read-email ' +
     'playlist-modify-private playlist-read-private ' +
@@ -329,7 +397,8 @@ const useSpotify = () => {
     getTracksFromPlayList,
     getSpotifyAccess,
     openPlayLists,
-    trackResult
+    trackResult,
+    savePlayList
   }
 }
 
