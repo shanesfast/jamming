@@ -12,15 +12,15 @@ const EditBoxTracks = (props) => {
     return (
       <div className="TrackList">
         {
-          editListTracks.map(track => {
+          editListTracks.map((track, index) => {
             return (
-              <div key={track.uri} className="Track">
+              <div key={`${track.uri}:${index}`} className="Track">
                 <div className="Track-information" id="track">
                   <h3>{track.name}</h3>
                   <p>{track.artistName} | {track.albumName}</p>
                 </div>
                 <button className="Track-action"
-                  onClick={() => removeTrack(track, true)}>-</button>
+                  onClick={() => removeTrack(index, true)}>-</button>
               </div>
             );
           })

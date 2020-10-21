@@ -32,14 +32,14 @@ export const PlayList = (props) => {
         <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
         <div className="TrackList">
         {
-          playListTracks.map(track => {
+          playListTracks.map((track, index) => {
             return (
-              <div key={track.uri} className="Track">
+              <div key={`${track.uri}:${index}`} className="Track">
                 <div className="Track-information" id="track">
                   <h3>{track.name}</h3>
                   <p>{track.artistName} | {track.albumName}</p>
                 </div>
-                <button className="Track-action" onClick={() => removeTrack(track)}>-</button>
+                <button className="Track-action" onClick={() => removeTrack(index)}>-</button>
               </div>
             );
           })

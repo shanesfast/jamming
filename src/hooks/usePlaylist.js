@@ -11,21 +11,20 @@ const usePlaylist = () => {
     return dispatch({ type: 'UPDATE_PLAY_LIST_TRACKS', tracks: trackInfo });
   }
 
-  function removeTrack(uri, editList=false) {
+  function removeTrack(trackIndex, editListOpen=false) {
     let trackArray;
 
-    if (editList === true) trackArray = [...editListTracks];
+    if (editListOpen === true) trackArray = [...editListTracks];
     else trackArray = [...playListTracks];
 
-    function remove(array, element) {
-      const index = array.indexOf(element);
-      array.splice(index, 1);
+    function remove(playList, index) {
+      playList.splice(index, 1);
 
-      if (editList === true) dispatch({ type: 'REMOVE_EDIT_LIST_TRACKS', tracks: array });
-      else dispatch({ type: 'REMOVE_PLAY_LIST_TRACKS', tracks: array });
+      if (editListOpen === true) dispatch({ type: 'REMOVE_EDIT_LIST_TRACKS', tracks: playList });
+      else dispatch({ type: 'REMOVE_PLAY_LIST_TRACKS', tracks: playList });
     }
 
-    remove(trackArray, uri);
+    remove(trackArray, trackIndex);
   }
 
   function updateEditPlaylistTracks(tracks) {
