@@ -1,5 +1,6 @@
 import React, { useContext, useRef } from 'react';
-import useTrack from '../../hooks/useTrack';
+import usePlaylist from '../../hooks/usePlaylist';
+import useSpotify from '../../hooks/useSpotify';
 import { PositionContext } from '../../context/PositionContext';
 import EditBoxTracks from '../EditBoxTracks/EditBoxTracks';
 
@@ -11,8 +12,8 @@ const EditBox = () => {
   const { state } = useContext(PositionContext);
   const { playListPosition } = state;
   
-  const { editBoxIsOpen, editListPlayLists, editListTracks, 
-          openPlayLists, updatePlayList } = useTrack();
+  const { editBoxIsOpen, editListPlayLists, editListTracks } = usePlaylist();
+  const { openPlayLists, updatePlayList } = useSpotify();
     
 
   const handleEditListClick = (e) => {

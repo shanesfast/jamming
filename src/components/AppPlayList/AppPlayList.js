@@ -1,12 +1,12 @@
 import React from 'react';
-import useTrack from '../../hooks/useTrack';
+import usePlaylist from '../../hooks/usePlaylist';
 import { SearchResults } from '../SearchResults/SearchResults.js';
 import PlayList from '../PlayList/PlayList.js';
 import EditBox from '../EditBox/EditBox.js';
 import './AppPlayList.css';
 
 export const AppPlayList = () => {
-  const { editBoxIsOpen } = useTrack();
+  const { editBoxIsOpen } = usePlaylist();
 
   if (editBoxIsOpen === true) {
     return (

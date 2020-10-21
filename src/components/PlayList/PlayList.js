@@ -1,6 +1,7 @@
 import React, { useContext, useRef } from 'react';
 import { PlayListContext } from '../../context/PlayListContext';
-import useTrack from '../../hooks/useTrack';
+import usePlaylist from '../../hooks/usePlaylist';
+import useSpotify from '../../hooks/useSpotify';
 import './PlayList.css';
 
 export const PlayList = (props) => {
@@ -8,7 +9,8 @@ export const PlayList = (props) => {
   const { state } = useContext(PlayListContext);
   const { playListTracks } = state; 
 
-  const { openPlayLists, removeTrack, savePlayList } = useTrack();
+  const { removeTrack } = usePlaylist();
+  const { openPlayLists, savePlayList } = useSpotify();
 
   const handleTitleChange = () => {
     let title = titleRef.current.value;
@@ -30,14 +32,14 @@ export const PlayList = (props) => {
         <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
         <div className="TrackList">
         {
-          playListTracks.map(track => {
+          playListTracks.map((track, index) => {
             return (
-              <div key={track.uri} className="Track">
+              <div key={`${track.uri}:${index}`} className="Track">
                 <div className="Track-information" id="track">
                   <h3>{track.name}</h3>
                   <p>{track.artistName} | {track.albumName}</p>
                 </div>
-                <button className="Track-action" onClick={() => removeTrack(track)}>-</button>
+                <button className="Track-action" onClick={() => removeTrack(index)}>-</button>
               </div>
             );
           })
