@@ -54,11 +54,10 @@ const EditBox = () => {
   if (editBoxIsOpen === true) {
       return (
         <div className="Editlist">
-            <div className="Show-playlist-list" onClick={handleEditListClick}>
-              Edit playlists</div>
           <input id="edit-title" placeholder={editListPlayLists[playListPosition].name} ref={newNameRef}></input>
           <button className="Editlist-save" onClick={() => handleUpdateClick(editListPlayLists[playListPosition].id)}>
           <b>UPDATE ON SPOTIFY</b></button>
+          <button className="Show-playlist-list" onClick={handleEditListClick}>EDIT PLAYLISTS</button>
           <div className="Track-counter">Number of tracks: {editListTracks.length}</div>
           <div className="TrackList">
             { renderEditTracks() }
