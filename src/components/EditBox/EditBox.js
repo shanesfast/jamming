@@ -29,7 +29,7 @@ const EditBox = () => {
   const renderEditTracks = () => {
     if (Array.isArray(editListTracks) && editListTracks.length > 0) {
       return (
-        <div className="TrackList">
+        <>
           {
             editListTracks.map((track, index) => {
               return (
@@ -44,29 +44,25 @@ const EditBox = () => {
               );
             })
           }
-        </div>
+        </>
       );
     } else {
-      return (
-        <div className="TrackList">
-          <br /><p>Add some tracks!</p>
-        </div>
-      );
+      return(<><br /><p>Add some tracks!</p></>);
     }
   }
 
   if (editBoxIsOpen === true) {
       return (
         <div className="Editlist">
-          <div className="remove-space">
             <div className="Show-playlist-list" onClick={handleEditListClick}>
               Edit playlists</div>
-          </div>
           <input id="edit-title" placeholder={editListPlayLists[playListPosition].name} ref={newNameRef}></input>
           <button className="Editlist-save" onClick={() => handleUpdateClick(editListPlayLists[playListPosition].id)}>
           <b>UPDATE ON SPOTIFY</b></button>
           <div className="Track-counter">Number of tracks: {editListTracks.length}</div>
-          { renderEditTracks() }
+          <div className="TrackList">
+            { renderEditTracks() }
+          </div>
         </div>
       );
   }

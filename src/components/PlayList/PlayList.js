@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useRef } from 'react';
 import { PlayListContext } from '../../context/PlayListContext';
 import usePlaylist from '../../hooks/usePlaylist';
 import useSpotify from '../../hooks/useSpotify';
@@ -6,10 +6,6 @@ import './PlayList.css';
 
 export const PlayList = (props) => {
   const titleRef = useRef();
-
-  const { state, setState } = useState({
-    editListIsOpen: false
-  });
 
   const { state: playListState } = useContext(PlayListContext);
   const { playListTracks } = playListState; 
@@ -28,43 +24,38 @@ export const PlayList = (props) => {
     }
   }
 
-  if (playListTracks.length > 0) {
-    return (
-      <div className="Playlist">
-        <input id='title' placeholder="New Playlist Title" ref={titleRef}></input>
-        <button className="Playlist-save" onClick={handleTitleChange}>
-        <b>SAVE TO SPOTIFY</b></button>
-        <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
-        <div className="TrackList">
-        {
-          playListTracks.map((track, index) => {
-            return (
-              <div key={`${track.uri}:${index}`} className="Track">
-                <div className="Track-information" id="track">
-                  <h3>{track.name}</h3>
-                  <p>{track.artistName} | {track.albumName}</p>
-                </div>
-                <button className="Track-action" onClick={() => removeTrack(index)}>-</button>
-              </div>
-            );
-          })
-        }
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className="Playlist">
-        <input id='title' placeholder="New Playlist Title" ref={titleRef}></input>
-        <button className="Playlist-save" onClick={handleTitleChange}>
-        <b>SAVE TO SPOTIFY</b></button>
-        <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
-        <div className="TrackList">
-          <br /><p className="empty-playlist-message">Add some tracks.</p>
-        </div>
-      </div>
-    );
+  const renderPlayListTracks = () => {
+    if (playListTracks.length > 0) {
+      playListTracks.map((track, index) => {
+        return (
+          <div key={`${track.uri}:${index}`} className="Track">
+            <div className="Track-information" id="track">
+              <h3>{track.name}</h3>
+              <p>{track.artistName} | {track.albumName}</p>
+            </div>
+            <button className="Track-action" onClick={() => removeTrack(index)}>-</button>
+          </div>
+        );
+      })
+    } else {
+      return (
+      <><br /><p className="empty-playlist-message">Add some tracks.</p></>
+      );
+    }
+       
   }
+
+  return (
+    <div className="Playlist">
+      <input id='title' placeholder="New Playlist Title" ref={titleRef}></input>
+      <button className="Playlist-save" onClick={handleTitleChange}>
+      <b>SAVE TO SPOTIFY</b></button>
+      <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
+      <div className="TrackList">
+      { renderPlayListTracks() }
+      </div>
+    </div>
+  );
 }
 
 export default PlayList;
