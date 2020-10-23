@@ -1,13 +1,17 @@
 import React from 'react';
 import usePlaylist from '../../hooks/usePlaylist';
 import useSpotify from '../../hooks/useSpotify';
-import { EditList } from '../EditList/EditList.js';
 
 import './ListOfPlayLists.css';
 
 export const ListOfPlayLists = (props) => {
   const { editListIsOpen, editListPlayLists } = usePlaylist();
-  const { openPlayLists } = useSpotify();
+  const { openPlayLists, getTracksFromPlayList } = useSpotify();
+
+  const handleClick = (e, playlistId, newplayListPosition) => {
+    e.preventDefault();
+    getTracksFromPlayList(playlistId);
+  }
 
   if (editListIsOpen === true && Array.isArray(editListPlayLists)) {
     return (
@@ -17,7 +21,16 @@ export const ListOfPlayLists = (props) => {
         <div className="Playlist-container">
           <h3>{editListPlayLists[0].user} Playlists</h3>
           <div className="Playlist-list">
-            <EditList />
+            {
+              editListPlayLists.map(playlist => 
+                <div className="List-item" key={playlist.id}>
+                  <p><i className="Title">{playlist.name}</i> <br />
+                  <i className="Count">{playlist.count} Tracks</i></p>
+                  <p><i className="Edit-btn" onClick={(e) => handleClick(e, playlist.id, playlist.position)}
+                     >edit</i> | <i className="Delete-btn">delete</i></p>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>

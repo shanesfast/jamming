@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { PlayListContext } from '../../context/PlayListContext';
 import usePlaylist from '../../hooks/usePlaylist';
 import useSpotify from '../../hooks/useSpotify';
@@ -6,8 +6,13 @@ import './PlayList.css';
 
 export const PlayList = (props) => {
   const titleRef = useRef();
-  const { state } = useContext(PlayListContext);
-  const { playListTracks } = state; 
+
+  const { state, setState } = useState({
+    editListIsOpen: false
+  });
+
+  const { state: playListState } = useContext(PlayListContext);
+  const { playListTracks } = playListState; 
 
   const { removeTrack } = usePlaylist();
   const { openPlayLists, savePlayList } = useSpotify();
