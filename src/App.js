@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import './App.css';
-import { AppPlayList } from './components/AppPlayList/AppPlayList';
 import { ListOfPlayLists } from './components/ListOfPlayLists/ListOfPlayLists';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { SignInBox } from './components/SignInBox/SignInBox';
+import { SearchResults } from './components/SearchResults/SearchResults.js';
+import { PlayList } from './components/PlayList/PlayList.js';
 import { AuthContext } from './context/AuthContext';
 import { PlayListProvider } from './context/PlayListContext';
 import { PositionProvider } from './context/PositionContext';
@@ -25,7 +26,10 @@ const App = () => {
     <>
       <SearchBar />
       <PositionProvider>
-        <AppPlayList />
+        <div className="main-container">
+          <SearchResults />
+          <PlayList />
+        </div>
         <ListOfPlayLists />
       </PositionProvider>
     </>
