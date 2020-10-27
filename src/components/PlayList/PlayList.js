@@ -6,11 +6,13 @@ import './PlayList.css';
 
 export const PlayList = (props) => {
   const titleRef = useRef();
-  const { state } = useContext(PlayListContext);
-  const { playListTracks } = state; 
+  const newNameRef = useRef();
 
-  const { removeTrack } = usePlaylist();
-  const { openPlayLists, savePlayList } = useSpotify();
+  const { state: playListState } = useContext(PlayListContext);
+  const { playListPosition, playListTracks } = playListState; 
+
+  const { editBoxIsOpen, editListPlayLists, editListTracks, removeTrack } = usePlaylist();
+  const { openPlayLists, savePlayList, updatePlayList } = useSpotify();
 
   const handleTitleChange = () => {
     let title = titleRef.current.value;
@@ -23,27 +25,72 @@ export const PlayList = (props) => {
     }
   }
 
-  if (playListTracks.length > 0) {
-    return (
-      <div className="Playlist">
-        <input id='title' placeholder="New Playlist Title" ref={titleRef}></input>
-        <button className="Playlist-save" onClick={handleTitleChange}>
-        <b>SAVE TO SPOTIFY</b></button>
-        <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
-        <div className="TrackList">
-        {
-          playListTracks.map((track, index) => {
-            return (
-              <div key={`${track.uri}:${index}`} className="Track">
-                <div className="Track-information" id="track">
-                  <h3>{track.name}</h3>
-                  <p>{track.artistName} | {track.albumName}</p>
+  const handleEditPlayListsClick = (e) => {
+    e.preventDefault();
+    openPlayLists(e);
+  }
+
+  const handleUpdatePlayListClick = (playListId) => {
+    let newName = newNameRef.current.value;
+    let uris = editListTracks.map(track => { return track.uri; });
+    updatePlayList(playListId, newName, uris);
+  }
+
+  const renderEditTracks = () => {
+    if (Array.isArray(editListTracks) && editListTracks.length > 0) {
+      return (
+        <>
+          {
+            editListTracks.map((track, index) => {
+              return (
+                <div key={`${track.uri}:${index}`} className="Track">
+                  <div className="Track-information" id="track">
+                    <h3>{track.name}</h3>
+                    <p>{track.artistName} | {track.albumName}</p>
+                  </div>
+                  <button className="Track-action"
+                    onClick={() => removeTrack(index, true)}>-</button>
                 </div>
-                <button className="Track-action" onClick={() => removeTrack(index)}>-</button>
-              </div>
-            );
-          })
-        }
+              );
+            })
+          }
+        </>
+      );
+    } else {
+      return(<><br /><p>Add some tracks!</p></>);
+    }
+  }
+
+  const renderPlayListTracks = () => {
+    if (playListTracks.length > 0) {
+      playListTracks.map((track, index) => {
+        return (
+          <div key={`${track.uri}:${index}`} className="Track">
+            <div className="Track-information" id="track">
+              <h3>{track.name}</h3>
+              <p>{track.artistName} | {track.albumName}</p>
+            </div>
+            <button className="Track-action" onClick={() => removeTrack(index)}>-</button>
+          </div>
+        );
+      })
+    } else {
+      return (
+      <><br /><p className="empty-playlist-message">Add some tracks.</p></>
+      );
+    }   
+  }
+
+  if (editBoxIsOpen) {
+    return(
+      <div className="Playlist">
+        <input id="title" placeholder={editListPlayLists[playListPosition].name} ref={newNameRef}></input>
+        <button className="Playlist-save" onClick={() => handleUpdatePlayListClick(editListPlayLists[playListPosition].id)}>
+        <b>UPDATE ON SPOTIFY</b></button>
+        <button className="Show-playlist-list" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
+        <div className="Track-counter">Number of tracks: {editListTracks.length}</div>
+        <div className="TrackList">
+          { renderEditTracks() }
         </div>
       </div>
     );
@@ -55,7 +102,7 @@ export const PlayList = (props) => {
         <b>SAVE TO SPOTIFY</b></button>
         <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
         <div className="TrackList">
-          <br /><p className="empty-playlist-message">Add some tracks.</p>
+          { renderPlayListTracks() }
         </div>
       </div>
     );
