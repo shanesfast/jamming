@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import './App.css';
 import { ListOfPlayLists } from './components/ListOfPlayLists/ListOfPlayLists';
-import { SearchBar } from './components/SearchBar/SearchBar';
 import { SignInBox } from './components/SignInBox/SignInBox';
 import { SearchResults } from './components/SearchResults/SearchResults.js';
 import { PlayList } from './components/PlayList/PlayList.js';
@@ -24,7 +23,6 @@ const App = () => {
 
   const mainApp = (
     <>
-      <SearchBar />
       <PositionProvider>
         <div className="main-container">
           <SearchResults />

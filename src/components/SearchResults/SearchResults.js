@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { DebounceInput } from 'react-debounce-input';
 import { SearchContext } from '../../context/SearchContext';
 import useSpotify from '../../hooks/useSpotify';
 import usePlaylist from '../../hooks/usePlaylist';
@@ -31,6 +32,12 @@ export const SearchResults = (props) => {
     // When you click on an artist, it brings up that artists albums in the album filter section
     // This ensures that the 'album' filter button is selected after clicking on an artist
     if (sortBy === 'AlbumsByArtist' && sortValue === 'Album') return "active";
+  }
+
+  const handleSearch = (e) => {
+    const terms = e.target.value;
+    dispatch({ type: 'UPDATE_SEARCH_TERMS', search: terms });
+    if (terms.length === 0) dispatch({type: 'CLEAR_SEARCH'});
   }
 
   const handleSortBy = (e) => {
@@ -120,7 +127,10 @@ export const SearchResults = (props) => {
 
   return (
     <div className="SearchResults">
-      <h2>Results</h2>
+      <div className="SearchBar">
+        <DebounceInput minLength={1} debounceTimeout={300} onChange={handleSearch}
+          id="searchBar" placeholder="Search Spotify" />
+      </div>
       <div className="SearchFilters">
         { renderSortByOptions() }
       </div>
