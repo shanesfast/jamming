@@ -16,6 +16,17 @@
   margin-bottom: 10%;
 }
 
+.main-header {
+  padding: 3% 0 3% 0;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 6rem;
+}
+
+.main-header .highlight {
+  color: #59d44b;
+}
+
 @media only screen and (max-width: 1020px) {
   .main-container {
     height: 80rem;
