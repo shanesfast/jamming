@@ -63,17 +63,23 @@ export const PlayList = (props) => {
 
   const renderPlayListTracks = () => {
     if (playListTracks.length > 0) {
-      playListTracks.map((track, index) => {
-        return (
-          <div key={`${track.uri}:${index}`} className="Track">
-            <div className="Track-information" id="track">
-              <h3>{track.name}</h3>
-              <p>{track.artistName} | {track.albumName}</p>
-            </div>
-            <button className="Track-action" onClick={() => removeTrack(index)}>-</button>
-          </div>
-        );
-      })
+      return(
+        <>
+          {
+            playListTracks.map((track, index) => {
+              return (
+                <div key={`${track.uri}:${index}`} className="Track">
+                  <div className="Track-information" id="track">
+                    <h3>{track.name}</h3>
+                    <p>{track.artistName} | {track.albumName}</p>
+                  </div>
+                  <button className="Track-action" onClick={() => removeTrack(index)}>-</button>
+                </div>
+              );
+            })
+          }
+        </>
+      );
     } else {
       return (
       <><br /><p className="empty-playlist-message">Add some tracks.</p></>
