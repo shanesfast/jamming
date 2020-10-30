@@ -19,19 +19,16 @@ export const ListOfPlayLists = (props) => {
         <div className="Close-playlist-container" onClick={openPlayLists}>
         </div>
         <div className="Playlist-container">
-          <h3>{editListPlayLists[0].user} Playlists</h3>
-          <div className="Playlist-list">
-            {
-              editListPlayLists.map(playlist => 
-                <div className="List-item" key={playlist.id}>
-                  <p><i className="Title">{playlist.name}</i> <br />
-                  <i className="Count">{playlist.count} Tracks</i></p>
-                  <p><i className="Edit-btn" onClick={(e) => handleClick(e, playlist.id, playlist.position)}
-                     >edit</i> | <i className="Delete-btn">delete</i></p>
-                </div>
-              )
-            }
-          </div>
+          {
+            editListPlayLists.map(playlist => 
+              <div className="List-item" key={playlist.id}>
+                <p><i className="Title">{playlist.name}</i> <br />
+                <i className="Count">{playlist.count} Tracks</i></p>
+                <p><i className="Edit-btn" onClick={(e) => handleClick(e, playlist.id, playlist.position)}
+                    >edit</i> | <i className="Delete-btn">delete</i></p>
+              </div>
+            )
+          }
         </div>
       </div>
     );
@@ -41,10 +38,7 @@ export const ListOfPlayLists = (props) => {
         <div className="Close-playlist-container" onClick={openPlayLists}>
         </div>
         <div className="Playlist-container">
-          <h3>Playlists</h3>
-          <div className="Playlist-list">
-            <p>No playlists found.</p>
-          </div>
+          <p>No playlists found.</p>
         </div>
       </div>
     );
