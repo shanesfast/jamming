@@ -5,12 +5,21 @@ import useSpotify from '../../hooks/useSpotify';
 import './ListOfPlayLists.css';
 
 export const ListOfPlayLists = (props) => {
-  const { editListIsOpen, editListPlayLists } = usePlaylist();
-  const { openPlayLists, getTracksFromPlayList } = useSpotify();
+  const { editListIsOpen, editListPlayLists, populateUserPlayLists } = usePlaylist();
+  const { deletePlayList, openPlayLists, getTracksFromPlayList } = useSpotify();
 
-  const handleClick = (e, playlistId, newplayListPosition) => {
+  const handleOpenClick = (e, playListId, newplayListPosition) => {
     e.preventDefault();
-    getTracksFromPlayList(playlistId);
+    getTracksFromPlayList(playListId);
+  }
+
+  const handleDeleteClick = (e, playListId, playListIndex) => {
+    e.preventDefault();
+    if (window.confirm("Are you sure you want to remove this playlist from your Spotify account?")) {
+      deletePlayList(playListId);
+      const newEditListPlayLists = editListPlayLists.filter((playlist, index) => { return index !== playListIndex });
+      populateUserPlayLists(newEditListPlayLists);
+    }
   }
 
   if (editListIsOpen === true && Array.isArray(editListPlayLists)) {
@@ -20,12 +29,12 @@ export const ListOfPlayLists = (props) => {
         </div>
         <div className="Playlist-container">
           {
-            editListPlayLists.map(playlist => 
+            editListPlayLists.map((playlist, index) => 
               <div className="List-item" key={playlist.id}>
                 <p><i className="Title">{playlist.name}</i> <br />
                 <i className="Count">{playlist.count} Tracks</i></p>
-                <p><i className="Edit-btn" onClick={(e) => handleClick(e, playlist.id, playlist.position)}
-                    >edit</i> | <i className="Delete-btn">delete</i></p>
+                <p><i className="Edit-btn" onClick={(e) => handleOpenClick(e, playlist.id, playlist.position)}
+                    >edit</i> | <i className="Delete-btn" onClick={(e) => handleDeleteClick(e, playlist.id, index)} >delete</i></p>
               </div>
             )
           }
