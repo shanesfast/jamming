@@ -16,39 +16,32 @@
 
 .Playlist-container {
   position: absolute;
-  top: 17%;
-  left: 25%;
-  height: 70%;
-  width: 50%;
-  border: 2px solid #2943e6;
+  top: 2%;
+  left: 18%;
+  height: 96%;
+  width: 65%;
+  border: 2px solid #787e99;
   background-color: rgba(26, 36, 64, 0.96);
   z-index: 1;
-}
-
-.Playlist-container h3 {
-  width: 85%;
-  padding: 2% 5% 0 1%;
-  margin-left: 4%;
-  font-size: 2rem;
-  color: rgba(251, 251, 251, 0.88);
-}
-
-.Playlist-list {
-  height: 88%;
-  width: 100%;
   overflow-y: scroll;
 }
 
-.Playlist-list .List-item {
+.Playlist-container h3 {
+  padding: 2% 5% 0 1%;
+  font-size: 2rem;
+  color: rgb(46, 197, 106);
+}
+
+.Playlist-container .List-item {
   display: flex;
   justify-content: space-between;
   width: 88%;
-  margin: 2% 0 0 4%;
+  margin: 10px auto;
   padding: 2%;
-  border: 2px solid #2943e6;
+  border-bottom: 2px solid #555d84;
 }
 
-.Playlist-list .List-item p {
+.Playlist-container .List-item p {
   max-width: 75%;
 }
 
@@ -56,7 +49,11 @@
   color: #2ec56a;
 }
 
-.Playlist-list .List-item:hover {
+.Playlist-container .List-item:hover .Title {
+  color: #fff;
+}
+
+.Playlist-container .List-item:hover {
   border-color: #fff;
 }
 
@@ -64,7 +61,7 @@
   color: rgba(251, 251, 251, 0.62);
 }
 
-.Playlist-list .List-item:hover .Count {
+.Playlist-container .List-item:hover .Count {
   color: rgb(251, 251, 251);
 }
 

@@ -1,5 +1,4 @@
 .App {
-  height: 100vh;
   padding: 0 15% 0 15%;
   font-family: 'Work Sans', sans-serif;
   font-weight: 500;
@@ -29,9 +28,8 @@
 
 @media only screen and (max-width: 1020px) {
   .main-container {
-    height: 80rem;
+    height: 80vh;
     align-items: center;
     flex-direction: column;
-    margin-top: 1rem;
   }
 }

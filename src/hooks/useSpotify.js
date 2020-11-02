@@ -280,6 +280,26 @@ const useSpotify = () => {
     .catch(err => { alert(`Getting playlists error: ${err.message}`); });
   }
 
+  function deletePlayList(id) {
+    // Abort username request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+
+    const titleRequest = new Request('https://api.spotify.com/v1/playlists/' + id +
+    '/followers', {
+    	method: 'DELETE',
+    	headers: {
+        'Authorization': 'Bearer ' + spotifyAccessToken
+      },
+      signal
+    });
+
+    return fetch(titleRequest)
+      .then(response => { if (response.ok) console.log("Playlist successfully removed from your Spotify account.") })
+      .catch(err => { alert(`Unfollowing playlist error: ${err.message}`) });
+  }
+
   function savePlayList(title) {
     let tracks = [];
     playListTracks.map(track => { return tracks = [...tracks, track.uri] });
@@ -469,6 +489,7 @@ const useSpotify = () => {
   return {
     artistResult,
     albumResult,
+    deletePlayList,
     getAlbumsFromArtist,
     getTracksFromAlbum,
     getTracksFromPlayList,
