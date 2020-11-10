@@ -11,16 +11,16 @@ const usePlaylist = () => {
     return dispatch({ type: 'UPDATE_PLAY_LIST_TRACKS', tracks: trackInfo });
   }
 
-  function removeTrack(trackIndex, editListOpen=false) {
+  function removeTrack(trackIndex) {
     let trackArray;
 
-    if (editListOpen === true) trackArray = [...editListTracks];
+    if (editBoxIsOpen) trackArray = [...editListTracks];
     else trackArray = [...playListTracks];
 
     function remove(playList, index) {
       playList.splice(index, 1);
 
-      if (editListOpen === true) dispatch({ type: 'REMOVE_EDIT_LIST_TRACKS', tracks: playList });
+      if (editBoxIsOpen) dispatch({ type: 'REMOVE_EDIT_LIST_TRACKS', tracks: playList });
       else dispatch({ type: 'REMOVE_PLAY_LIST_TRACKS', tracks: playList });
     }
 

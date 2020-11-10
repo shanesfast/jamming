@@ -45,7 +45,7 @@ export const PlayList = (props) => {
                     <p>{track.artistName} | {track.albumName}</p>
                   </div>
                   <button className="Track-action"
-                    onClick={() => removeTrack(index, true)}>-</button>
+                    onClick={() => removeTrack(index)}>-</button>
                 </div>
               );
             })
