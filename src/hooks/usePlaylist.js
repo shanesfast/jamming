@@ -42,6 +42,10 @@ const usePlaylist = () => {
     return false;
   }
 
+  function closeEditBox() {
+    dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: false });
+  }
+
   function populateUserPlayLists(playlists) {
     dispatch({ type: 'UPDATE_EDIT_PLAY_LISTS', lists: playlists });
     dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: true });
@@ -54,6 +58,7 @@ const usePlaylist = () => {
   return {
     addTrack,
     clearPlayListTracks,
+    closeEditBox,
     closeEditPlayLists,
     editBoxIsOpen,
     editListIsOpen,

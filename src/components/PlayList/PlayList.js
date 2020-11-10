@@ -7,8 +7,13 @@ export const PlayList = (props) => {
   const titleRef = useRef();
   const newNameRef = useRef();
 
-  const { editBoxIsOpen, editListPlayLists, editListTracks, playListPosition, playListTracks, removeTrack } = usePlaylist();
+  const { closeEditBox, editBoxIsOpen, editListPlayLists, editListTracks, playListPosition, playListTracks, removeTrack } = usePlaylist();
   const { openPlayLists, savePlayList, updatePlayList } = useSpotify();
+
+  const handleBackToNewPlaylist = () => {
+    if (window.confirm("Do you want to save changes to the current playlist?")) handleUpdatePlayListClick(editListPlayLists[playListPosition].id);
+    closeEditBox();
+  }
 
   const handleTitleChange = () => {
     let title = titleRef.current.value;
@@ -87,6 +92,7 @@ export const PlayList = (props) => {
     return(
       <div className="Playlist">
         <input id="title" placeholder={editListPlayLists[playListPosition].name} ref={newNameRef}></input>
+        <a id="back-to-new-playlist" href="#" onClick={handleBackToNewPlaylist}>Back to new playlist</a>
         <button className="Playlist-save" onClick={() => handleUpdatePlayListClick(editListPlayLists[playListPosition].id)}>
         <b>UPDATE ON SPOTIFY</b></button>
         <button className="Show-playlist-list" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
