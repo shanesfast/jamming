@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import DialogBox from '../../borrowed/custom_dialog_box/dialog-box.1.0.1';
 import usePlaylist from '../../hooks/usePlaylist';
 import useSpotify from '../../hooks/useSpotify';
 import './PlayList.css';
@@ -11,8 +12,18 @@ export const PlayList = (props) => {
   const { openPlayLists, savePlayList, updatePlayList } = useSpotify();
 
   const handleBackToNewPlaylist = () => {
-    if (window.confirm("Do you want to save changes to the current playlist?")) handleUpdatePlayListClick(editListPlayLists[playListPosition].id);
-    closeEditBox();
+    const confirmBox = new DialogBox({
+      trueButtonText: "Yes",
+      falseButtonText: "No",
+      cancelButtonText: 'Cancel',
+      messageText: "Would you like to save the changes made to this playlist before moving on?",
+      titleText: "Save Changes"
+    });
+
+    confirmBox.respond().then(res => {
+      if (res) handleUpdatePlayListClick(editListPlayLists[playListPosition].id)
+      closeEditBox();
+    });
   }
 
   const handleTitleChange = () => {
@@ -31,8 +42,8 @@ export const PlayList = (props) => {
     openPlayLists(e);
   }
 
-  const handleUpdatePlayListClick = (playListId) => {
-    let newName = newNameRef.current.value;
+  const handleUpdatePlayListClick = (playListId, updateName=false) => {
+    let newName = updateName ? newNameRef.current.value : editListPlayLists[playListPosition].name;
     let uris = editListTracks.map(track => { return track.uri; });
     updatePlayList(playListId, newName, uris);
   }
@@ -92,8 +103,8 @@ export const PlayList = (props) => {
     return(
       <div className="Playlist">
         <input id="title" placeholder={editListPlayLists[playListPosition].name} ref={newNameRef}></input>
-        <a id="back-to-new-playlist" href="#" onClick={handleBackToNewPlaylist}>Back to new playlist</a>
-        <button className="Playlist-save" onClick={() => handleUpdatePlayListClick(editListPlayLists[playListPosition].id)}>
+        <button id="back-to-new-playlist" onClick={handleBackToNewPlaylist}>Back to new playlist</button>
+        <button className="Playlist-save" onClick={() => handleUpdatePlayListClick(editListPlayLists[playListPosition].id, true)}>
         <b>UPDATE ON SPOTIFY</b></button>
         <button className="Show-playlist-list" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
         <div className="Track-counter">Number of tracks: {editListTracks.length}</div>
