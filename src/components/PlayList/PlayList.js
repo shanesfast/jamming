@@ -21,7 +21,7 @@ export const PlayList = (props) => {
     });
 
     confirmBox.respond().then(res => {
-      if (res) handleUpdatePlayListClick(editListPlayLists[playListPosition].id)
+      if (res) handleUpdatePlayListClick(editListPlayLists[playListPosition].id);
       closeEditBox();
     });
   }
@@ -46,6 +46,7 @@ export const PlayList = (props) => {
     let newName = updateName ? newNameRef.current.value : editListPlayLists[playListPosition].name;
     let uris = editListTracks.map(track => { return track.uri; });
     updatePlayList(playListId, newName, uris);
+    newNameRef.current.value = editListPlayLists[playListPosition].name;
   }
 
   const renderEditTracks = () => {
