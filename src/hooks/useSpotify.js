@@ -247,7 +247,7 @@ const useSpotify = () => {
   function openPlayLists(e) {
     e.preventDefault();
 
-    if (closeEditPlayLists() === true) return;
+    if (closeEditPlayLists()) return;
 
     // Abort username request if it is taking too long
     const controller = new AbortController();

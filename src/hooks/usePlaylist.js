@@ -33,6 +33,10 @@ const usePlaylist = () => {
     dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: true });
   }
 
+  function updateEditPlaylistPosition(position) {
+    dispatch({ type: 'SET_EDIT_LIST_POSITION', position: position });
+  }
+
   function closeEditPlayLists() {
     if (editListIsOpen === true) {
       dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
@@ -68,7 +72,8 @@ const usePlaylist = () => {
     playListPosition,
     removeTrack,
     populateUserPlayLists,
-    updateEditPlaylistTracks
+    updateEditPlaylistTracks,
+    updateEditPlaylistPosition
   }
 };
 

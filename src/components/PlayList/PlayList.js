@@ -22,6 +22,7 @@ export const PlayList = (props) => {
 
     confirmBox.respond().then(res => {
       if (res) handleUpdatePlayListClick(editListPlayLists[playListPosition].id);
+      newNameRef.current.value = '';
       closeEditBox();
     });
   }
@@ -39,6 +40,7 @@ export const PlayList = (props) => {
 
   const handleEditPlayListsClick = (e) => {
     e.preventDefault();
+    if (titleRef.current) titleRef.current.value = '';
     openPlayLists(e);
   }
 
@@ -120,7 +122,7 @@ export const PlayList = (props) => {
         <input id='title' placeholder="New Playlist Title" ref={titleRef}></input>
         <button className="Playlist-save" onClick={handleTitleChange}>
         <b>SAVE TO SPOTIFY</b></button>
-        <button className="Show-playlist-list" onClick={openPlayLists}>EDIT PLAYLISTS</button>
+        <button className="Show-playlist-list" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
         <div className="TrackList">
           { renderPlayListTracks() }
         </div>
