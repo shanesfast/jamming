@@ -27,7 +27,7 @@ export const PlayList = (props) => {
     });
   }
 
-  const handleTitleChange = () => {
+  const handleSavePlayList = () => {
     let title = titleRef.current.value;
 
     if (title.length > 0) {
@@ -48,7 +48,7 @@ export const PlayList = (props) => {
     let newName = updateName ? updateName : editListPlayLists[playListPosition].name;
     let uris = editListTracks.map(track => { return track.uri; });
     updatePlayList(playListId, newName, uris);
-    newNameRef.current.value = editListPlayLists[playListPosition].name;
+    newNameRef.current.value = newName;
   }
 
   const renderEditTracks = () => {
@@ -107,7 +107,7 @@ export const PlayList = (props) => {
       <div className="Playlist">
         <input id="title" placeholder={editListPlayLists[playListPosition].name} ref={newNameRef}></input>
         <button id="back-to-new-playlist" onClick={handleBackToNewPlaylist}>Back to new playlist</button>
-        <button className="Playlist-save" onClick={() => handleUpdatePlayListClick(editListPlayLists[playListPosition].id, true)}>
+        <button className="Playlist-save" onClick={() => handleUpdatePlayListClick(editListPlayLists[playListPosition].id, newNameRef.current.value)}>
         <b>UPDATE ON SPOTIFY</b></button>
         <button className="Show-playlist-list" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
         <div className="Track-counter">Number of tracks: {editListTracks.length}</div>
@@ -120,7 +120,7 @@ export const PlayList = (props) => {
     return (
       <div className="Playlist">
         <input id='title' placeholder="New Playlist Title" ref={titleRef}></input>
-        <button className="Playlist-save" onClick={handleTitleChange}>
+        <button className="Playlist-save" onClick={handleSavePlayList}>
         <b>SAVE TO SPOTIFY</b></button>
         <button className="Show-playlist-list" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
         <div className="TrackList">
