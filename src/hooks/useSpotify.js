@@ -21,7 +21,7 @@ const useSpotify = () => {
   const { state: playListState } = useContext(PlayListContext);
   const { editListPlayLists, playListPosition, playListTracks } = playListState;
 
-  const { addTrack, clearPlayListTracks, closeEditPlayLists, populateUserPlayLists, updateEditPlaylistTracks } = usePlaylist();
+  const { addTrack, clearPlayListTracks, closeEditPlayLists, populateUserPlayLists, updateEditPlaylistTracks, updateEditPlaylistPosition } = usePlaylist();
 
   useEffect(() => {
     function searchArtist(terms) {
@@ -361,6 +361,9 @@ const useSpotify = () => {
     })
     .then(trackRequest => { return addTracks(trackRequest) });
 
+    console.log(tracks);
+    updateEditPlaylistTracks(tracks);
+    updateEditPlaylistPosition(0);
     clearPlayListTracks();
   }
 
