@@ -6,7 +6,6 @@ import { SearchResults } from './components/SearchResults/SearchResults.js';
 import { PlayList } from './components/PlayList/PlayList.js';
 import { AuthContext } from './context/AuthContext';
 import { PlayListProvider } from './context/PlayListContext';
-import { PositionProvider } from './context/PositionContext';
 import { SearchProvider } from './context/SearchContext';
 
 const App = () => {
@@ -23,13 +22,11 @@ const App = () => {
 
   const mainApp = (
     <>
-      <PositionProvider>
-        <div className="main-container">
-          <SearchResults />
-          <PlayList />
-        </div>
-        <ListOfPlayLists />
-      </PositionProvider>
+      <div className="main-container">
+        <SearchResults />
+        <PlayList />
+      </div>
+      <ListOfPlayLists />
     </>
   );
 

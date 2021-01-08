@@ -5,11 +5,12 @@ import useSpotify from '../../hooks/useSpotify';
 import './ListOfPlayLists.css';
 
 export const ListOfPlayLists = (props) => {
-  const { editListIsOpen, editListPlayLists, populateUserPlayLists } = usePlaylist();
+  const { editListIsOpen, editListPlayLists, populateUserPlayLists, updateEditPlaylistPosition } = usePlaylist();
   const { deletePlayList, openPlayLists, getTracksFromPlayList } = useSpotify();
 
   const handleOpenClick = (e, playListId, newplayListPosition) => {
     e.preventDefault();
+    updateEditPlaylistPosition(newplayListPosition);
     getTracksFromPlayList(playListId);
   }
 

@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 export const playListReducer = (state, action) => {
-  const { editListTracks, playListTracks } = state;
+  const { editListTracks, playListTracks, playListPosition } = state;
 
   switch (action.type) {
     case 'CLEAR_PLAY_LIST_TRACKS':
@@ -14,6 +14,9 @@ export const playListReducer = (state, action) => {
 
     case 'SET_EDIT_LIST_TRACKS':
         return { ...state, editListTracks: action.tracks }
+
+    case 'SET_EDIT_LIST_POSITION':
+        return { ...state, playListPosition: action.position } 
 
     case 'UPDATE_EDIT_LIST_TRACKS':
         return { ...state, editListTracks: [...editListTracks, action.tracks] }

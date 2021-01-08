@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { PlayListContext } from "../context/PlayListContext";
+import { PlayListContext } from '../context/PlayListContext';
 
 const usePlaylist = () => {
   const { state, dispatch } = useContext(PlayListContext);
@@ -11,16 +11,16 @@ const usePlaylist = () => {
     return dispatch({ type: 'UPDATE_PLAY_LIST_TRACKS', tracks: trackInfo });
   }
 
-  function removeTrack(trackIndex, editListOpen=false) {
+  function removeTrack(trackIndex) {
     let trackArray;
 
-    if (editListOpen === true) trackArray = [...editListTracks];
+    if (editBoxIsOpen) trackArray = [...editListTracks];
     else trackArray = [...playListTracks];
 
     function remove(playList, index) {
       playList.splice(index, 1);
 
-      if (editListOpen === true) dispatch({ type: 'REMOVE_EDIT_LIST_TRACKS', tracks: playList });
+      if (editBoxIsOpen) dispatch({ type: 'REMOVE_EDIT_LIST_TRACKS', tracks: playList });
       else dispatch({ type: 'REMOVE_PLAY_LIST_TRACKS', tracks: playList });
     }
 
@@ -33,6 +33,10 @@ const usePlaylist = () => {
     dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: true });
   }
 
+  function updateEditPlaylistPosition(position) {
+    dispatch({ type: 'SET_EDIT_LIST_POSITION', position: position });
+  }
+
   function closeEditPlayLists() {
     if (editListIsOpen === true) {
       dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: false });
@@ -40,6 +44,10 @@ const usePlaylist = () => {
     }
 
     return false;
+  }
+
+  function closeEditBox() {
+    dispatch({ type: 'UPDATE_SHOW_EDIT_BOX', show: false });
   }
 
   function populateUserPlayLists(playlists) {
@@ -54,6 +62,7 @@ const usePlaylist = () => {
   return {
     addTrack,
     clearPlayListTracks,
+    closeEditBox,
     closeEditPlayLists,
     editBoxIsOpen,
     editListIsOpen,
@@ -63,7 +72,8 @@ const usePlaylist = () => {
     playListPosition,
     removeTrack,
     populateUserPlayLists,
-    updateEditPlaylistTracks
+    updateEditPlaylistTracks,
+    updateEditPlaylistPosition
   }
 };
 
