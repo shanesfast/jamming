@@ -223,7 +223,7 @@ const useSpotify = () => {
       })
     }
 
-    fetchTracks()
+    return fetchTracks()
     .then(data => {
       if (data) {
         return data.map(track => {
@@ -238,7 +238,7 @@ const useSpotify = () => {
     })
     .then(tracks => {
       if (tracks) {
-        updateEditPlaylistTracks(tracks);
+        return tracks;
       }
     })
     .catch(err => { alert(`Getting tracks from playlist error: ${err.message}`); });
