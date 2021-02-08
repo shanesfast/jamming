@@ -325,8 +325,7 @@ const useSpotify = () => {
       .then(response => {
         return response.json();
       })
-      .then(jsonResponse => {
-        console.log(jsonResponse);
+      .then(jsonResponse => {        
         return jsonResponse.id;
       })
       .catch(err => { alert(`Adding playlist error: ${err.message}`) });
@@ -344,7 +343,7 @@ const useSpotify = () => {
     }
 
     
-    addPlayList()
+    return addPlayList()
     .then(playListID => {
       let trackRequest = new Request('https://api.spotify.com/v1/users/' +
       spotifyUsername + '/playlists/' + playListID + '/tracks', {
@@ -357,14 +356,13 @@ const useSpotify = () => {
         signal
       });
 
-      return trackRequest;
+      return [trackRequest, playListID];
     })
-    .then(trackRequest => { return addTracks(trackRequest) });
-
-    console.log(tracks);
-    updateEditPlaylistTracks(tracks);
-    updateEditPlaylistPosition(0);
-    clearPlayListTracks();
+    .then(response => { 
+      addTracks(response[0])
+      clearPlayListTracks();
+      return response[1]; 
+    });
   }
 
   function updatePlayList(playlistId, newName, urisArray) {
