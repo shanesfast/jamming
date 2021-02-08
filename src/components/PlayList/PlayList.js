@@ -8,8 +8,8 @@ export const PlayList = (props) => {
   const titleRef = useRef();
   const newNameRef = useRef();
 
-  const { closeEditBox, editBoxIsOpen, editListPlayLists, editListTracks, playListPosition, playListTracks, removeTrack, updateEditPlaylistTracks } = usePlaylist();
-  const { getTracksFromPlayList, openPlayLists, savePlayList, updatePlayList } = useSpotify();
+  const { closeEditBox, editBoxIsOpen, editListPlayLists, editListTracks, playListPosition, playListTracks, removeTrack, updateEditPlaylistTracks, updateUserPlayLists } = usePlaylist();
+  const { getTracksFromPlayList, getUserPlaylists, openPlayLists, savePlayList, updatePlayList } = useSpotify();
 
   const handleBackToNewPlaylist = () => {
     const confirmBox = new DialogBox({
@@ -32,8 +32,11 @@ export const PlayList = (props) => {
 
     if (title.length > 0) {
       const playListId = await savePlayList(title);
+      const playlists = await getUserPlaylists();
       const tracks = await getTracksFromPlayList(playListId);    
       titleRef.current.value = '';
+      console.log(playlists);
+      updateUserPlayLists(playlists);
       updateEditPlaylistTracks(tracks);
     } else if (title.length < 1) {
       alert('You must enter a title before saving the playlist.');

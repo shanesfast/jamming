@@ -10,8 +10,9 @@ export const ListOfPlayLists = (props) => {
 
   const handleOpenClick = async (e, playListId, newplayListPosition) => {
     e.preventDefault();
+    const tracks = await getTracksFromPlayList(playListId);
+
     updateEditPlaylistPosition(newplayListPosition);
-    const tracks = await getTracksFromPlayList(playListId);    
     updateEditPlaylistTracks(tracks);
   }
 

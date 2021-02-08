@@ -244,12 +244,40 @@ const useSpotify = () => {
     .catch(err => { alert(`Getting tracks from playlist error: ${err.message}`); });
   }
 
+  function getUserPlaylists() {
+    // Abort request if it is taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => controller.abort(), 6000);
+
+    return fetch("https://api.spotify.com/v1/me/playlists", { headers: {
+      'Authorization': 'Bearer ' + spotifyAccessToken
+      },
+      signal
+    })
+    .then(response => { return response.json() })
+    .then(jsonResponse => {
+      if (jsonResponse.items.length) {
+        return jsonResponse.items.map((items, num) => {
+          return {
+            name: items.name,
+            count: items.tracks.total,
+            id: items.id,
+            user: spotifyUsername,
+            position: num
+          }
+        });
+      }
+    })
+    .catch(err => { alert(`Getting playlists error: ${err.message}`); });
+  }
+
   function openPlayLists(e) {
     e.preventDefault();
 
     if (closeEditPlayLists()) return;
 
-    // Abort username request if it is taking too long
+    // Abort request if it is taking too long
     const controller = new AbortController();
     const signal = controller.signal;
     setTimeout(() => controller.abort(), 6000);
@@ -271,10 +299,7 @@ const useSpotify = () => {
             position: num
           }
         });
-      } else {
-        return;
       }
-
     })
     .then(playlists => populateUserPlayLists(playlists))
     .catch(err => { alert(`Getting playlists error: ${err.message}`); });
@@ -492,9 +517,10 @@ const useSpotify = () => {
     albumResult,
     deletePlayList,
     getAlbumsFromArtist,
+    getSpotifyAccess,
     getTracksFromAlbum,
     getTracksFromPlayList,
-    getSpotifyAccess,
+    getUserPlaylists,
     openPlayLists,
     savePlayList,
     trackResult,
