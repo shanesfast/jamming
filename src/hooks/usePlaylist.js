@@ -55,6 +55,10 @@ const usePlaylist = () => {
     dispatch({ type: 'UPDATE_SHOW_EDIT_LIST', show: true });
   }
 
+  function updateUserPlayLists(playlists) {
+    dispatch({ type: 'UPDATE_EDIT_PLAY_LISTS', lists: playlists });
+  }
+
   function clearPlayListTracks() {
     dispatch({ type: 'CLEAR_PLAY_LIST_TRACKS', tracks: [] });
   }
@@ -73,7 +77,8 @@ const usePlaylist = () => {
     removeTrack,
     populateUserPlayLists,
     updateEditPlaylistTracks,
-    updateEditPlaylistPosition
+    updateEditPlaylistPosition,
+    updateUserPlayLists
   }
 };
 
