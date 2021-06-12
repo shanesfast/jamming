@@ -1,5 +1,4 @@
 import React from 'react';
-
 import useSpotify from '../../hooks/useSpotify';
 
 import './SignInBox.css';
