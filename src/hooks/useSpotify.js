@@ -482,13 +482,14 @@ const useSpotify = () => {
     window.spotifyCallback = (token) => {
       popup.close();
       authDispatch({ type: 'SET_ACCESS_TOKEN', token });
-      const expireAt = new Date().setHours(1);
-
-      if (process.env.NODE_ENV === 'production') {
-        document.cookie = `secure_token=${token}; expires=${expireAt}; secure;`;
-      }
-
-      else document.cookie = `token=${token}; expires=${expireAt};`;
+      const expireAt = new Date();
+      const time = expireAt.getTime();
+      expireAt.setTime(time + 1000*3600);
+      
+      if (process.env.NODE_ENV === 'production')
+        document.cookie = `secure_token=${token}; expires=${expireAt.toUTCString()}; secure;`;
+      else 
+        document.cookie = `token=${token}; expires=${expireAt.toUTCString()};`;
 
       // Gets then Sets Spotify Username
       const usernameRequest = new Request('https://api.spotify.com/v1/me', 
@@ -503,10 +504,10 @@ const useSpotify = () => {
         authDispatch({ type: 'SET_USERNAME', username: response.id })
 
         if (process.env.NODE_ENV === 'production') {
-          document.cookie = `secure_username=${response.id}; expires=${expireAt}; secure;`;
+          document.cookie = `secure_username=${response.id}; expires=${expireAt.toUTCString()}; secure;`;
         }
 
-        else document.cookie = `username=${response.id}; expires=${expireAt};`;
+        else document.cookie = `username=${response.id}; expires=${expireAt.toUTCString()};`;
       })
       .catch(err => { console.log(`Get Spotify Username Error: ${err}`) });
     }
