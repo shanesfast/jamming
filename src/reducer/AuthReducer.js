@@ -13,6 +13,13 @@ export const authReducer = (state, action) => {
     case 'SET_USERNAME':
       return { ...state, spotifyUsername: action.username }
 
+    case 'END_SESSION':
+      return { ...state,
+               isAuthenticated: false,
+               spotifyAccessToken: null,
+               spotifyUsername: null
+             }
+
     default:
       return state;
   }
