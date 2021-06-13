@@ -10,27 +10,6 @@
   scrollbar-width: none;
 }
 
-.remove-space {
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: baseline;
-  height: 0;
-  width: 100%;
-}
-
-.Show-playlist-list {
-  width: 100%;
-  cursor: pointer;
-  transition: background-color .25s;
-  padding: 0.5rem;
-  color: #356264;
-  font-size: 1rem;
-}
-
-.Show-playlist-list:hover {
-  background-color: #3a9330;
-}
-
 .Playlist input {
   width: 100%;
   border: 0;
@@ -41,19 +20,43 @@
   color: #fff;
 }
 
-.Playlist-save {
+.remove-space {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: baseline;
+  height: 0;
+  width: 100%;
+}
+
+.playlist-btn-container {
+  margin: 10px 0;
+}
+
+.playlist-button {
+  width: 100%;
+  cursor: pointer;
+  transition: background-color .25s;
+  padding: 0.5rem;
+  color: #356264;
+  font-size: 1rem;
+}
+
+.playlist-button:hover {
+  background-color: #3a9330;
+}
+
+.playlist-save-button {
   text-align: center;
   cursor: pointer;
   width: 100%;
   padding: 8px 0;
-  margin: 0 0.1rem 0.6rem 0;
   background-color: #6c41ec;
   font-size: 1rem;
   transition: background-color .25s;
   color: #3bdadf;
 }
 
-.Playlist-save:hover {
+.playlist-save-button:hover {
   background-color: rgba(108, 65, 233, .7);
 }
 

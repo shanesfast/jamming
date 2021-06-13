@@ -111,10 +111,12 @@ export const PlayList = (props) => {
     return(
       <div className="Playlist">
         <input id="title" placeholder={editListPlayLists[playListPosition].name} ref={newNameRef}></input>
-        <button id="back-to-new-playlist" onClick={handleBackToNewPlaylist}>Back to new playlist</button>
-        <button className="Playlist-save" onClick={() => handleUpdatePlayListClick(editListPlayLists[playListPosition].id, newNameRef.current.value)}>
-        <b>UPDATE ON SPOTIFY</b></button>
-        <button className="Show-playlist-list" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
+        <div class="playlist-btn-container">
+          <button class="playlist-button" onClick={handleBackToNewPlaylist}>NEW PLAYLIST</button>
+          <button className="playlist-save-button" onClick={() => handleUpdatePlayListClick(editListPlayLists[playListPosition].id, newNameRef.current.value)}>
+            UPDATE ON SPOTIFY</button>
+          <button className="playlist-button" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
+        </div>
         <div className="Track-counter">Number of tracks: {editListTracks.length}</div>
         <div className="TrackList">
           { renderEditTracks() }
@@ -125,9 +127,10 @@ export const PlayList = (props) => {
     return (
       <div className="Playlist">
         <input id='title' placeholder="New Playlist Title" ref={titleRef}></input>
-        <button className="Playlist-save" onClick={handleSavePlayList}>
-        <b>SAVE TO SPOTIFY</b></button>
-        <button className="Show-playlist-list" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
+        <div class="playlist-btn-container">
+          <button className="playlist-save-button" onClick={handleSavePlayList}>SAVE TO SPOTIFY</button>
+          <button className="playlist-button" onClick={handleEditPlayListsClick}>EDIT PLAYLISTS</button>
+        </div>
         <div className="TrackList">
           { renderPlayListTracks() }
         </div>
