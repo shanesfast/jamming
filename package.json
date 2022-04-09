@@ -18,7 +18,7 @@
     "express": "^4.17.1",
     "find-config": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "mkdirp": "^1.0.3",
     "mongoose": "^5.9.10",
     "react": "^16.4.1",
